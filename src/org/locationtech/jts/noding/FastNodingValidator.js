@@ -22,13 +22,6 @@ export default class FastNodingValidator {
     nv.isValid()
     return nv.getIntersections()
   }
-  execute() {
-    if (this._segInt !== null) return null
-    this.checkInteriorIntersections()
-  }
-  getIntersections() {
-    return this._segInt.getIntersections()
-  }
   isValid() {
     this.execute()
     return this._isValid
@@ -56,5 +49,12 @@ export default class FastNodingValidator {
     if (this._isValid) return 'no intersections found'
     const intSegs = this._segInt.getIntersectionSegments()
     return 'found non-noded intersection between ' + WKTWriter.toLineString(intSegs[0], intSegs[1]) + ' and ' + WKTWriter.toLineString(intSegs[2], intSegs[3])
+  }
+  execute() {
+    if (this._segInt !== null) return null
+    this.checkInteriorIntersections()
+  }
+  getIntersections() {
+    return this._segInt.getIntersections()
   }
 }

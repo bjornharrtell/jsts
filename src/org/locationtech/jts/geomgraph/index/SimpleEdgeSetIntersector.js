@@ -10,15 +10,6 @@ export default class SimpleEdgeSetIntersector extends EdgeSetIntersector {
   static constructor_() {
     this.nOverlaps = null
   }
-  computeIntersects(e0, e1, si) {
-    const pts0 = e0.getCoordinates()
-    const pts1 = e1.getCoordinates()
-    for (let i0 = 0; i0 < pts0.length - 1; i0++) 
-      for (let i1 = 0; i1 < pts1.length - 1; i1++) 
-        si.addIntersections(e0, i0, e1, i1)
-      
-    
-  }
   computeIntersections() {
     if (arguments[2] instanceof SegmentIntersector && (hasInterface(arguments[0], List) && hasInterface(arguments[1], List))) {
       const edges0 = arguments[0], edges1 = arguments[1], si = arguments[2]
@@ -41,5 +32,14 @@ export default class SimpleEdgeSetIntersector extends EdgeSetIntersector {
         }
       }
     }
+  }
+  computeIntersects(e0, e1, si) {
+    const pts0 = e0.getCoordinates()
+    const pts1 = e1.getCoordinates()
+    for (let i0 = 0; i0 < pts0.length - 1; i0++) 
+      for (let i1 = 0; i1 < pts1.length - 1; i1++) 
+        si.addIntersections(e0, i0, e1, i1)
+      
+    
   }
 }

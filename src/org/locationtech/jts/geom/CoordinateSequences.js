@@ -3,18 +3,6 @@ import Coordinate from './Coordinate.js'
 import Double from '../../../../java/lang/Double.js'
 import CoordinateSequence from './CoordinateSequence.js'
 export default class CoordinateSequences {
-  static copyCoord(src, srcPos, dest, destPos) {
-    const minDim = Math.min(src.getDimension(), dest.getDimension())
-    for (let dim = 0; dim < minDim; dim++) 
-      dest.setOrdinate(destPos, dim, src.getOrdinate(srcPos, dim))
-    
-  }
-  static isRing(seq) {
-    const n = seq.size()
-    if (n === 0) return true
-    if (n <= 3) return false
-    return seq.getOrdinate(0, CoordinateSequence.X) === seq.getOrdinate(n - 1, CoordinateSequence.X) && seq.getOrdinate(0, CoordinateSequence.Y) === seq.getOrdinate(n - 1, CoordinateSequence.Y)
-  }
   static scroll() {
     if (arguments.length === 2) {
       if (hasInterface(arguments[0], CoordinateSequence) && Number.isInteger(arguments[1])) {
@@ -90,6 +78,36 @@ export default class CoordinateSequences {
       CoordinateSequences.swap(seq, i, last - i)
     
   }
+  static ensureValidRing(fact, seq) {
+    const n = seq.size()
+    if (n === 0) return seq
+    if (n <= 3) return CoordinateSequences.createClosedRing(fact, seq, 4)
+    const isClosed = seq.getOrdinate(0, CoordinateSequence.X) === seq.getOrdinate(n - 1, CoordinateSequence.X) && seq.getOrdinate(0, CoordinateSequence.Y) === seq.getOrdinate(n - 1, CoordinateSequence.Y)
+    if (isClosed) return seq
+    return CoordinateSequences.createClosedRing(fact, seq, n + 1)
+  }
+  static minCoordinate(seq) {
+    let minCoord = null
+    for (let i = 0; i < seq.size(); i++) {
+      const testCoord = seq.getCoordinate(i)
+      if (minCoord === null || minCoord.compareTo(testCoord) > 0) 
+        minCoord = testCoord
+      
+    }
+    return minCoord
+  }
+  static copyCoord(src, srcPos, dest, destPos) {
+    const minDim = Math.min(src.getDimension(), dest.getDimension())
+    for (let dim = 0; dim < minDim; dim++) 
+      dest.setOrdinate(destPos, dim, src.getOrdinate(srcPos, dim))
+    
+  }
+  static isRing(seq) {
+    const n = seq.size()
+    if (n === 0) return true
+    if (n <= 3) return false
+    return seq.getOrdinate(0, CoordinateSequence.X) === seq.getOrdinate(n - 1, CoordinateSequence.X) && seq.getOrdinate(0, CoordinateSequence.Y) === seq.getOrdinate(n - 1, CoordinateSequence.Y)
+  }
   static swap(seq, i, j) {
     if (i === j) return null
     for (let dim = 0; dim < seq.getDimension(); dim++) {
@@ -102,14 +120,6 @@ export default class CoordinateSequences {
     for (let i = 0; i < length; i++) 
       CoordinateSequences.copyCoord(src, srcPos + i, dest, destPos + i)
     
-  }
-  static ensureValidRing(fact, seq) {
-    const n = seq.size()
-    if (n === 0) return seq
-    if (n <= 3) return CoordinateSequences.createClosedRing(fact, seq, 4)
-    const isClosed = seq.getOrdinate(0, CoordinateSequence.X) === seq.getOrdinate(n - 1, CoordinateSequence.X) && seq.getOrdinate(0, CoordinateSequence.Y) === seq.getOrdinate(n - 1, CoordinateSequence.Y)
-    if (isClosed) return seq
-    return CoordinateSequences.createClosedRing(fact, seq, n + 1)
   }
   static indexOf(coordinate, seq) {
     for (let i = 0; i < seq.size(); i++) 
@@ -125,15 +135,5 @@ export default class CoordinateSequences {
     CoordinateSequences.copy(seq, 0, newseq, 0, n)
     for (let i = n; i < size; i++) CoordinateSequences.copy(seq, 0, newseq, i, 1)
     return newseq
-  }
-  static minCoordinate(seq) {
-    let minCoord = null
-    for (let i = 0; i < seq.size(); i++) {
-      const testCoord = seq.getCoordinate(i)
-      if (minCoord === null || minCoord.compareTo(testCoord) > 0) 
-        minCoord = testCoord
-      
-    }
-    return minCoord
   }
 }

@@ -2,6 +2,7 @@ import LineString from '../geom/LineString.js'
 import CoordinateList from '../geom/CoordinateList.js'
 import GeometryTransformer from '../geom/util/GeometryTransformer.js'
 import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException.js'
+import BufferOp from '../operation/buffer/BufferOp.js'
 import MultiPolygon from '../geom/MultiPolygon.js'
 import LineSegment from '../geom/LineSegment.js'
 export default class Densifier {
@@ -13,6 +14,11 @@ export default class Densifier {
     this._distanceTolerance = null
     const inputGeom = arguments[0]
     this._inputGeom = inputGeom
+  }
+  static densify(geom, distanceTolerance) {
+    const densifier = new Densifier(geom)
+    densifier.setDistanceTolerance(distanceTolerance)
+    return densifier.getResultGeometry()
   }
   static densifyPoints(pts, distanceTolerance, precModel) {
     const seg = new LineSegment()
@@ -36,17 +42,12 @@ export default class Densifier {
     coordList.add(pts[pts.length - 1], false)
     return coordList.toCoordinateArray()
   }
-  static densify(geom, distanceTolerance) {
-    const densifier = new Densifier(geom)
-    densifier.setDistanceTolerance(distanceTolerance)
-    return densifier.getResultGeometry()
-  }
-  getResultGeometry() {
-    return new DensifyTransformer(this._distanceTolerance).transform(this._inputGeom)
-  }
   setDistanceTolerance(distanceTolerance) {
     if (distanceTolerance <= 0.0) throw new IllegalArgumentException('Tolerance must be positive')
     this._distanceTolerance = distanceTolerance
+  }
+  getResultGeometry() {
+    return new DensifyTransformer(this._distanceTolerance).transform(this._inputGeom)
   }
 }
 class DensifyTransformer extends GeometryTransformer {
@@ -59,17 +60,6 @@ class DensifyTransformer extends GeometryTransformer {
     const distanceTolerance = arguments[0]
     this.distanceTolerance = distanceTolerance
   }
-  transformMultiPolygon(geom, parent) {
-    const roughGeom = super.transformMultiPolygon.call(this, geom, parent)
-    return this.createValidArea(roughGeom)
-  }
-  transformPolygon(geom, parent) {
-    const roughGeom = super.transformPolygon.call(this, geom, parent)
-    if (parent instanceof MultiPolygon) 
-      return roughGeom
-    
-    return this.createValidArea(roughGeom)
-  }
   transformCoordinates(coords, parent) {
     const inputPts = coords.toCoordinateArray()
     let newPts = Densifier.densifyPoints(inputPts, this.distanceTolerance, parent.getPrecisionModel())
@@ -78,8 +68,19 @@ class DensifyTransformer extends GeometryTransformer {
     
     return this._factory.getCoordinateSequenceFactory().create(newPts)
   }
+  transformPolygon(geom, parent) {
+    const roughGeom = super.transformPolygon.call(this, geom, parent)
+    if (parent instanceof MultiPolygon) 
+      return roughGeom
+    
+    return this.createValidArea(roughGeom)
+  }
   createValidArea(roughAreaGeom) {
-    return roughAreaGeom.buffer(0.0)
+    return BufferOp.bufferOp(roughAreaGeom, 0.0)
+  }
+  transformMultiPolygon(geom, parent) {
+    const roughGeom = super.transformMultiPolygon.call(this, geom, parent)
+    return this.createValidArea(roughGeom)
   }
 }
 Densifier.DensifyTransformer = DensifyTransformer

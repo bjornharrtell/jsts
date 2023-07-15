@@ -1,9 +1,9 @@
+import PointPairDistance from './PointPairDistance.js'
+import CoordinateSequenceFilter from '../../geom/CoordinateSequenceFilter.js'
 import DistanceToPoint from './DistanceToPoint.js'
 import CoordinateFilter from '../../geom/CoordinateFilter.js'
 import Coordinate from '../../geom/Coordinate.js'
 import IllegalArgumentException from '../../../../../java/lang/IllegalArgumentException.js'
-import PointPairDistance from './PointPairDistance.js'
-import CoordinateSequenceFilter from '../../geom/CoordinateSequenceFilter.js'
 export default class DiscreteHausdorffDistance {
   constructor() {
     DiscreteHausdorffDistance.constructor_.apply(this, arguments)
@@ -111,14 +111,14 @@ class MaxDensifiedByFractionDistanceFilter {
       this._maxPtDist.setMaximum(this._minPtDist)
     }
   }
-  isDone() {
-    return false
-  }
   isGeometryChanged() {
     return false
   }
   getMaxPointDistance() {
     return this._maxPtDist
+  }
+  isDone() {
+    return false
   }
   get interfaces_() {
     return [CoordinateSequenceFilter]

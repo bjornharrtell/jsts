@@ -1,9 +1,10 @@
 import GeometryTransformer from '../geom/util/GeometryTransformer.js'
-import VWLineSimplifier from './VWLineSimplifier.js'
-import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException.js'
 import Polygon from '../geom/Polygon.js'
 import LinearRing from '../geom/LinearRing.js'
+import BufferOp from '../operation/buffer/BufferOp.js'
 import MultiPolygon from '../geom/MultiPolygon.js'
+import VWLineSimplifier from './VWLineSimplifier.js'
+import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException.js'
 export default class VWSimplifier {
   constructor() {
     VWSimplifier.constructor_.apply(this, arguments)
@@ -20,16 +21,16 @@ export default class VWSimplifier {
     simp.setDistanceTolerance(distanceTolerance)
     return simp.getResultGeometry()
   }
-  setEnsureValid(isEnsureValidTopology) {
-    this._isEnsureValidTopology = isEnsureValidTopology
+  setDistanceTolerance(distanceTolerance) {
+    if (distanceTolerance < 0.0) throw new IllegalArgumentException('Tolerance must be non-negative')
+    this._distanceTolerance = distanceTolerance
   }
   getResultGeometry() {
     if (this._inputGeom.isEmpty()) return this._inputGeom.copy()
     return new VWTransformer(this._isEnsureValidTopology, this._distanceTolerance).transform(this._inputGeom)
   }
-  setDistanceTolerance(distanceTolerance) {
-    if (distanceTolerance < 0.0) throw new IllegalArgumentException('Tolerance must be non-negative')
-    this._distanceTolerance = distanceTolerance
+  setEnsureValid(isEnsureValidTopology) {
+    this._isEnsureValidTopology = isEnsureValidTopology
   }
 }
 class VWTransformer extends GeometryTransformer {
@@ -53,7 +54,7 @@ class VWTransformer extends GeometryTransformer {
     return this.createValidArea(rawGeom)
   }
   createValidArea(rawAreaGeom) {
-    if (this._isEnsureValidTopology) return rawAreaGeom.buffer(0.0)
+    if (this._isEnsureValidTopology) return BufferOp.bufferOp(rawAreaGeom, 0.0)
     return rawAreaGeom
   }
   transformCoordinates(coords, parent) {

@@ -1,8 +1,4 @@
-import TreeSet from '../../../../../java/util/TreeSet.js'
-import LineString from '../../geom/LineString.js'
 import Geometry from '../../geom/Geometry.js'
-import hasInterface from '../../../../../hasInterface.js'
-import GeometryFactory from '../../geom/GeometryFactory.js'
 import Collection from '../../../../../java/util/Collection.js'
 import Coordinate from '../../geom/Coordinate.js'
 import Integer from '../../../../../java/lang/Integer.js'
@@ -14,6 +10,10 @@ import ConnectedSubgraphFinder from '../../planargraph/algorithm/ConnectedSubgra
 import Assert from '../../util/Assert.js'
 import MultiLineString from '../../geom/MultiLineString.js'
 import GraphComponent from '../../planargraph/GraphComponent.js'
+import TreeSet from '../../../../../java/util/TreeSet.js'
+import LineString from '../../geom/LineString.js'
+import hasInterface from '../../../../../hasInterface.js'
+import GeometryFactory from '../../geom/GeometryFactory.js'
 export default class LineSequencer {
   constructor() {
     LineSequencer.constructor_.apply(this, arguments)
@@ -91,21 +91,6 @@ export default class LineSequencer {
     sequencer.add(geom)
     return sequencer.getSequencedLineStrings()
   }
-  addLine(lineString) {
-    if (this._factory === null) 
-      this._factory = lineString.getFactory()
-    
-    this._graph.addEdge(lineString)
-    this._lineCount++
-  }
-  hasSequence(graph) {
-    let oddDegreeCount = 0
-    for (let i = graph.nodeIterator(); i.hasNext(); ) {
-      const node = i.next()
-      if (node.getDegree() % 2 === 1) oddDegreeCount++
-    }
-    return oddDegreeCount <= 2
-  }
   computeSequence() {
     if (this._isRun) 
       return null
@@ -173,6 +158,42 @@ export default class LineSequencer {
     }
     return newSeq
   }
+  add() {
+    if (hasInterface(arguments[0], Collection)) {
+      const geometries = arguments[0]
+      for (let i = geometries.iterator(); i.hasNext(); ) {
+        const geometry = i.next()
+        this.add(geometry)
+      }
+    } else if (arguments[0] instanceof Geometry) {
+      const geometry = arguments[0]
+      geometry.apply(new (class {
+        get interfaces_() {
+          return [GeometryComponentFilter]
+        }
+        filter(component) {
+          if (component instanceof LineString) 
+            this.addLine(component)
+          
+        }
+      })())
+    }
+  }
+  addLine(lineString) {
+    if (this._factory === null) 
+      this._factory = lineString.getFactory()
+    
+    this._graph.addEdge(lineString)
+    this._lineCount++
+  }
+  hasSequence(graph) {
+    let oddDegreeCount = 0
+    for (let i = graph.nodeIterator(); i.hasNext(); ) {
+      const node = i.next()
+      if (node.getDegree() % 2 === 1) oddDegreeCount++
+    }
+    return oddDegreeCount <= 2
+  }
   orient(seq) {
     const startEdge = seq.get(0)
     const endEdge = seq.get(seq.size() - 1)
@@ -220,26 +241,5 @@ export default class LineSequencer {
   isSequenceable() {
     this.computeSequence()
     return this._isSequenceable
-  }
-  add() {
-    if (hasInterface(arguments[0], Collection)) {
-      const geometries = arguments[0]
-      for (let i = geometries.iterator(); i.hasNext(); ) {
-        const geometry = i.next()
-        this.add(geometry)
-      }
-    } else if (arguments[0] instanceof Geometry) {
-      const geometry = arguments[0]
-      geometry.apply(new (class {
-        get interfaces_() {
-          return [GeometryComponentFilter]
-        }
-        filter(component) {
-          if (component instanceof LineString) 
-            this.addLine(component)
-          
-        }
-      })())
-    }
   }
 }

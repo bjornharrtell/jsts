@@ -26,27 +26,6 @@ export default class CoordinateXYZM extends Coordinate {
       this._m = m
     }
   }
-  getM() {
-    return this._m
-  }
-  setOrdinate(ordinateIndex, value) {
-    switch (ordinateIndex) {
-    case Coordinate.X:
-      this.x = value
-      break
-    case Coordinate.Y:
-      this.y = value
-      break
-    case Coordinate.Z:
-      this.z = value
-      break
-    case Coordinate.M:
-      this._m = value
-      break
-    default:
-      throw new IllegalArgumentException('Invalid ordinate index: ' + ordinateIndex)
-    }
-  }
   setM(m) {
     this._m = m
   }
@@ -74,5 +53,26 @@ export default class CoordinateXYZM extends Coordinate {
     this.y = other.y
     this.z = other.getZ()
     this._m = other.getM()
+  }
+  getM() {
+    return this._m
+  }
+  setOrdinate(ordinateIndex, value) {
+    switch (ordinateIndex) {
+    case Coordinate.X:
+      this.x = value
+      break
+    case Coordinate.Y:
+      this.y = value
+      break
+    case Coordinate.Z:
+      this.z = value
+      break
+    case Coordinate.M:
+      this._m = value
+      break
+    default:
+      throw new IllegalArgumentException('Invalid ordinate index: ' + ordinateIndex)
+    }
   }
 }

@@ -1,14 +1,4 @@
 export default class Memory {
-  static used() {
-    const runtime = Runtime.getRuntime()
-    return runtime.totalMemory() - runtime.freeMemory()
-  }
-  static format(mem) {
-    if (mem < 2 * Memory.KB) return mem + ' bytes'
-    if (mem < 2 * Memory.MB) return Memory.round(mem / Memory.KB) + ' KB'
-    if (mem < 2 * Memory.GB) return Memory.round(mem / Memory.MB) + ' MB'
-    return Memory.round(mem / Memory.GB) + ' GB'
-  }
   static freeString() {
     return Memory.format(Memory.free())
   }
@@ -34,6 +24,16 @@ export default class Memory {
   static free() {
     const runtime = Runtime.getRuntime()
     return runtime.freeMemory()
+  }
+  static used() {
+    const runtime = Runtime.getRuntime()
+    return runtime.totalMemory() - runtime.freeMemory()
+  }
+  static format(mem) {
+    if (mem < 2 * Memory.KB) return mem + ' bytes'
+    if (mem < 2 * Memory.MB) return Memory.round(mem / Memory.KB) + ' KB'
+    if (mem < 2 * Memory.GB) return Memory.round(mem / Memory.MB) + ' MB'
+    return Memory.round(mem / Memory.GB) + ' GB'
   }
 }
 Memory.KB = 1024

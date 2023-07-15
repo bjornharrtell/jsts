@@ -20,12 +20,6 @@ export default class GraphComponent {
   setInResult(isInResult) {
     this._isInResult = isInResult
   }
-  isCovered() {
-    return this._isCovered
-  }
-  isCoveredSet() {
-    return this._isCoveredSet
-  }
   setLabel(label) {
     this._label = label
   }
@@ -39,6 +33,12 @@ export default class GraphComponent {
   updateIM(im) {
     Assert.isTrue(this._label.getGeometryCount() >= 2, 'found partial label')
     this.computeIM(im)
+  }
+  isCovered() {
+    return this._isCovered
+  }
+  isCoveredSet() {
+    return this._isCoveredSet
   }
   isInResult() {
     return this._isInResult

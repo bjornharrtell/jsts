@@ -12,12 +12,9 @@ export default class PointBuilder {
     this._op = op
     this._geometryFactory = geometryFactory
   }
-  filterCoveredNodeToPoint(n) {
-    const coord = n.getCoordinate()
-    if (!this._op.isCoveredByLA(coord)) {
-      const pt = this._geometryFactory.createPoint(coord)
-      this._resultPointList.add(pt)
-    }
+  build(opCode) {
+    this.extractNonCoveredResultNodes(opCode)
+    return this._resultPointList
   }
   extractNonCoveredResultNodes(opCode) {
     for (let nodeit = this._op.getGraph().getNodes().iterator(); nodeit.hasNext(); ) {
@@ -32,8 +29,11 @@ export default class PointBuilder {
       }
     }
   }
-  build(opCode) {
-    this.extractNonCoveredResultNodes(opCode)
-    return this._resultPointList
+  filterCoveredNodeToPoint(n) {
+    const coord = n.getCoordinate()
+    if (!this._op.isCoveredByLA(coord)) {
+      const pt = this._geometryFactory.createPoint(coord)
+      this._resultPointList.add(pt)
+    }
   }
 }

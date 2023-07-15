@@ -16,6 +16,10 @@ export default class ConstraintVertex extends Vertex {
   setOnConstraint(isOnConstraint) {
     this._isOnConstraint = isOnConstraint
   }
+  setConstraint(constraint) {
+    this._isOnConstraint = true
+    this._constraint = constraint
+  }
   merge(other) {
     if (other._isOnConstraint) {
       this._isOnConstraint = true
@@ -24,9 +28,5 @@ export default class ConstraintVertex extends Vertex {
   }
   isOnConstraint() {
     return this._isOnConstraint
-  }
-  setConstraint(constraint) {
-    this._isOnConstraint = true
-    this._constraint = constraint
   }
 }

@@ -1,14 +1,14 @@
 import LineString from '../LineString.js'
 import GeometryFactory from '../GeometryFactory.js'
-import IllegalArgumentException from '../../../../../java/lang/IllegalArgumentException.js'
-import Point from '../Point.js'
-import Polygon from '../Polygon.js'
-import MultiPoint from '../MultiPoint.js'
 import LinearRing from '../LinearRing.js'
 import MultiPolygon from '../MultiPolygon.js'
 import GeometryCollection from '../GeometryCollection.js'
 import ArrayList from '../../../../../java/util/ArrayList.js'
 import MultiLineString from '../MultiLineString.js'
+import IllegalArgumentException from '../../../../../java/lang/IllegalArgumentException.js'
+import Point from '../Point.js'
+import Polygon from '../Polygon.js'
+import MultiPoint from '../MultiPoint.js'
 export default class GeometryTransformer {
   constructor() {
     GeometryTransformer.constructor_.apply(this, arguments)
@@ -91,6 +91,13 @@ export default class GeometryTransformer {
   copy(seq) {
     return seq.copy()
   }
+  transformLinearRing(geom, parent) {
+    const seq = this.transformCoordinates(geom.getCoordinateSequence(), geom)
+    if (seq === null) return this._factory.createLinearRing(null)
+    const seqSize = seq.size()
+    if (seqSize > 0 && seqSize < 4 && !this._preserveType) return this._factory.createLineString(seq)
+    return this._factory.createLinearRing(seq)
+  }
   transformGeometryCollection(geom, parent) {
     const transGeomList = new ArrayList()
     for (let i = 0; i < geom.getNumGeometries(); i++) {
@@ -114,12 +121,5 @@ export default class GeometryTransformer {
     if (inputGeom instanceof MultiPolygon) return this.transformMultiPolygon(inputGeom, null)
     if (inputGeom instanceof GeometryCollection) return this.transformGeometryCollection(inputGeom, null)
     throw new IllegalArgumentException('Unknown Geometry subtype: ' + inputGeom.getGeometryType())
-  }
-  transformLinearRing(geom, parent) {
-    const seq = this.transformCoordinates(geom.getCoordinateSequence(), geom)
-    if (seq === null) return this._factory.createLinearRing(null)
-    const seqSize = seq.size()
-    if (seqSize > 0 && seqSize < 4 && !this._preserveType) return this._factory.createLineString(seq)
-    return this._factory.createLinearRing(seq)
   }
 }

@@ -7,12 +7,11 @@ export default class GraphComponent {
     this._isVisited = false
     this._data = null
   }
-  static getComponentWithVisitedState(i, visitedState) {
+  static setMarked(i, marked) {
     while (i.hasNext()) {
       const comp = i.next()
-      if (comp.isVisited() === visitedState) return comp
+      comp.setMarked(marked)
     }
-    return null
   }
   static setVisited(i, visited) {
     while (i.hasNext()) {
@@ -20,11 +19,12 @@ export default class GraphComponent {
       comp.setVisited(visited)
     }
   }
-  static setMarked(i, marked) {
+  static getComponentWithVisitedState(i, visitedState) {
     while (i.hasNext()) {
       const comp = i.next()
-      comp.setMarked(marked)
+      if (comp.isVisited() === visitedState) return comp
     }
+    return null
   }
   setVisited(isVisited) {
     this._isVisited = isVisited

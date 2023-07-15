@@ -24,6 +24,15 @@ export default class CoordinateSequenceComparator {
     if (Double.isNaN(b)) return 1
     return 0
   }
+  compareCoordinate(s1, s2, i, dimension) {
+    for (let d = 0; d < dimension; d++) {
+      const ord1 = s1.getOrdinate(i, d)
+      const ord2 = s2.getOrdinate(i, d)
+      const comp = CoordinateSequenceComparator.compare(ord1, ord2)
+      if (comp !== 0) return comp
+    }
+    return 0
+  }
   compare(o1, o2) {
     const s1 = o1
     const s2 = o2
@@ -50,15 +59,6 @@ export default class CoordinateSequenceComparator {
     }
     if (i < size1) return 1
     if (i < size2) return -1
-    return 0
-  }
-  compareCoordinate(s1, s2, i, dimension) {
-    for (let d = 0; d < dimension; d++) {
-      const ord1 = s1.getOrdinate(i, d)
-      const ord2 = s2.getOrdinate(i, d)
-      const comp = CoordinateSequenceComparator.compare(ord1, ord2)
-      if (comp !== 0) return comp
-    }
     return 0
   }
   get interfaces_() {

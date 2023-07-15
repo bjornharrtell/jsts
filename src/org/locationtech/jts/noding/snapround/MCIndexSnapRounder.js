@@ -1,7 +1,5 @@
 import NodingValidator from '../NodingValidator.js'
 import hasInterface from '../../../../../hasInterface.js'
-import Collection from '../../../../../java/util/Collection.js'
-import Noder from '../Noder.js'
 import MCIndexNoder from '../MCIndexNoder.js'
 import NodedSegmentString from '../NodedSegmentString.js'
 import HotPixel from './HotPixel.js'
@@ -9,6 +7,8 @@ import Exception from '../../../../../java/lang/Exception.js'
 import MCIndexPointSnapper from './MCIndexPointSnapper.js'
 import RobustLineIntersector from '../../algorithm/RobustLineIntersector.js'
 import InteriorIntersectionFinderAdder from '../InteriorIntersectionFinderAdder.js'
+import Collection from '../../../../../java/util/Collection.js'
+import Noder from '../Noder.js'
 export default class MCIndexSnapRounder {
   constructor() {
     MCIndexSnapRounder.constructor_.apply(this, arguments)

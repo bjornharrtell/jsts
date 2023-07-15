@@ -1,13 +1,13 @@
 import EdgeIntersectionList from './EdgeIntersectionList.js'
 import IntersectionMatrix from '../geom/IntersectionMatrix.js'
-import MonotoneChainEdge from './index/MonotoneChainEdge.js'
-import Position from './Position.js'
 import Coordinate from '../geom/Coordinate.js'
 import Label from './Label.js'
 import Envelope from '../geom/Envelope.js'
 import StringBuilder from '../../../../java/lang/StringBuilder.js'
 import Depth from './Depth.js'
 import GraphComponent from './GraphComponent.js'
+import MonotoneChainEdge from './index/MonotoneChainEdge.js'
+import Position from './Position.js'
 export default class Edge extends GraphComponent {
   constructor() {
     super()
@@ -53,12 +53,6 @@ export default class Edge extends GraphComponent {
     const newe = new Edge(newPts, Label.toLineLabel(this._label))
     return newe
   }
-  isIsolated() {
-    return this._isIsolated
-  }
-  getCoordinates() {
-    return this.pts
-  }
   setIsolated(isIsolated) {
     this._isIsolated = isIsolated
   }
@@ -92,6 +86,29 @@ export default class Edge extends GraphComponent {
       return this.pts[i]
     }
   }
+  isClosed() {
+    return this.pts[0].equals(this.pts[this.pts.length - 1])
+  }
+  getMaximumSegmentIndex() {
+    return this.pts.length - 1
+  }
+  setDepthDelta(depthDelta) {
+    this._depthDelta = depthDelta
+  }
+  getEdgeIntersectionList() {
+    return this.eiList
+  }
+  addIntersections(li, segmentIndex, geomIndex) {
+    for (let i = 0; i < li.getIntersectionNum(); i++) 
+      this.addIntersection(li, segmentIndex, geomIndex, i)
+    
+  }
+  isIsolated() {
+    return this._isIsolated
+  }
+  getCoordinates() {
+    return this.pts
+  }
   print(out) {
     out.print('edge ' + this._name + ': ')
     out.print('LINESTRING (')
@@ -109,12 +126,6 @@ export default class Edge extends GraphComponent {
     if (this.pts.length !== 3) return false
     if (this.pts[0].equals(this.pts[2])) return true
     return false
-  }
-  isClosed() {
-    return this.pts[0].equals(this.pts[this.pts.length - 1])
-  }
-  getMaximumSegmentIndex() {
-    return this.pts.length - 1
   }
   getDepthDelta() {
     return this._depthDelta
@@ -175,16 +186,5 @@ export default class Edge extends GraphComponent {
       
     
     return true
-  }
-  setDepthDelta(depthDelta) {
-    this._depthDelta = depthDelta
-  }
-  getEdgeIntersectionList() {
-    return this.eiList
-  }
-  addIntersections(li, segmentIndex, geomIndex) {
-    for (let i = 0; i < li.getIntersectionNum(); i++) 
-      this.addIntersection(li, segmentIndex, geomIndex, i)
-    
   }
 }

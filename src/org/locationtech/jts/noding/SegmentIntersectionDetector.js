@@ -59,6 +59,9 @@ export default class SegmentIntersectionDetector {
   hasIntersection() {
     return this._hasIntersection
   }
+  setFindProper(findProper) {
+    this._findProper = findProper
+  }
   isDone() {
     if (this._findAllTypes) 
       return this._hasProperIntersection && this._hasNonProperIntersection
@@ -70,9 +73,6 @@ export default class SegmentIntersectionDetector {
   }
   hasNonProperIntersection() {
     return this._hasNonProperIntersection
-  }
-  setFindProper(findProper) {
-    this._findProper = findProper
   }
   get interfaces_() {
     return [SegmentIntersector]

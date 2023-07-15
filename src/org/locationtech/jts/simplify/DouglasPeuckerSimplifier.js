@@ -1,9 +1,10 @@
-import DouglasPeuckerLineSimplifier from './DouglasPeuckerLineSimplifier.js'
-import GeometryTransformer from '../geom/util/GeometryTransformer.js'
 import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException.js'
 import Polygon from '../geom/Polygon.js'
 import LinearRing from '../geom/LinearRing.js'
+import BufferOp from '../operation/buffer/BufferOp.js'
 import MultiPolygon from '../geom/MultiPolygon.js'
+import DouglasPeuckerLineSimplifier from './DouglasPeuckerLineSimplifier.js'
+import GeometryTransformer from '../geom/util/GeometryTransformer.js'
 export default class DouglasPeuckerSimplifier {
   constructor() {
     DouglasPeuckerSimplifier.constructor_.apply(this, arguments)
@@ -20,16 +21,16 @@ export default class DouglasPeuckerSimplifier {
     tss.setDistanceTolerance(distanceTolerance)
     return tss.getResultGeometry()
   }
-  setEnsureValid(isEnsureValidTopology) {
-    this._isEnsureValidTopology = isEnsureValidTopology
+  setDistanceTolerance(distanceTolerance) {
+    if (distanceTolerance < 0.0) throw new IllegalArgumentException('Tolerance must be non-negative')
+    this._distanceTolerance = distanceTolerance
   }
   getResultGeometry() {
     if (this._inputGeom.isEmpty()) return this._inputGeom.copy()
     return new DPTransformer(this._isEnsureValidTopology, this._distanceTolerance).transform(this._inputGeom)
   }
-  setDistanceTolerance(distanceTolerance) {
-    if (distanceTolerance < 0.0) throw new IllegalArgumentException('Tolerance must be non-negative')
-    this._distanceTolerance = distanceTolerance
+  setEnsureValid(isEnsureValidTopology) {
+    this._isEnsureValidTopology = isEnsureValidTopology
   }
 }
 class DPTransformer extends GeometryTransformer {
@@ -53,7 +54,7 @@ class DPTransformer extends GeometryTransformer {
     return this.createValidArea(rawGeom)
   }
   createValidArea(rawAreaGeom) {
-    if (this._isEnsureValidTopology) return rawAreaGeom.buffer(0.0)
+    if (this._isEnsureValidTopology) return BufferOp.bufferOp(rawAreaGeom, 0.0)
     return rawAreaGeom
   }
   transformCoordinates(coords, parent) {

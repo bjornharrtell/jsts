@@ -1,16 +1,17 @@
-import Geometry from './Geometry.js'
-import CoordinateFilter from './CoordinateFilter.js'
 import hasInterface from '../../../../hasInterface.js'
 import Length from '../algorithm/Length.js'
 import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException.js'
-import Lineal from './Lineal.js'
-import CoordinateSequences from './CoordinateSequences.js'
+import IsSimpleOp from '../operation/IsSimpleOp.js'
 import GeometryComponentFilter from './GeometryComponentFilter.js'
 import UnsupportedOperationException from '../../../../java/lang/UnsupportedOperationException.js'
 import Dimension from './Dimension.js'
+import Envelope from './Envelope.js'
+import Geometry from './Geometry.js'
+import CoordinateFilter from './CoordinateFilter.js'
+import Lineal from './Lineal.js'
+import CoordinateSequences from './CoordinateSequences.js'
 import GeometryFilter from './GeometryFilter.js'
 import CoordinateSequenceFilter from './CoordinateSequenceFilter.js'
-import Envelope from './Envelope.js'
 export default class LineString extends Geometry {
   constructor() {
     super()
@@ -31,7 +32,7 @@ export default class LineString extends Geometry {
     return this._points.expandEnvelope(new Envelope())
   }
   isRing() {
-    return this.isClosed() && this.isSimple()
+    return this.isClosed() && IsSimpleOp.isSimple(this)
   }
   getCoordinates() {
     return this._points.toCoordinateArray()
@@ -59,29 +60,6 @@ export default class LineString extends Geometry {
       return super.equalsExact.apply(this, arguments)
     }
   }
-  normalize() {
-    for (let i = 0; i < Math.trunc(this._points.size() / 2); i++) {
-      const j = this._points.size() - 1 - i
-      if (!this._points.getCoordinate(i).equals(this._points.getCoordinate(j))) {
-        if (this._points.getCoordinate(i).compareTo(this._points.getCoordinate(j)) > 0) {
-          const copy = this._points.copy()
-          CoordinateSequences.reverse(copy)
-          this._points = copy
-        }
-        return null
-      }
-    }
-  }
-  getCoordinate() {
-    if (this.isEmpty()) return null
-    return this._points.getCoordinate(0)
-  }
-  getBoundaryDimension() {
-    if (this.isClosed()) 
-      return Dimension.FALSE
-    
-    return 0
-  }
   isClosed() {
     if (this.isEmpty()) 
       return false
@@ -104,6 +82,41 @@ export default class LineString extends Geometry {
   }
   getDimension() {
     return 1
+  }
+  getBoundary() {
+    throw new UnsupportedOperationException()
+  }
+  isEquivalentClass(other) {
+    return other instanceof LineString
+  }
+  getCoordinateSequence() {
+    return this._points
+  }
+  getPointN(n) {
+    return this.getFactory().createPoint(this._points.getCoordinate(n))
+  }
+  normalize() {
+    for (let i = 0; i < Math.trunc(this._points.size() / 2); i++) {
+      const j = this._points.size() - 1 - i
+      if (!this._points.getCoordinate(i).equals(this._points.getCoordinate(j))) {
+        if (this._points.getCoordinate(i).compareTo(this._points.getCoordinate(j)) > 0) {
+          const copy = this._points.copy()
+          CoordinateSequences.reverse(copy)
+          this._points = copy
+        }
+        return null
+      }
+    }
+  }
+  getCoordinate() {
+    if (this.isEmpty()) return null
+    return this._points.getCoordinate(0)
+  }
+  getBoundaryDimension() {
+    if (this.isClosed()) 
+      return Dimension.FALSE
+    
+    return 0
   }
   getLength() {
     return Length.ofLine(this._points)
@@ -160,20 +173,11 @@ export default class LineString extends Geometry {
       filter.filter(this)
     }
   }
-  getBoundary() {
-    throw new UnsupportedOperationException()
-  }
-  isEquivalentClass(other) {
-    return other instanceof LineString
-  }
   getCoordinateN(n) {
     return this._points.getCoordinate(n)
   }
   getGeometryType() {
     return Geometry.TYPENAME_LINESTRING
-  }
-  getCoordinateSequence() {
-    return this._points
   }
   isEmpty() {
     return this._points.size() === 0
@@ -200,9 +204,6 @@ export default class LineString extends Geometry {
       return null
     
     return this.getPointN(0)
-  }
-  getPointN(n) {
-    return this.getFactory().createPoint(this._points.getCoordinate(n))
   }
   get interfaces_() {
     return [Lineal]

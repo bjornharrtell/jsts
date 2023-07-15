@@ -2,10 +2,10 @@ import NumberUtil from '../util/NumberUtil.js'
 import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException.js'
 import Double from '../../../../java/lang/Double.js'
 import Comparable from '../../../../java/lang/Comparable.js'
-import Cloneable from '../../../../java/lang/Cloneable.js'
-import Comparator from '../../../../java/util/Comparator.js'
 import Serializable from '../../../../java/io/Serializable.js'
 import Assert from '../util/Assert.js'
+import Cloneable from '../../../../java/lang/Cloneable.js'
+import Comparator from '../../../../java/util/Comparator.js'
 
 const kBuf = new ArrayBuffer(8)
 const kBufAsF64 = new Float64Array(kBuf)
@@ -38,24 +38,6 @@ export default class Coordinate {
     kBufAsF64[0] = n
     return kBufAsI32[0] ^ kBufAsI32[1]
   }
-  getM() {
-    return Double.NaN
-  }
-  setOrdinate(ordinateIndex, value) {
-    switch (ordinateIndex) {
-    case Coordinate.X:
-      this.x = value
-      break
-    case Coordinate.Y:
-      this.y = value
-      break
-    case Coordinate.Z:
-      this.setZ(value)
-      break
-    default:
-      throw new IllegalArgumentException('Invalid ordinate index: ' + ordinateIndex)
-    }
-  }
   equals2D() {
     if (arguments.length === 1) {
       const other = arguments[0]
@@ -80,31 +62,8 @@ export default class Coordinate {
   setM(m) {
     throw new IllegalArgumentException('Invalid ordinate index: ' + Coordinate.M)
   }
-  getZ() {
-    return this.z
-  }
-  getOrdinate(ordinateIndex) {
-    switch (ordinateIndex) {
-    case Coordinate.X:
-      return this.x
-    case Coordinate.Y:
-      return this.y
-    case Coordinate.Z:
-      return this.getZ()
-    }
-    throw new IllegalArgumentException('Invalid ordinate index: ' + ordinateIndex)
-  }
   equals3D(other) {
     return this.x === other.x && this.y === other.y && (this.getZ() === other.getZ() || Double.isNaN(this.getZ()) && Double.isNaN(other.getZ()))
-  }
-  equals(other) {
-    if (!(other instanceof Coordinate)) 
-      return false
-    
-    return this.equals2D(other)
-  }
-  equalInZ(c, tolerance) {
-    return NumberUtil.equalsWithTolerance(this.getZ(), c.getZ(), tolerance)
   }
   setX(x) {
     this.x = x
@@ -119,6 +78,62 @@ export default class Coordinate {
   }
   getX() {
     return this.x
+  }
+  copy() {
+    return new Coordinate(this)
+  }
+  toString() {
+    return '(' + this.x + ', ' + this.y + ', ' + this.getZ() + ')'
+  }
+  distance3D(c) {
+    const dx = this.x - c.x
+    const dy = this.y - c.y
+    const dz = this.getZ() - c.getZ()
+    return Math.sqrt(dx * dx + dy * dy + dz * dz)
+  }
+  getY() {
+    return this.y
+  }
+  getM() {
+    return Double.NaN
+  }
+  setOrdinate(ordinateIndex, value) {
+    switch (ordinateIndex) {
+    case Coordinate.X:
+      this.x = value
+      break
+    case Coordinate.Y:
+      this.y = value
+      break
+    case Coordinate.Z:
+      this.setZ(value)
+      break
+    default:
+      throw new IllegalArgumentException('Invalid ordinate index: ' + ordinateIndex)
+    }
+  }
+  getZ() {
+    return this.z
+  }
+  getOrdinate(ordinateIndex) {
+    switch (ordinateIndex) {
+    case Coordinate.X:
+      return this.x
+    case Coordinate.Y:
+      return this.y
+    case Coordinate.Z:
+      return this.getZ()
+    }
+    throw new IllegalArgumentException('Invalid ordinate index: ' + ordinateIndex)
+  }
+  equals(other) {
+    if (!(other instanceof Coordinate)) 
+      return false
+    
+    return this.equals2D(other)
+  }
+  equalInZ(c, tolerance) {
+    return NumberUtil.equalsWithTolerance(this.getZ(), c.getZ(), tolerance)
   }
   setZ(z) {
     this.z = z
@@ -135,21 +150,6 @@ export default class Coordinate {
         throw e
       }
     } finally {}
-  }
-  copy() {
-    return new Coordinate(this)
-  }
-  toString() {
-    return '(' + this.x + ', ' + this.y + ', ' + this.getZ() + ')'
-  }
-  distance3D(c) {
-    const dx = this.x - c.x
-    const dy = this.y - c.y
-    const dz = this.getZ() - c.getZ()
-    return Math.sqrt(dx * dx + dy * dy + dz * dz)
-  }
-  getY() {
-    return this.y
   }
   setY(y) {
     this.y = y

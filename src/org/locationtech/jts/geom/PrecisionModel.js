@@ -48,12 +48,6 @@ export default class PrecisionModel {
     const otherSigDigits = other.getMaximumSignificantDigits()
     return Integer.compare(sigDigits, otherSigDigits)
   }
-  getScale() {
-    return this._scale
-  }
-  isFloating() {
-    return this._modelType === PrecisionModel.FLOATING || this._modelType === PrecisionModel.FLOATING_SINGLE
-  }
   getType() {
     return this._modelType
   }
@@ -100,6 +94,12 @@ export default class PrecisionModel {
   }
   setScale(scale) {
     this._scale = Math.abs(scale)
+  }
+  getScale() {
+    return this._scale
+  }
+  isFloating() {
+    return this._modelType === PrecisionModel.FLOATING || this._modelType === PrecisionModel.FLOATING_SINGLE
   }
   get interfaces_() {
     return [Serializable, Comparable]

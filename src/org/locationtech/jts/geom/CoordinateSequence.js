@@ -1,24 +1,6 @@
 import Double from '../../../../java/lang/Double.js'
 import Cloneable from '../../../../java/lang/Cloneable.js'
 export default class CoordinateSequence {
-  getM(index) {
-    if (this.hasM()) {
-      const mIndex = this.getDimension() - this.getMeasures()
-      return this.getOrdinate(index, mIndex)
-    } else {
-      return Double.NaN
-    }
-  }
-  setOrdinate(index, ordinateIndex, value) {}
-  getZ(index) {
-    if (this.hasZ()) 
-      return this.getOrdinate(index, 2)
-    else 
-      return Double.NaN
-    
-  }
-  size() {}
-  getOrdinate(index, ordinateIndex) {}
   getCoordinate() {
     if (arguments.length === 1) {
       const i = arguments[0]
@@ -43,6 +25,24 @@ export default class CoordinateSequence {
   copy() {}
   getY(index) {}
   toCoordinateArray() {}
+  getM(index) {
+    if (this.hasM()) {
+      const mIndex = this.getDimension() - this.getMeasures()
+      return this.getOrdinate(index, mIndex)
+    } else {
+      return Double.NaN
+    }
+  }
+  setOrdinate(index, ordinateIndex, value) {}
+  getZ(index) {
+    if (this.hasZ()) 
+      return this.getOrdinate(index, 2)
+    else 
+      return Double.NaN
+    
+  }
+  size() {}
+  getOrdinate(index, ordinateIndex) {}
   get interfaces_() {
     return [Cloneable]
   }

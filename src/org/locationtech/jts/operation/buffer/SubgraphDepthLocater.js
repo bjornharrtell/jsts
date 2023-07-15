@@ -1,13 +1,13 @@
 import hasInterface from '../../../../../hasInterface.js'
 import Position from '../../geomgraph/Position.js'
 import Coordinate from '../../geom/Coordinate.js'
-import Orientation from '../../algorithm/Orientation.js'
-import Collections from '../../../../../java/util/Collections.js'
-import DirectedEdge from '../../geomgraph/DirectedEdge.js'
 import LineSegment from '../../geom/LineSegment.js'
 import Comparable from '../../../../../java/lang/Comparable.js'
 import ArrayList from '../../../../../java/util/ArrayList.js'
 import List from '../../../../../java/util/List.js'
+import DirectedEdge from '../../geomgraph/DirectedEdge.js'
+import Orientation from '../../algorithm/Orientation.js'
+import Collections from '../../../../../java/util/Collections.js'
 export default class SubgraphDepthLocater {
   constructor() {
     SubgraphDepthLocater.constructor_.apply(this, arguments)
@@ -75,6 +75,14 @@ class DepthSegment {
     this._upwardSeg = new LineSegment(seg)
     this._leftDepth = depth
   }
+  compareX(seg0, seg1) {
+    const compare0 = seg0.p0.compareTo(seg1.p0)
+    if (compare0 !== 0) return compare0
+    return seg0.p1.compareTo(seg1.p1)
+  }
+  toString() {
+    return this._upwardSeg.toString()
+  }
   compareTo(obj) {
     const other = obj
     if (this._upwardSeg.minX() >= other._upwardSeg.maxX()) return 1
@@ -84,14 +92,6 @@ class DepthSegment {
     orientIndex = -1 * other._upwardSeg.orientationIndex(this._upwardSeg)
     if (orientIndex !== 0) return orientIndex
     return this._upwardSeg.compareTo(other._upwardSeg)
-  }
-  compareX(seg0, seg1) {
-    const compare0 = seg0.p0.compareTo(seg1.p0)
-    if (compare0 !== 0) return compare0
-    return seg0.p1.compareTo(seg1.p1)
-  }
-  toString() {
-    return this._upwardSeg.toString()
   }
   get interfaces_() {
     return [Comparable]

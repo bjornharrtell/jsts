@@ -1,10 +1,10 @@
 import BufferParameters from './BufferParameters.js'
 import CoordinateList from '../../geom/CoordinateList.js'
 import GeometryFactory from '../../geom/GeometryFactory.js'
-import Coordinate from '../../geom/Coordinate.js'
-import IllegalArgumentException from '../../../../../java/lang/IllegalArgumentException.js'
 import Double from '../../../../../java/lang/Double.js'
 import LineSegment from '../../geom/LineSegment.js'
+import Coordinate from '../../geom/Coordinate.js'
+import IllegalArgumentException from '../../../../../java/lang/IllegalArgumentException.js'
 import ArrayList from '../../../../../java/util/ArrayList.js'
 import Angle from '../../algorithm/Angle.js'
 export default class VariableBuffer {

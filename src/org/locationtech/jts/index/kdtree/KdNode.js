@@ -46,16 +46,16 @@ export default class KdNode {
   getCount() {
     return this._count
   }
-  getLeft() {
-    return this._left
-  }
-  getY() {
-    return this._p.y
-  }
   increment() {
     this._count = this._count + 1
   }
   setRight(_right) {
     this._right = _right
+  }
+  getLeft() {
+    return this._left
+  }
+  getY() {
+    return this._p.y
   }
 }

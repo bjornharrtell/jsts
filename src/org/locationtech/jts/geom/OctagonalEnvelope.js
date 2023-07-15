@@ -2,12 +2,12 @@ import LineString from './LineString.js'
 import CoordinateList from './CoordinateList.js'
 import Geometry from './Geometry.js'
 import hasInterface from '../../../../hasInterface.js'
-import Coordinate from './Coordinate.js'
-import Point from './Point.js'
 import Double from '../../../../java/lang/Double.js'
 import GeometryComponentFilter from './GeometryComponentFilter.js'
 import CoordinateSequence from './CoordinateSequence.js'
 import Envelope from './Envelope.js'
+import Coordinate from './Coordinate.js'
+import Point from './Point.js'
 export default class OctagonalEnvelope {
   constructor() {
     OctagonalEnvelope.constructor_.apply(this, arguments)
@@ -41,14 +41,14 @@ export default class OctagonalEnvelope {
       this.expandToInclude(p1)
     }
   }
-  static octagonalEnvelope(geom) {
-    return new OctagonalEnvelope(geom).toGeometry(geom.getFactory())
-  }
   static computeB(x, y) {
     return x - y
   }
   static computeA(x, y) {
     return x + y
+  }
+  static octagonalEnvelope(geom) {
+    return new OctagonalEnvelope(geom).toGeometry(geom.getFactory())
   }
   toGeometry(geomFactory) {
     if (this.isNull()) 
@@ -100,45 +100,6 @@ export default class OctagonalEnvelope {
   isValid() {
     if (this.isNull()) return true
     return this._minX <= this._maxX && this._minY <= this._maxY && this._minA <= this._maxA && this._minB <= this._maxB
-  }
-  isNull() {
-    return Double.isNaN(this._minX)
-  }
-  getMaxX() {
-    return this._maxX
-  }
-  intersects() {
-    if (arguments[0] instanceof OctagonalEnvelope) {
-      const other = arguments[0]
-      if (this.isNull() || other.isNull()) 
-        return false
-      
-      if (this._minX > other._maxX) return false
-      if (this._maxX < other._minX) return false
-      if (this._minY > other._maxY) return false
-      if (this._maxY < other._minY) return false
-      if (this._minA > other._maxA) return false
-      if (this._maxA < other._minA) return false
-      if (this._minB > other._maxB) return false
-      if (this._maxB < other._minB) return false
-      return true
-    } else if (arguments[0] instanceof Coordinate) {
-      const p = arguments[0]
-      if (this._minX > p.x) return false
-      if (this._maxX < p.x) return false
-      if (this._minY > p.y) return false
-      if (this._maxY < p.y) return false
-      const A = OctagonalEnvelope.computeA(p.x, p.y)
-      const B = OctagonalEnvelope.computeB(p.x, p.y)
-      if (this._minA > A) return false
-      if (this._maxA < A) return false
-      if (this._minB > B) return false
-      if (this._maxB < B) return false
-      return true
-    }
-  }
-  getMinY() {
-    return this._minY
   }
   getMinX() {
     return this._minX
@@ -236,6 +197,48 @@ export default class OctagonalEnvelope {
     this._maxB += diagonalDistance
     if (!this.isValid()) this.setToNull()
   }
+  getMaxY() {
+    return this._maxY
+  }
+  isNull() {
+    return Double.isNaN(this._minX)
+  }
+  getMaxX() {
+    return this._maxX
+  }
+  intersects() {
+    if (arguments[0] instanceof OctagonalEnvelope) {
+      const other = arguments[0]
+      if (this.isNull() || other.isNull()) 
+        return false
+      
+      if (this._minX > other._maxX) return false
+      if (this._maxX < other._minX) return false
+      if (this._minY > other._maxY) return false
+      if (this._maxY < other._minY) return false
+      if (this._minA > other._maxA) return false
+      if (this._maxA < other._minA) return false
+      if (this._minB > other._maxB) return false
+      if (this._maxB < other._minB) return false
+      return true
+    } else if (arguments[0] instanceof Coordinate) {
+      const p = arguments[0]
+      if (this._minX > p.x) return false
+      if (this._maxX < p.x) return false
+      if (this._minY > p.y) return false
+      if (this._maxY < p.y) return false
+      const A = OctagonalEnvelope.computeA(p.x, p.y)
+      const B = OctagonalEnvelope.computeB(p.x, p.y)
+      if (this._minA > A) return false
+      if (this._maxA < A) return false
+      if (this._minB > B) return false
+      if (this._maxB < B) return false
+      return true
+    }
+  }
+  getMinY() {
+    return this._minY
+  }
   getMaxA() {
     return this._maxA
   }
@@ -244,9 +247,6 @@ export default class OctagonalEnvelope {
       return false
     
     return other._minX >= this._minX && other._maxX <= this._maxX && other._minY >= this._minY && other._maxY <= this._maxY && other._minA >= this._minA && other._maxA <= this._maxA && other._minB >= this._minB && other._maxB <= this._maxB
-  }
-  getMaxY() {
-    return this._maxY
   }
 }
 class BoundingOctagonComponentFilter {

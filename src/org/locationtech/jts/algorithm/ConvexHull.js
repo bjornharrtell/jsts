@@ -1,10 +1,10 @@
 import TreeSet from '../../../../java/util/TreeSet.js'
 import CoordinateList from '../geom/CoordinateList.js'
 import Arrays from '../../../../java/util/Arrays.js'
-import PointLocation from './PointLocation.js'
-import Stack from '../../../../java/util/Stack.js'
 import Orientation from './Orientation.js'
 import CoordinateArrays from '../geom/CoordinateArrays.js'
+import PointLocation from './PointLocation.js'
+import Stack from '../../../../java/util/Stack.js'
 import ArrayList from '../../../../java/util/ArrayList.js'
 import Comparator from '../../../../java/util/Comparator.js'
 import UniqueCoordinateArrayFilter from '../util/UniqueCoordinateArrayFilter.js'
@@ -29,28 +29,6 @@ export default class ConvexHull {
     const filter = new UniqueCoordinateArrayFilter()
     geom.apply(filter)
     return filter.getCoordinates()
-  }
-  preSort(pts) {
-    let t = null
-    for (let i = 1; i < pts.length; i++) 
-      if (pts[i].y < pts[0].y || pts[i].y === pts[0].y && pts[i].x < pts[0].x) {
-        t = pts[0]
-        pts[0] = pts[i]
-        pts[i] = t
-      }
-    
-    Arrays.sort(pts, 1, pts.length, new RadialComparator(pts[0]))
-    return pts
-  }
-  computeOctRing(inputPts) {
-    const octPts = this.computeOctPts(inputPts)
-    const coordList = new CoordinateList()
-    coordList.add(octPts, false)
-    if (coordList.size() < 3) 
-      return null
-    
-    coordList.closeRing()
-    return coordList.toCoordinateArray()
   }
   lineOrPolygon(coordinates) {
     coordinates = this.cleanRing(coordinates)
@@ -203,6 +181,28 @@ export default class ConvexHull {
     }
     ps.push(c[0])
     return ps
+  }
+  preSort(pts) {
+    let t = null
+    for (let i = 1; i < pts.length; i++) 
+      if (pts[i].y < pts[0].y || pts[i].y === pts[0].y && pts[i].x < pts[0].x) {
+        t = pts[0]
+        pts[0] = pts[i]
+        pts[i] = t
+      }
+    
+    Arrays.sort(pts, 1, pts.length, new RadialComparator(pts[0]))
+    return pts
+  }
+  computeOctRing(inputPts) {
+    const octPts = this.computeOctPts(inputPts)
+    const coordList = new CoordinateList()
+    coordList.add(octPts, false)
+    if (coordList.size() < 3) 
+      return null
+    
+    coordList.closeRing()
+    return coordList.toCoordinateArray()
   }
 }
 class RadialComparator {

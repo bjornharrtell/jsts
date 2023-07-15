@@ -25,6 +25,54 @@ export default class BufferSubgraph {
       de.setVisited(false)
     }
   }
+  compareTo(o) {
+    const graph = o
+    if (this._rightMostCoord.x < graph._rightMostCoord.x) 
+      return -1
+    
+    if (this._rightMostCoord.x > graph._rightMostCoord.x) 
+      return 1
+    
+    return 0
+  }
+  getEnvelope() {
+    if (this._env === null) {
+      const edgeEnv = new Envelope()
+      for (let it = this._dirEdgeList.iterator(); it.hasNext(); ) {
+        const dirEdge = it.next()
+        const pts = dirEdge.getEdge().getCoordinates()
+        for (let i = 0; i < pts.length - 1; i++) 
+          edgeEnv.expandToInclude(pts[i])
+        
+      }
+      this._env = edgeEnv
+    }
+    return this._env
+  }
+  addReachable(startNode) {
+    const nodeStack = new Stack()
+    nodeStack.add(startNode)
+    while (!nodeStack.empty()) {
+      const node = nodeStack.pop()
+      this.add(node, nodeStack)
+    }
+  }
+  copySymDepths(de) {
+    const sym = de.getSym()
+    sym.setDepth(Position.LEFT, de.getDepth(Position.RIGHT))
+    sym.setDepth(Position.RIGHT, de.getDepth(Position.LEFT))
+  }
+  add(node, nodeStack) {
+    node.setVisited(true)
+    this._nodes.add(node)
+    for (let i = node.getEdges().iterator(); i.hasNext(); ) {
+      const de = i.next()
+      this._dirEdgeList.add(de)
+      const sym = de.getSym()
+      const symNode = sym.getNode()
+      if (!symNode.isVisited()) nodeStack.push(symNode)
+    }
+  }
   getRightmostCoordinate() {
     return this._rightMostCoord
   }
@@ -88,54 +136,6 @@ export default class BufferSubgraph {
           nodesVisited.add(adjNode)
         }
       }
-    }
-  }
-  compareTo(o) {
-    const graph = o
-    if (this._rightMostCoord.x < graph._rightMostCoord.x) 
-      return -1
-    
-    if (this._rightMostCoord.x > graph._rightMostCoord.x) 
-      return 1
-    
-    return 0
-  }
-  getEnvelope() {
-    if (this._env === null) {
-      const edgeEnv = new Envelope()
-      for (let it = this._dirEdgeList.iterator(); it.hasNext(); ) {
-        const dirEdge = it.next()
-        const pts = dirEdge.getEdge().getCoordinates()
-        for (let i = 0; i < pts.length - 1; i++) 
-          edgeEnv.expandToInclude(pts[i])
-        
-      }
-      this._env = edgeEnv
-    }
-    return this._env
-  }
-  addReachable(startNode) {
-    const nodeStack = new Stack()
-    nodeStack.add(startNode)
-    while (!nodeStack.empty()) {
-      const node = nodeStack.pop()
-      this.add(node, nodeStack)
-    }
-  }
-  copySymDepths(de) {
-    const sym = de.getSym()
-    sym.setDepth(Position.LEFT, de.getDepth(Position.RIGHT))
-    sym.setDepth(Position.RIGHT, de.getDepth(Position.LEFT))
-  }
-  add(node, nodeStack) {
-    node.setVisited(true)
-    this._nodes.add(node)
-    for (let i = node.getEdges().iterator(); i.hasNext(); ) {
-      const de = i.next()
-      this._dirEdgeList.add(de)
-      const sym = de.getSym()
-      const symNode = sym.getNode()
-      if (!symNode.isVisited()) nodeStack.push(symNode)
     }
   }
   getNodes() {

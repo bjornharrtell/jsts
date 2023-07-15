@@ -59,17 +59,6 @@ export default class EdgeEndStar {
     const e = it.next()
     return e.getCoordinate()
   }
-  print(out) {
-    System.out.println('EdgeEndStar:   ' + this.getCoordinate())
-    for (let it = this.iterator(); it.hasNext(); ) {
-      const e = it.next()
-      e.print(out)
-    }
-  }
-  isAreaLabelsConsistent(geomGraph) {
-    this.computeEdgeEndLabels(geomGraph.getBoundaryNodeRule())
-    return this.checkAreaLabelsConsistent(0)
-  }
   checkAreaLabelsConsistent(geomIndex) {
     const edges = this.getEdges()
     if (edges.size() <= 0) return true
@@ -169,5 +158,16 @@ export default class EdgeEndStar {
   insertEdgeEnd(e, obj) {
     this._edgeMap.put(e, obj)
     this._edgeList = null
+  }
+  print(out) {
+    System.out.println('EdgeEndStar:   ' + this.getCoordinate())
+    for (let it = this.iterator(); it.hasNext(); ) {
+      const e = it.next()
+      e.print(out)
+    }
+  }
+  isAreaLabelsConsistent(geomGraph) {
+    this.computeEdgeEndLabels(geomGraph.getBoundaryNodeRule())
+    return this.checkAreaLabelsConsistent(0)
   }
 }

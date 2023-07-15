@@ -18,6 +18,9 @@ export default class DouglasPeuckerLineSimplifier {
     simp.setDistanceTolerance(distanceTolerance)
     return simp.simplify()
   }
+  setDistanceTolerance(distanceTolerance) {
+    this._distanceTolerance = distanceTolerance
+  }
   simplifySection(i, j) {
     if (i + 1 === j) 
       return null
@@ -41,9 +44,6 @@ export default class DouglasPeuckerLineSimplifier {
       this.simplifySection(i, maxIndex)
       this.simplifySection(maxIndex, j)
     }
-  }
-  setDistanceTolerance(distanceTolerance) {
-    this._distanceTolerance = distanceTolerance
   }
   simplify() {
     this._usePt = new Array(this._pts.length).fill(null)

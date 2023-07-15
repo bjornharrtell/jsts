@@ -1,8 +1,8 @@
-import DistanceToPointFinder from './DistanceToPointFinder.js'
-import CoordinateFilter from '../../../geom/CoordinateFilter.js'
 import Coordinate from '../../../geom/Coordinate.js'
 import PointPairDistance from './PointPairDistance.js'
 import CoordinateSequenceFilter from '../../../geom/CoordinateSequenceFilter.js'
+import DistanceToPointFinder from './DistanceToPointFinder.js'
+import CoordinateFilter from '../../../geom/CoordinateFilter.js'
 export default class BufferCurveMaximumDistanceFinder {
   constructor() {
     BufferCurveMaximumDistanceFinder.constructor_.apply(this, arguments)
@@ -18,18 +18,18 @@ export default class BufferCurveMaximumDistanceFinder {
     curve.apply(distFilter)
     this._maxPtDist.setMaximum(distFilter.getMaxPointDistance())
   }
-  computeMaxVertexDistance(curve) {
-    const distFilter = new MaxPointDistanceFilter(this._inputGeom)
-    curve.apply(distFilter)
-    this._maxPtDist.setMaximum(distFilter.getMaxPointDistance())
+  getDistancePoints() {
+    return this._maxPtDist
   }
   findDistance(bufferCurve) {
     this.computeMaxVertexDistance(bufferCurve)
     this.computeMaxMidpointDistance(bufferCurve)
     return this._maxPtDist.getDistance()
   }
-  getDistancePoints() {
-    return this._maxPtDist
+  computeMaxVertexDistance(curve) {
+    const distFilter = new MaxPointDistanceFilter(this._inputGeom)
+    curve.apply(distFilter)
+    this._maxPtDist.setMaximum(distFilter.getMaxPointDistance())
   }
 }
 class MaxPointDistanceFilter {
@@ -75,14 +75,14 @@ class MaxMidpointDistanceFilter {
     DistanceToPointFinder.computeDistance(this._geom, midPt, this._minPtDist)
     this._maxPtDist.setMaximum(this._minPtDist)
   }
-  isDone() {
-    return false
-  }
   isGeometryChanged() {
     return false
   }
   getMaxPointDistance() {
     return this._maxPtDist
+  }
+  isDone() {
+    return false
   }
   get interfaces_() {
     return [CoordinateSequenceFilter]

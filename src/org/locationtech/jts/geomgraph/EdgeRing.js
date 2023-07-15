@@ -90,16 +90,6 @@ export default class EdgeRing {
       
     }
   }
-  isHole() {
-    return this._isHole
-  }
-  setInResult() {
-    let de = this._startDe
-    do {
-      de.getEdge().setInResult(true)
-      de = de.getNext()
-    } while (de !== this._startDe)
-  }
   containsPoint(p) {
     const shell = this.getLinearRing()
     const env = shell.getEnvelopeInternal()
@@ -110,6 +100,32 @@ export default class EdgeRing {
       if (hole.containsPoint(p)) return false
     }
     return true
+  }
+  getMaxNodeDegree() {
+    if (this._maxNodeDegree < 0) this.computeMaxNodeDegree()
+    return this._maxNodeDegree
+  }
+  setShell(shell) {
+    this._shell = shell
+    if (shell !== null) shell.addHole(this)
+  }
+  toPolygon(geometryFactory) {
+    const holeLR = new Array(this._holes.size()).fill(null)
+    for (let i = 0; i < this._holes.size(); i++) 
+      holeLR[i] = this._holes.get(i).getLinearRing()
+    
+    const poly = geometryFactory.createPolygon(this.getLinearRing(), holeLR)
+    return poly
+  }
+  isHole() {
+    return this._isHole
+  }
+  setInResult() {
+    let de = this._startDe
+    do {
+      de.getEdge().setInResult(true)
+      de = de.getNext()
+    } while (de !== this._startDe)
   }
   addHole(ring) {
     this._holes.add(ring)
@@ -122,10 +138,6 @@ export default class EdgeRing {
   }
   getEdges() {
     return this._edges
-  }
-  getMaxNodeDegree() {
-    if (this._maxNodeDegree < 0) this.computeMaxNodeDegree()
-    return this._maxNodeDegree
   }
   getShell() {
     return this._shell
@@ -144,17 +156,5 @@ export default class EdgeRing {
         return null
       }
     }
-  }
-  setShell(shell) {
-    this._shell = shell
-    if (shell !== null) shell.addHole(this)
-  }
-  toPolygon(geometryFactory) {
-    const holeLR = new Array(this._holes.size()).fill(null)
-    for (let i = 0; i < this._holes.size(); i++) 
-      holeLR[i] = this._holes.get(i).getLinearRing()
-    
-    const poly = geometryFactory.createPolygon(this.getLinearRing(), holeLR)
-    return poly
   }
 }

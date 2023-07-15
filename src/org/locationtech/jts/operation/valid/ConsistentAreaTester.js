@@ -22,9 +22,6 @@ export default class ConsistentAreaTester {
     }
     return true
   }
-  getInvalidPoint() {
-    return this._invalidPoint
-  }
   hasDuplicateRings() {
     for (let nodeIt = this._nodeGraph.getNodeIterator(); nodeIt.hasNext(); ) {
       const node = nodeIt.next()
@@ -46,5 +43,8 @@ export default class ConsistentAreaTester {
     }
     this._nodeGraph.build(this._geomGraph)
     return this.isNodeEdgeAreaLabelsConsistent()
+  }
+  getInvalidPoint() {
+    return this._invalidPoint
   }
 }

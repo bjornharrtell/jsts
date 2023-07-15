@@ -94,19 +94,6 @@ export default class MinimumDiameter {
       currMaxIndex = this.findMaxPerpDistance(pts, seg, currMaxIndex)
     }
   }
-  computeMinimumDiameter() {
-    if (this._minWidthPt !== null) return null
-    if (this._isConvex) {
-      this.computeWidthConvex(this._inputGeom)
-    } else {
-      const convexGeom = new ConvexHull(this._inputGeom).getConvexHull()
-      this.computeWidthConvex(convexGeom)
-    }
-  }
-  getLength() {
-    this.computeMinimumDiameter()
-    return this._minWidth
-  }
   findMaxPerpDistance(pts, seg, startIndex) {
     let maxPerpDistance = seg.distancePerpendicular(pts[startIndex])
     let nextPerpDistance = maxPerpDistance
@@ -158,5 +145,18 @@ export default class MinimumDiameter {
     const p3 = maxParaLine.lineIntersection(minPerpLine)
     const shell = this._inputGeom.getFactory().createLinearRing([p0, p1, p2, p3, p0])
     return this._inputGeom.getFactory().createPolygon(shell)
+  }
+  computeMinimumDiameter() {
+    if (this._minWidthPt !== null) return null
+    if (this._isConvex) {
+      this.computeWidthConvex(this._inputGeom)
+    } else {
+      const convexGeom = new ConvexHull(this._inputGeom).getConvexHull()
+      this.computeWidthConvex(convexGeom)
+    }
+  }
+  getLength() {
+    this.computeMinimumDiameter()
+    return this._minWidth
   }
 }

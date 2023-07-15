@@ -30,6 +30,14 @@ export default class SimplePointInAreaLocator {
     if (!ring.getEnvelopeInternal().intersects(p)) return Location.EXTERIOR
     return PointLocation.locateInRing(p, ring.getCoordinates())
   }
+  static isContained(p, geom) {
+    return Location.EXTERIOR !== SimplePointInAreaLocator.locate(p, geom)
+  }
+  static locate(p, geom) {
+    if (geom.isEmpty()) return Location.EXTERIOR
+    if (!geom.getEnvelopeInternal().intersects(p)) return Location.EXTERIOR
+    return SimplePointInAreaLocator.locateInGeometry(p, geom)
+  }
   static containsPointInPolygon(p, poly) {
     return Location.EXTERIOR !== SimplePointInAreaLocator.locatePointInPolygon(p, poly)
   }
@@ -48,14 +56,6 @@ export default class SimplePointInAreaLocator {
       }
     }
     return Location.EXTERIOR
-  }
-  static isContained(p, geom) {
-    return Location.EXTERIOR !== SimplePointInAreaLocator.locate(p, geom)
-  }
-  static locate(p, geom) {
-    if (geom.isEmpty()) return Location.EXTERIOR
-    if (!geom.getEnvelopeInternal().intersects(p)) return Location.EXTERIOR
-    return SimplePointInAreaLocator.locateInGeometry(p, geom)
   }
   locate(p) {
     return SimplePointInAreaLocator.locate(p, this._geom)

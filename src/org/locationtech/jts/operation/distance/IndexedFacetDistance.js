@@ -11,6 +11,11 @@ export default class IndexedFacetDistance {
     this._baseGeometry = geom
     this._cachedTree = FacetSequenceTreeBuilder.build(geom)
   }
+  static toPoints(locations) {
+    if (locations === null) return null
+    const nearestPts = [locations[0].getCoordinate(), locations[1].getCoordinate()]
+    return nearestPts
+  }
   static distance(g1, g2) {
     const dist = new IndexedFacetDistance(g1)
     return dist.distance(g2)
@@ -23,10 +28,12 @@ export default class IndexedFacetDistance {
     const dist = new IndexedFacetDistance(g1)
     return dist.nearestPoints(g2)
   }
-  static toPoints(locations) {
-    if (locations === null) return null
-    const nearestPts = [locations[0].getCoordinate(), locations[1].getCoordinate()]
-    return nearestPts
+  nearestLocations(g) {
+    const tree2 = FacetSequenceTreeBuilder.build(g)
+    const obj = this._cachedTree.nearestNeighbour(tree2, IndexedFacetDistance.FACET_SEQ_DIST)
+    const fs1 = obj[0]
+    const fs2 = obj[1]
+    return fs1.nearestLocations(fs2)
   }
   distance(g) {
     const tree2 = FacetSequenceTreeBuilder.build(g)
@@ -45,13 +52,6 @@ export default class IndexedFacetDistance {
     const minDistanceLocation = this.nearestLocations(g)
     const nearestPts = IndexedFacetDistance.toPoints(minDistanceLocation)
     return nearestPts
-  }
-  nearestLocations(g) {
-    const tree2 = FacetSequenceTreeBuilder.build(g)
-    const obj = this._cachedTree.nearestNeighbour(tree2, IndexedFacetDistance.FACET_SEQ_DIST)
-    const fs1 = obj[0]
-    const fs2 = obj[1]
-    return fs1.nearestLocations(fs2)
   }
 }
 class FacetSequenceDistance {

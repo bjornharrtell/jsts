@@ -1,14 +1,14 @@
 import LineString from '../../geom/LineString.js'
-import Geometry from '../../geom/Geometry.js'
-import PolygonizeGraph from './PolygonizeGraph.js'
-import hasInterface from '../../../../../hasInterface.js'
-import GeometryFactory from '../../geom/GeometryFactory.js'
 import Collection from '../../../../../java/util/Collection.js'
 import Collections from '../../../../../java/util/Collections.js'
 import EdgeRing from './EdgeRing.js'
 import GeometryComponentFilter from '../../geom/GeometryComponentFilter.js'
 import ArrayList from '../../../../../java/util/ArrayList.js'
 import HoleAssigner from './HoleAssigner.js'
+import Geometry from '../../geom/Geometry.js'
+import PolygonizeGraph from './PolygonizeGraph.js'
+import hasInterface from '../../../../../hasInterface.js'
+import GeometryFactory from '../../geom/GeometryFactory.js'
 export default class Polygonizer {
   constructor() {
     Polygonizer.constructor_.apply(this, arguments)
@@ -32,16 +32,6 @@ export default class Polygonizer {
       this._extractOnlyPolygonal = extractOnlyPolygonal
     }
   }
-  static extractPolygons(shellList, includeAll) {
-    const polyList = new ArrayList()
-    for (let i = shellList.iterator(); i.hasNext(); ) {
-      const er = i.next()
-      if (includeAll || er.isIncluded()) 
-        polyList.add(er.getPolygon())
-      
-    }
-    return polyList
-  }
   static findOuterShells(shellList) {
     for (let i = shellList.iterator(); i.hasNext(); ) {
       const er = i.next()
@@ -51,6 +41,16 @@ export default class Polygonizer {
         outerHoleER.setProcessed(true)
       }
     }
+  }
+  static extractPolygons(shellList, includeAll) {
+    const polyList = new ArrayList()
+    for (let i = shellList.iterator(); i.hasNext(); ) {
+      const er = i.next()
+      if (includeAll || er.isIncluded()) 
+        polyList.add(er.getPolygon())
+      
+    }
+    return polyList
   }
   static findDisjointShells(shellList) {
     Polygonizer.findOuterShells(shellList)
@@ -113,14 +113,6 @@ export default class Polygonizer {
     this.polygonize()
     return this._dangles
   }
-  getCutEdges() {
-    this.polygonize()
-    return this._cutEdges
-  }
-  getPolygons() {
-    this.polygonize()
-    return this._polyList
-  }
   add() {
     if (hasInterface(arguments[0], Collection)) {
       const geomList = arguments[0]
@@ -149,6 +141,14 @@ export default class Polygonizer {
       er.computeHole()
       if (er.isHole()) this._holeList.add(er); else this._shellList.add(er)
     }
+  }
+  getCutEdges() {
+    this.polygonize()
+    return this._cutEdges
+  }
+  getPolygons() {
+    this.polygonize()
+    return this._polyList
   }
 }
 class LineStringAdder {

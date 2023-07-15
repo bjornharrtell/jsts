@@ -53,12 +53,11 @@ export default class HCoordinate {
       this.w = px * qy - qx * py
     }
   }
-  getY() {
-    const a = this.y / this.w
-    if (Double.isNaN(a) || Double.isInfinite(a)) 
-      throw new NotRepresentableException()
-    
-    return a
+  getCoordinate() {
+    const p = new Coordinate()
+    p.x = this.getX()
+    p.y = this.getY()
+    return p
   }
   getX() {
     const a = this.x / this.w
@@ -67,10 +66,11 @@ export default class HCoordinate {
     
     return a
   }
-  getCoordinate() {
-    const p = new Coordinate()
-    p.x = this.getX()
-    p.y = this.getY()
-    return p
+  getY() {
+    const a = this.y / this.w
+    if (Double.isNaN(a) || Double.isInfinite(a)) 
+      throw new NotRepresentableException()
+    
+    return a
   }
 }

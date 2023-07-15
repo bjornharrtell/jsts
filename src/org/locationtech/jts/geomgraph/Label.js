@@ -100,17 +100,6 @@ export default class Label {
     }
     return buf.toString()
   }
-  isArea() {
-    if (arguments.length === 0) {
-      return this.elt[0].isArea() || this.elt[1].isArea()
-    } else if (arguments.length === 1) {
-      const geomIndex = arguments[0]
-      return this.elt[geomIndex].isArea()
-    }
-  }
-  isAnyNull(geomIndex) {
-    return this.elt[geomIndex].isAnyNull()
-  }
   setLocation() {
     if (arguments.length === 2) {
       const geomIndex = arguments[0], location = arguments[1]
@@ -128,5 +117,16 @@ export default class Label {
   }
   toLine(geomIndex) {
     if (this.elt[geomIndex].isArea()) this.elt[geomIndex] = new TopologyLocation(this.elt[geomIndex].location[0])
+  }
+  isArea() {
+    if (arguments.length === 0) {
+      return this.elt[0].isArea() || this.elt[1].isArea()
+    } else if (arguments.length === 1) {
+      const geomIndex = arguments[0]
+      return this.elt[geomIndex].isArea()
+    }
+  }
+  isAnyNull(geomIndex) {
+    return this.elt[geomIndex].isAnyNull()
   }
 }

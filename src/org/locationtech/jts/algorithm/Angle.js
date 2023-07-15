@@ -3,22 +3,6 @@ export default class Angle {
   static toDegrees(radians) {
     return radians * 180 / Math.PI
   }
-  static normalize(angle) {
-    while (angle > Math.PI) angle -= Angle.PI_TIMES_2
-    while (angle <= -Math.PI) angle += Angle.PI_TIMES_2
-    return angle
-  }
-  static angle() {
-    if (arguments.length === 1) {
-      const p = arguments[0]
-      return Math.atan2(p.y, p.x)
-    } else if (arguments.length === 2) {
-      const p0 = arguments[0], p1 = arguments[1]
-      const dx = p1.x - p0.x
-      const dy = p1.y - p0.y
-      return Math.atan2(dy, dx)
-    }
-  }
   static isAcute(p0, p1, p2) {
     const dx0 = p0.x - p1.x
     const dy0 = p0.y - p1.y
@@ -69,6 +53,22 @@ export default class Angle {
   }
   static toRadians(angleDegrees) {
     return angleDegrees * Math.PI / 180.0
+  }
+  static normalize(angle) {
+    while (angle > Math.PI) angle -= Angle.PI_TIMES_2
+    while (angle <= -Math.PI) angle += Angle.PI_TIMES_2
+    return angle
+  }
+  static angle() {
+    if (arguments.length === 1) {
+      const p = arguments[0]
+      return Math.atan2(p.y, p.x)
+    } else if (arguments.length === 2) {
+      const p0 = arguments[0], p1 = arguments[1]
+      const dx = p1.x - p0.x
+      const dy = p1.y - p0.y
+      return Math.atan2(dy, dx)
+    }
   }
   static getTurn(ang1, ang2) {
     const crossproduct = Math.sin(ang2 - ang1)

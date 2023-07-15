@@ -17,18 +17,11 @@ export default class ExtractLineByLocation {
     const ls = new ExtractLineByLocation(line)
     return ls.extract(start, end)
   }
-  computeLinear(start, end) {
-    const builder = new LinearGeometryBuilder(this._line.getFactory())
-    builder.setFixInvalidLines(true)
-    if (!start.isVertex()) builder.add(start.getCoordinate(this._line))
-    for (let it = new LinearIterator(this._line, start); it.hasNext(); it.next()) {
-      if (end.compareLocationValues(it.getComponentIndex(), it.getVertexIndex(), 0.0) < 0) break
-      const pt = it.getSegmentStart()
-      builder.add(pt)
-      if (it.isEndOfLine()) builder.endLine()
-    }
-    if (!end.isVertex()) builder.add(end.getCoordinate(this._line))
-    return builder.getGeometry()
+  extract(start, end) {
+    if (end.compareTo(start) < 0) 
+      return this.reverse(this.computeLinear(end, start))
+    
+    return this.computeLinear(start, end)
   }
   computeLine(start, end) {
     const coordinates = this._line.getCoordinates()
@@ -50,15 +43,22 @@ export default class ExtractLineByLocation {
     
     return this._line.getFactory().createLineString(newCoordinateArray)
   }
-  extract(start, end) {
-    if (end.compareTo(start) < 0) 
-      return this.reverse(this.computeLinear(end, start))
-    
-    return this.computeLinear(start, end)
-  }
   reverse(linear) {
     if (hasInterface(linear, Lineal)) return linear.reverse()
     Assert.shouldNeverReachHere('non-linear geometry encountered')
     return null
+  }
+  computeLinear(start, end) {
+    const builder = new LinearGeometryBuilder(this._line.getFactory())
+    builder.setFixInvalidLines(true)
+    if (!start.isVertex()) builder.add(start.getCoordinate(this._line))
+    for (let it = new LinearIterator(this._line, start); it.hasNext(); it.next()) {
+      if (end.compareLocationValues(it.getComponentIndex(), it.getVertexIndex(), 0.0) < 0) break
+      const pt = it.getSegmentStart()
+      builder.add(pt)
+      if (it.isEndOfLine()) builder.endLine()
+    }
+    if (!end.isVertex()) builder.add(end.getCoordinate(this._line))
+    return builder.getGeometry()
   }
 }

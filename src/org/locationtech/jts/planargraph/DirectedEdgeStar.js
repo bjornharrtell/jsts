@@ -1,7 +1,7 @@
-import Collections from '../../../../java/util/Collections.js'
-import DirectedEdge from './DirectedEdge.js'
 import ArrayList from '../../../../java/util/ArrayList.js'
 import Edge from './Edge.js'
+import Collections from '../../../../java/util/Collections.js'
+import DirectedEdge from './DirectedEdge.js'
 export default class DirectedEdgeStar {
   constructor() {
     DirectedEdgeStar.constructor_.apply(this, arguments)

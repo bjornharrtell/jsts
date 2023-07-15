@@ -44,29 +44,6 @@ export default class HotPixel {
     Assert.isTrue(!(isOutsidePixelEnv && intersects), 'Found bad envelope test')
     return intersects
   }
-  initCorners(pt) {
-    const tolerance = 0.5
-    this._minx = pt.x - tolerance
-    this._maxx = pt.x + tolerance
-    this._miny = pt.y - tolerance
-    this._maxy = pt.y + tolerance
-    this._corner[0] = new Coordinate(this._maxx, this._maxy)
-    this._corner[1] = new Coordinate(this._minx, this._maxy)
-    this._corner[2] = new Coordinate(this._minx, this._miny)
-    this._corner[3] = new Coordinate(this._maxx, this._miny)
-  }
-  intersects(p0, p1) {
-    if (this._scaleFactor === 1.0) return this.intersectsScaled(p0, p1)
-    this.copyScaled(p0, this._p0Scaled)
-    this.copyScaled(p1, this._p1Scaled)
-    return this.intersectsScaled(this._p0Scaled, this._p1Scaled)
-  }
-  scale(val) {
-    return Math.round(val * this._scaleFactor)
-  }
-  getCoordinate() {
-    return this._originalPt
-  }
   copyScaled(p, pScaled) {
     pScaled.x = this.scale(p.x)
     pScaled.y = this.scale(p.y)
@@ -115,6 +92,29 @@ export default class HotPixel {
       return true
     }
     return false
+  }
+  initCorners(pt) {
+    const tolerance = 0.5
+    this._minx = pt.x - tolerance
+    this._maxx = pt.x + tolerance
+    this._miny = pt.y - tolerance
+    this._maxy = pt.y + tolerance
+    this._corner[0] = new Coordinate(this._maxx, this._maxy)
+    this._corner[1] = new Coordinate(this._minx, this._maxy)
+    this._corner[2] = new Coordinate(this._minx, this._miny)
+    this._corner[3] = new Coordinate(this._maxx, this._miny)
+  }
+  intersects(p0, p1) {
+    if (this._scaleFactor === 1.0) return this.intersectsScaled(p0, p1)
+    this.copyScaled(p0, this._p0Scaled)
+    this.copyScaled(p1, this._p1Scaled)
+    return this.intersectsScaled(this._p0Scaled, this._p1Scaled)
+  }
+  scale(val) {
+    return Math.round(val * this._scaleFactor)
+  }
+  getCoordinate() {
+    return this._originalPt
   }
 }
 HotPixel.SAFE_ENV_EXPANSION_FACTOR = 0.75

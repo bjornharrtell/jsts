@@ -20,42 +20,6 @@ export default class GeometricShapeFactory {
       this._precModel = geomFact.getPrecisionModel()
     }
   }
-  createSupercircle(power) {
-    const recipPow = 1.0 / power
-    const radius = this._dim.getMinSize() / 2
-    const centre = this._dim.getCentre()
-    const r4 = Math.pow(radius, power)
-    const y0 = radius
-    const xyInt = Math.pow(r4 / 2, recipPow)
-    const nSegsInOct = Math.trunc(this._nPts / 8)
-    const totPts = nSegsInOct * 8 + 1
-    const pts = new Array(totPts).fill(null)
-    const xInc = xyInt / nSegsInOct
-    for (let i = 0; i <= nSegsInOct; i++) {
-      let x = 0.0
-      let y = y0
-      if (i !== 0) {
-        x = xInc * i
-        const x4 = Math.pow(x, power)
-        y = Math.pow(r4 - x4, recipPow)
-      }
-      pts[i] = this.coordTrans(x, y, centre)
-      pts[2 * nSegsInOct - i] = this.coordTrans(y, x, centre)
-      pts[2 * nSegsInOct + i] = this.coordTrans(y, -x, centre)
-      pts[4 * nSegsInOct - i] = this.coordTrans(x, -y, centre)
-      pts[4 * nSegsInOct + i] = this.coordTrans(-x, -y, centre)
-      pts[6 * nSegsInOct - i] = this.coordTrans(-y, -x, centre)
-      pts[6 * nSegsInOct + i] = this.coordTrans(-y, x, centre)
-      pts[8 * nSegsInOct - i] = this.coordTrans(-x, y, centre)
-    }
-    pts[pts.length - 1] = new Coordinate(pts[0])
-    const ring = this._geomFact.createLinearRing(pts)
-    const poly = this._geomFact.createPolygon(ring)
-    return this.rotate(poly)
-  }
-  setNumPoints(nPts) {
-    this._nPts = nPts
-  }
   setBase(base) {
     this._dim.setBase(base)
   }
@@ -83,18 +47,6 @@ export default class GeometricShapeFactory {
     const ring = this._geomFact.createLinearRing(pts)
     const poly = this._geomFact.createPolygon(ring)
     return this.rotate(poly)
-  }
-  coordTrans(x, y, trans) {
-    return this.coord(x + trans.x, y + trans.y)
-  }
-  createSquircle() {
-    return this.createSupercircle(4)
-  }
-  setEnvelope(env) {
-    this._dim.setEnvelope(env)
-  }
-  setCentre(centre) {
-    this._dim.setCentre(centre)
   }
   createArc(startAng, angExtent) {
     const env = this._dim.getEnvelope()
@@ -194,6 +146,54 @@ export default class GeometricShapeFactory {
   setSize(size) {
     this._dim.setSize(size)
   }
+  createSupercircle(power) {
+    const recipPow = 1.0 / power
+    const radius = this._dim.getMinSize() / 2
+    const centre = this._dim.getCentre()
+    const r4 = Math.pow(radius, power)
+    const y0 = radius
+    const xyInt = Math.pow(r4 / 2, recipPow)
+    const nSegsInOct = Math.trunc(this._nPts / 8)
+    const totPts = nSegsInOct * 8 + 1
+    const pts = new Array(totPts).fill(null)
+    const xInc = xyInt / nSegsInOct
+    for (let i = 0; i <= nSegsInOct; i++) {
+      let x = 0.0
+      let y = y0
+      if (i !== 0) {
+        x = xInc * i
+        const x4 = Math.pow(x, power)
+        y = Math.pow(r4 - x4, recipPow)
+      }
+      pts[i] = this.coordTrans(x, y, centre)
+      pts[2 * nSegsInOct - i] = this.coordTrans(y, x, centre)
+      pts[2 * nSegsInOct + i] = this.coordTrans(y, -x, centre)
+      pts[4 * nSegsInOct - i] = this.coordTrans(x, -y, centre)
+      pts[4 * nSegsInOct + i] = this.coordTrans(-x, -y, centre)
+      pts[6 * nSegsInOct - i] = this.coordTrans(-y, -x, centre)
+      pts[6 * nSegsInOct + i] = this.coordTrans(-y, x, centre)
+      pts[8 * nSegsInOct - i] = this.coordTrans(-x, y, centre)
+    }
+    pts[pts.length - 1] = new Coordinate(pts[0])
+    const ring = this._geomFact.createLinearRing(pts)
+    const poly = this._geomFact.createPolygon(ring)
+    return this.rotate(poly)
+  }
+  setNumPoints(nPts) {
+    this._nPts = nPts
+  }
+  coordTrans(x, y, trans) {
+    return this.coord(x + trans.x, y + trans.y)
+  }
+  createSquircle() {
+    return this.createSupercircle(4)
+  }
+  setEnvelope(env) {
+    this._dim.setEnvelope(env)
+  }
+  setCentre(centre) {
+    this._dim.setCentre(centre)
+  }
 }
 class Dimensions {
   constructor() {
@@ -216,18 +216,6 @@ class Dimensions {
   }
   getWidth() {
     return this.width
-  }
-  setEnvelope(env) {
-    this.width = env.getWidth()
-    this.height = env.getHeight()
-    this.base = new Coordinate(env.getMinX(), env.getMinY())
-    this.centre = new Coordinate(env.centre())
-  }
-  setCentre(centre) {
-    this.centre = centre
-  }
-  getMinSize() {
-    return Math.min(this.width, this.height)
   }
   getEnvelope() {
     if (this.base !== null) 
@@ -253,6 +241,18 @@ class Dimensions {
   setSize(size) {
     this.height = size
     this.width = size
+  }
+  setEnvelope(env) {
+    this.width = env.getWidth()
+    this.height = env.getHeight()
+    this.base = new Coordinate(env.getMinX(), env.getMinY())
+    this.centre = new Coordinate(env.centre())
+  }
+  setCentre(centre) {
+    this.centre = centre
+  }
+  getMinSize() {
+    return Math.min(this.width, this.height)
   }
 }
 GeometricShapeFactory.Dimensions = Dimensions

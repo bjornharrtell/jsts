@@ -12,15 +12,6 @@ export default class MortonCode {
   static encode(x, y) {
     return (MortonCode.interleave(y) << 1) + MortonCode.interleave(x)
   }
-  static checkLevel(level) {
-    if (level > MortonCode.MAX_LEVEL) 
-      throw new IllegalArgumentException('Level must be in range 0 to ' + MortonCode.MAX_LEVEL)
-    
-  }
-  static size(level) {
-    MortonCode.checkLevel(level)
-    return Math.trunc(Math.pow(2, 2 * level))
-  }
   static maxOrdinate(level) {
     MortonCode.checkLevel(level)
     return Math.trunc(Math.pow(2, level)) - 1
@@ -44,6 +35,15 @@ export default class MortonCode {
     const size = MortonCode.size(level)
     if (size < numPoints) level += 1
     return level
+  }
+  static checkLevel(level) {
+    if (level > MortonCode.MAX_LEVEL) 
+      throw new IllegalArgumentException('Level must be in range 0 to ' + MortonCode.MAX_LEVEL)
+    
+  }
+  static size(level) {
+    MortonCode.checkLevel(level)
+    return Math.trunc(Math.pow(2, 2 * level))
   }
 }
 MortonCode.MAX_LEVEL = 16

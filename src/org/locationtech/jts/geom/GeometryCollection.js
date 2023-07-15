@@ -1,12 +1,12 @@
 import TreeSet from '../../../../java/util/TreeSet.js'
-import Geometry from './Geometry.js'
-import Arrays from '../../../../java/util/Arrays.js'
-import CoordinateFilter from './CoordinateFilter.js'
 import hasInterface from '../../../../hasInterface.js'
 import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException.js'
 import GeometryComponentFilter from './GeometryComponentFilter.js'
 import Dimension from './Dimension.js'
 import ArrayList from '../../../../java/util/ArrayList.js'
+import Geometry from './Geometry.js'
+import Arrays from '../../../../java/util/Arrays.js'
+import CoordinateFilter from './CoordinateFilter.js'
 import GeometryFilter from './GeometryFilter.js'
 import CoordinateSequenceFilter from './CoordinateSequenceFilter.js'
 import Envelope from './Envelope.js'
@@ -86,23 +86,6 @@ export default class GeometryCollection extends Geometry {
       return super.equalsExact.apply(this, arguments)
     }
   }
-  normalize() {
-    for (let i = 0; i < this._geometries.length; i++) 
-      this._geometries[i].normalize()
-    
-    Arrays.sort(this._geometries)
-  }
-  getCoordinate() {
-    if (this.isEmpty()) return null
-    return this._geometries[0].getCoordinate()
-  }
-  getBoundaryDimension() {
-    let dimension = Dimension.FALSE
-    for (let i = 0; i < this._geometries.length; i++) 
-      dimension = Math.max(dimension, this._geometries[i].getBoundaryDimension())
-    
-    return dimension
-  }
   reverseInternal() {
     const numGeometries = this._geometries.length
     const reversed = new ArrayList(numGeometries)
@@ -121,6 +104,42 @@ export default class GeometryCollection extends Geometry {
     
     return dimension
   }
+  getNumGeometries() {
+    return this._geometries.length
+  }
+  getBoundary() {
+    Geometry.checkNotGeometryCollection(this)
+    Assert.shouldNeverReachHere()
+    return null
+  }
+  getGeometryType() {
+    return Geometry.TYPENAME_GEOMETRYCOLLECTION
+  }
+  isEmpty() {
+    for (let i = 0; i < this._geometries.length; i++) 
+      if (!this._geometries[i].isEmpty()) 
+        return false
+      
+    
+    return true
+  }
+  normalize() {
+    for (let i = 0; i < this._geometries.length; i++) 
+      this._geometries[i].normalize()
+    
+    Arrays.sort(this._geometries)
+  }
+  getCoordinate() {
+    if (this.isEmpty()) return null
+    return this._geometries[0].getCoordinate()
+  }
+  getBoundaryDimension() {
+    let dimension = Dimension.FALSE
+    for (let i = 0; i < this._geometries.length; i++) 
+      dimension = Math.max(dimension, this._geometries[i].getBoundaryDimension())
+    
+    return dimension
+  }
   getLength() {
     let sum = 0.0
     for (let i = 0; i < this._geometries.length; i++) 
@@ -134,9 +153,6 @@ export default class GeometryCollection extends Geometry {
       numPoints += this._geometries[i].getNumPoints()
     
     return numPoints
-  }
-  getNumGeometries() {
-    return this._geometries.length
   }
   compareToSameClass() {
     if (arguments.length === 1) {
@@ -191,21 +207,5 @@ export default class GeometryCollection extends Geometry {
         this._geometries[i].apply(filter)
       
     }
-  }
-  getBoundary() {
-    Geometry.checkNotGeometryCollection(this)
-    Assert.shouldNeverReachHere()
-    return null
-  }
-  getGeometryType() {
-    return Geometry.TYPENAME_GEOMETRYCOLLECTION
-  }
-  isEmpty() {
-    for (let i = 0; i < this._geometries.length; i++) 
-      if (!this._geometries[i].isEmpty()) 
-        return false
-      
-    
-    return true
   }
 }

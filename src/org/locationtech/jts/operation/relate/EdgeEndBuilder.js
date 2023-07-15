@@ -2,27 +2,6 @@ import EdgeEnd from '../../geomgraph/EdgeEnd.js'
 import Label from '../../geomgraph/Label.js'
 import ArrayList from '../../../../../java/util/ArrayList.js'
 export default class EdgeEndBuilder {
-  createEdgeEndForNext(edge, l, eiCurr, eiNext) {
-    const iNext = eiCurr.segmentIndex + 1
-    if (iNext >= edge.getNumPoints() && eiNext === null) return null
-    let pNext = edge.getCoordinate(iNext)
-    if (eiNext !== null && eiNext.segmentIndex === eiCurr.segmentIndex) pNext = eiNext.coord
-    const e = new EdgeEnd(edge, eiCurr.coord, pNext, new Label(edge.getLabel()))
-    l.add(e)
-  }
-  createEdgeEndForPrev(edge, l, eiCurr, eiPrev) {
-    let iPrev = eiCurr.segmentIndex
-    if (eiCurr.dist === 0.0) {
-      if (iPrev === 0) return null
-      iPrev--
-    }
-    let pPrev = edge.getCoordinate(iPrev)
-    if (eiPrev !== null && eiPrev.segmentIndex >= iPrev) pPrev = eiPrev.coord
-    const label = new Label(edge.getLabel())
-    label.flip()
-    const e = new EdgeEnd(edge, eiCurr.coord, pPrev, label)
-    l.add(e)
-  }
   computeEdgeEnds() {
     if (arguments.length === 1) {
       const edges = arguments[0]
@@ -52,5 +31,26 @@ export default class EdgeEndBuilder {
         }
       } while (eiCurr !== null)
     }
+  }
+  createEdgeEndForNext(edge, l, eiCurr, eiNext) {
+    const iNext = eiCurr.segmentIndex + 1
+    if (iNext >= edge.getNumPoints() && eiNext === null) return null
+    let pNext = edge.getCoordinate(iNext)
+    if (eiNext !== null && eiNext.segmentIndex === eiCurr.segmentIndex) pNext = eiNext.coord
+    const e = new EdgeEnd(edge, eiCurr.coord, pNext, new Label(edge.getLabel()))
+    l.add(e)
+  }
+  createEdgeEndForPrev(edge, l, eiCurr, eiPrev) {
+    let iPrev = eiCurr.segmentIndex
+    if (eiCurr.dist === 0.0) {
+      if (iPrev === 0) return null
+      iPrev--
+    }
+    let pPrev = edge.getCoordinate(iPrev)
+    if (eiPrev !== null && eiPrev.segmentIndex >= iPrev) pPrev = eiPrev.coord
+    const label = new Label(edge.getLabel())
+    label.flip()
+    const e = new EdgeEnd(edge, eiCurr.coord, pPrev, label)
+    l.add(e)
   }
 }

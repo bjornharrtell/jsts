@@ -189,6 +189,54 @@ export default class DD {
   sqr() {
     return this.multiply(this)
   }
+  getSpecialNumberString() {
+    if (this.isZero()) return '0.0'
+    if (this.isNaN()) return 'NaN '
+    return null
+  }
+  setValue() {
+    if (arguments[0] instanceof DD) {
+      const value = arguments[0]
+      this.init(value)
+      return this
+    } else if (typeof arguments[0] === 'number') {
+      const value = arguments[0]
+      this.init(value)
+      return this
+    }
+  }
+  multiply() {
+    if (arguments[0] instanceof DD) {
+      const y = arguments[0]
+      if (y.isNaN()) return DD.createNaN()
+      return DD.copy(this).selfMultiply(y)
+    } else if (typeof arguments[0] === 'number') {
+      const y = arguments[0]
+      if (Double.isNaN(y)) return DD.createNaN()
+      return DD.copy(this).selfMultiply(y, 0.0)
+    }
+  }
+  isNaN() {
+    return Double.isNaN(this._hi)
+  }
+  reciprocal() {
+    let hc = null, tc = null, hy = null, ty = null, C = null, c = null, U = null, u = null
+    C = 1.0 / this._hi
+    c = DD.SPLIT * C
+    hc = c - C
+    u = DD.SPLIT * this._hi
+    hc = c - hc
+    tc = C - hc
+    hy = u - this._hi
+    U = C * this._hi
+    hy = u - hy
+    ty = this._hi - hy
+    u = hc * hy - U + hc * ty + tc * hy + tc * ty
+    c = (1.0 - U - u - C * this._lo) / this._hi
+    const zhi = C + c
+    const zlo = C - zhi + c
+    return new DD(zhi, zlo)
+  }
   doubleValue() {
     return this._hi + this._lo
   }
@@ -220,11 +268,6 @@ export default class DD {
       if (this.isNaN()) return this
       return this.selfAdd(-y, 0.0)
     }
-  }
-  getSpecialNumberString() {
-    if (this.isZero()) return '0.0'
-    if (this.isNaN()) return 'NaN '
-    return null
   }
   min(x) {
     if (this.le(x)) 
@@ -335,17 +378,6 @@ export default class DD {
     if (this.isNaN()) return this
     const plus5 = this.add(0.5)
     return plus5.floor()
-  }
-  setValue() {
-    if (arguments[0] instanceof DD) {
-      const value = arguments[0]
-      this.init(value)
-      return this
-    } else if (typeof arguments[0] === 'number') {
-      const value = arguments[0]
-      this.init(value)
-      return this
-    }
   }
   max(x) {
     if (this.ge(x)) 
@@ -462,20 +494,6 @@ export default class DD {
       else throw ex
     } finally {}
   }
-  multiply() {
-    if (arguments[0] instanceof DD) {
-      const y = arguments[0]
-      if (y.isNaN()) return DD.createNaN()
-      return DD.copy(this).selfMultiply(y)
-    } else if (typeof arguments[0] === 'number') {
-      const y = arguments[0]
-      if (Double.isNaN(y)) return DD.createNaN()
-      return DD.copy(this).selfMultiply(y, 0.0)
-    }
-  }
-  isNaN() {
-    return Double.isNaN(this._hi)
-  }
   intValue() {
     return Math.trunc(this._hi)
   }
@@ -502,24 +520,6 @@ export default class DD {
     }
     if (this.isNegative()) return '-' + num
     return num
-  }
-  reciprocal() {
-    let hc = null, tc = null, hy = null, ty = null, C = null, c = null, U = null, u = null
-    C = 1.0 / this._hi
-    c = DD.SPLIT * C
-    hc = c - C
-    u = DD.SPLIT * this._hi
-    hc = c - hc
-    tc = C - hc
-    hy = u - this._hi
-    U = C * this._hi
-    hy = u - hy
-    ty = this._hi - hy
-    u = hc * hy - U + hc * ty + tc * hy + tc * ty
-    c = (1.0 - U - u - C * this._lo) / this._hi
-    const zhi = C + c
-    const zlo = C - zhi + c
-    return new DD(zhi, zlo)
   }
   toSciNotation() {
     if (this.isZero()) return DD.SCI_NOT_ZERO

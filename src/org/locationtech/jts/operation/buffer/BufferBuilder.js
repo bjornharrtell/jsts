@@ -1,21 +1,21 @@
 import Location from '../../geom/Location.js'
 import BufferSubgraph from './BufferSubgraph.js'
-import PolygonBuilder from '../overlay/PolygonBuilder.js'
-import GeometryFactory from '../../geom/GeometryFactory.js'
 import Position from '../../geomgraph/Position.js'
 import MCIndexNoder from '../../noding/MCIndexNoder.js'
 import OffsetCurveBuilder from './OffsetCurveBuilder.js'
 import Collections from '../../../../../java/util/Collections.js'
+import Label from '../../geomgraph/Label.js'
+import PlanarGraph from '../../geomgraph/PlanarGraph.js'
+import PolygonBuilder from '../overlay/PolygonBuilder.js'
+import GeometryFactory from '../../geom/GeometryFactory.js'
 import SubgraphDepthLocater from './SubgraphDepthLocater.js'
 import OffsetCurveSetBuilder from './OffsetCurveSetBuilder.js'
-import Label from '../../geomgraph/Label.js'
 import OverlayNodeFactory from '../overlay/OverlayNodeFactory.js'
 import EdgeList from '../../geomgraph/EdgeList.js'
 import ArrayList from '../../../../../java/util/ArrayList.js'
 import RobustLineIntersector from '../../algorithm/RobustLineIntersector.js'
 import IntersectionAdder from '../../noding/IntersectionAdder.js'
 import Edge from '../../geomgraph/Edge.js'
-import PlanarGraph from '../../geomgraph/PlanarGraph.js'
 export default class BufferBuilder {
   constructor() {
     BufferBuilder.constructor_.apply(this, arguments)
@@ -30,12 +30,6 @@ export default class BufferBuilder {
     const bufParams = arguments[0]
     this._bufParams = bufParams
   }
-  static depthDelta(label) {
-    const lLoc = label.getLocation(0, Position.LEFT)
-    const rLoc = label.getLocation(0, Position.RIGHT)
-    if (lLoc === Location.INTERIOR && rLoc === Location.EXTERIOR) return 1; else if (lLoc === Location.EXTERIOR && rLoc === Location.INTERIOR) return -1
-    return 0
-  }
   static convertSegStrings(it) {
     const fact = new GeometryFactory()
     const lines = new ArrayList()
@@ -46,53 +40,11 @@ export default class BufferBuilder {
     }
     return fact.buildGeometry(lines)
   }
-  setWorkingPrecisionModel(pm) {
-    this._workingPrecisionModel = pm
-  }
-  insertUniqueEdge(e) {
-    const existingEdge = this._edgeList.findEqualEdge(e)
-    if (existingEdge !== null) {
-      const existingLabel = existingEdge.getLabel()
-      let labelToMerge = e.getLabel()
-      if (!existingEdge.isPointwiseEqual(e)) {
-        labelToMerge = new Label(e.getLabel())
-        labelToMerge.flip()
-      }
-      existingLabel.merge(labelToMerge)
-      const mergeDelta = BufferBuilder.depthDelta(labelToMerge)
-      const existingDelta = existingEdge.getDepthDelta()
-      const newDelta = existingDelta + mergeDelta
-      existingEdge.setDepthDelta(newDelta)
-    } else {
-      this._edgeList.add(e)
-      e.setDepthDelta(BufferBuilder.depthDelta(e.getLabel()))
-    }
-  }
-  buildSubgraphs(subgraphList, polyBuilder) {
-    const processedGraphs = new ArrayList()
-    for (let i = subgraphList.iterator(); i.hasNext(); ) {
-      const subgraph = i.next()
-      const p = subgraph.getRightmostCoordinate()
-      const locater = new SubgraphDepthLocater(processedGraphs)
-      const outsideDepth = locater.getDepth(p)
-      subgraph.computeDepth(outsideDepth)
-      subgraph.findResultEdges()
-      processedGraphs.add(subgraph)
-      polyBuilder.add(subgraph.getDirectedEdges(), subgraph.getNodes())
-    }
-  }
-  createSubgraphs(graph) {
-    const subgraphList = new ArrayList()
-    for (let i = graph.getNodes().iterator(); i.hasNext(); ) {
-      const node = i.next()
-      if (!node.isVisited()) {
-        const subgraph = new BufferSubgraph()
-        subgraph.create(node)
-        subgraphList.add(subgraph)
-      }
-    }
-    Collections.sort(subgraphList, Collections.reverseOrder())
-    return subgraphList
+  static depthDelta(label) {
+    const lLoc = label.getLocation(0, Position.LEFT)
+    const rLoc = label.getLocation(0, Position.RIGHT)
+    if (lLoc === Location.INTERIOR && rLoc === Location.EXTERIOR) return 1; else if (lLoc === Location.EXTERIOR && rLoc === Location.INTERIOR) return -1
+    return 0
   }
   createEmptyResultGeometry() {
     const emptyGeom = this._geomFact.createPolygon()
@@ -144,5 +96,53 @@ export default class BufferBuilder {
   }
   setNoder(noder) {
     this._workingNoder = noder
+  }
+  setWorkingPrecisionModel(pm) {
+    this._workingPrecisionModel = pm
+  }
+  insertUniqueEdge(e) {
+    const existingEdge = this._edgeList.findEqualEdge(e)
+    if (existingEdge !== null) {
+      const existingLabel = existingEdge.getLabel()
+      let labelToMerge = e.getLabel()
+      if (!existingEdge.isPointwiseEqual(e)) {
+        labelToMerge = new Label(e.getLabel())
+        labelToMerge.flip()
+      }
+      existingLabel.merge(labelToMerge)
+      const mergeDelta = BufferBuilder.depthDelta(labelToMerge)
+      const existingDelta = existingEdge.getDepthDelta()
+      const newDelta = existingDelta + mergeDelta
+      existingEdge.setDepthDelta(newDelta)
+    } else {
+      this._edgeList.add(e)
+      e.setDepthDelta(BufferBuilder.depthDelta(e.getLabel()))
+    }
+  }
+  buildSubgraphs(subgraphList, polyBuilder) {
+    const processedGraphs = new ArrayList()
+    for (let i = subgraphList.iterator(); i.hasNext(); ) {
+      const subgraph = i.next()
+      const p = subgraph.getRightmostCoordinate()
+      const locater = new SubgraphDepthLocater(processedGraphs)
+      const outsideDepth = locater.getDepth(p)
+      subgraph.computeDepth(outsideDepth)
+      subgraph.findResultEdges()
+      processedGraphs.add(subgraph)
+      polyBuilder.add(subgraph.getDirectedEdges(), subgraph.getNodes())
+    }
+  }
+  createSubgraphs(graph) {
+    const subgraphList = new ArrayList()
+    for (let i = graph.getNodes().iterator(); i.hasNext(); ) {
+      const node = i.next()
+      if (!node.isVisited()) {
+        const subgraph = new BufferSubgraph()
+        subgraph.create(node)
+        subgraphList.add(subgraph)
+      }
+    }
+    Collections.sort(subgraphList, Collections.reverseOrder())
+    return subgraphList
   }
 }

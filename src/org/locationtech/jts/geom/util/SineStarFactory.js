@@ -25,9 +25,6 @@ export default class SineStarFactory extends GeometricShapeFactory {
     const poly = gsf.createSineStar()
     return poly
   }
-  setNumArms(numArms) {
-    this._numArms = numArms
-  }
   setArmLengthRatio(armLengthRatio) {
     this._armLengthRatio = armLengthRatio
   }
@@ -58,5 +55,8 @@ export default class SineStarFactory extends GeometricShapeFactory {
     const ring = this._geomFact.createLinearRing(pts)
     const poly = this._geomFact.createPolygon(ring)
     return poly
+  }
+  setNumArms(numArms) {
+    this._numArms = numArms
   }
 }

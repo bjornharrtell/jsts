@@ -11,9 +11,6 @@ export default class LineSegmentIndex {
   static constructor_() {
     this._index = new Quadtree()
   }
-  remove(seg) {
-    this._index.remove(new Envelope(seg.p0, seg.p1), seg)
-  }
   add() {
     if (arguments[0] instanceof TaggedLineString) {
       const line = arguments[0]
@@ -34,6 +31,9 @@ export default class LineSegmentIndex {
     const itemsFound = visitor.getItems()
     return itemsFound
   }
+  remove(seg) {
+    this._index.remove(new Envelope(seg.p0, seg.p1), seg)
+  }
 }
 class LineSegmentVisitor {
   constructor() {
@@ -45,12 +45,12 @@ class LineSegmentVisitor {
     const querySeg = arguments[0]
     this._querySeg = querySeg
   }
+  getItems() {
+    return this._items
+  }
   visitItem(item) {
     const seg = item
     if (Envelope.intersects(seg.p0, seg.p1, this._querySeg.p0, this._querySeg.p1)) this._items.add(item)
-  }
-  getItems() {
-    return this._items
   }
   get interfaces_() {
     return [ItemVisitor]

@@ -6,9 +6,9 @@ import NodedSegmentString from './NodedSegmentString.js'
 import Integer from '../../../../java/lang/Integer.js'
 import UnsupportedOperationException from '../../../../java/lang/UnsupportedOperationException.js'
 import ArrayList from '../../../../java/util/ArrayList.js'
+import TreeMap from '../../../../java/util/TreeMap.js'
 import RuntimeException from '../../../../java/lang/RuntimeException.js'
 import Assert from '../util/Assert.js'
-import TreeMap from '../../../../java/util/TreeMap.js'
 export default class SegmentNodeList {
   constructor() {
     SegmentNodeList.constructor_.apply(this, arguments)
@@ -31,32 +31,6 @@ export default class SegmentNodeList {
     }
     return coordList.toCoordinateArray()
   }
-  addCollapsedNodes() {
-    const collapsedVertexIndexes = new ArrayList()
-    this.findCollapsesFromInsertedNodes(collapsedVertexIndexes)
-    this.findCollapsesFromExistingVertices(collapsedVertexIndexes)
-    for (let it = collapsedVertexIndexes.iterator(); it.hasNext(); ) {
-      const vertexIndex = it.next().intValue()
-      this.add(this._edge.getCoordinate(vertexIndex), vertexIndex)
-    }
-  }
-  createSplitEdgePts(ei0, ei1) {
-    let npts = ei1.segmentIndex - ei0.segmentIndex + 2
-    if (npts === 2) return [new Coordinate(ei0.coord), new Coordinate(ei1.coord)]
-    const lastSegStartPt = this._edge.getCoordinate(ei1.segmentIndex)
-    const useIntPt1 = ei1.isInterior() || !ei1.coord.equals2D(lastSegStartPt)
-    if (!useIntPt1) 
-      npts--
-    
-    const pts = new Array(npts).fill(null)
-    let ipt = 0
-    pts[ipt++] = new Coordinate(ei0.coord)
-    for (let i = ei0.segmentIndex + 1; i <= ei1.segmentIndex; i++) 
-      pts[ipt++] = this._edge.getCoordinate(i)
-    
-    if (useIntPt1) pts[ipt] = new Coordinate(ei1.coord)
-    return pts
-  }
   print(out) {
     out.println('Intersections:')
     for (let it = this.iterator(); it.hasNext(); ) {
@@ -77,21 +51,6 @@ export default class SegmentNodeList {
   addEdgeCoordinates(ei0, ei1, coordList) {
     const pts = this.createSplitEdgePts(ei0, ei1)
     coordList.add(pts, false)
-  }
-  iterator() {
-    return this._nodeMap.values().iterator()
-  }
-  addSplitEdges(edgeList) {
-    this.addEndpoints()
-    this.addCollapsedNodes()
-    const it = this.iterator()
-    let eiPrev = it.next()
-    while (it.hasNext()) {
-      const ei = it.next()
-      const newEdge = this.createSplitEdge(eiPrev, ei)
-      edgeList.add(newEdge)
-      eiPrev = ei
-    }
   }
   findCollapseIndex(ei0, ei1, collapsedVertexIndex) {
     if (!ei0.coord.equals2D(ei1.coord)) return false
@@ -148,6 +107,47 @@ export default class SegmentNodeList {
     const ptn = splitnPts[splitnPts.length - 1]
     if (!ptn.equals2D(edgePts[edgePts.length - 1])) throw new RuntimeException('bad split edge end point at ' + ptn)
   }
+  addCollapsedNodes() {
+    const collapsedVertexIndexes = new ArrayList()
+    this.findCollapsesFromInsertedNodes(collapsedVertexIndexes)
+    this.findCollapsesFromExistingVertices(collapsedVertexIndexes)
+    for (let it = collapsedVertexIndexes.iterator(); it.hasNext(); ) {
+      const vertexIndex = it.next().intValue()
+      this.add(this._edge.getCoordinate(vertexIndex), vertexIndex)
+    }
+  }
+  createSplitEdgePts(ei0, ei1) {
+    let npts = ei1.segmentIndex - ei0.segmentIndex + 2
+    if (npts === 2) return [new Coordinate(ei0.coord), new Coordinate(ei1.coord)]
+    const lastSegStartPt = this._edge.getCoordinate(ei1.segmentIndex)
+    const useIntPt1 = ei1.isInterior() || !ei1.coord.equals2D(lastSegStartPt)
+    if (!useIntPt1) 
+      npts--
+    
+    const pts = new Array(npts).fill(null)
+    let ipt = 0
+    pts[ipt++] = new Coordinate(ei0.coord)
+    for (let i = ei0.segmentIndex + 1; i <= ei1.segmentIndex; i++) 
+      pts[ipt++] = this._edge.getCoordinate(i)
+    
+    if (useIntPt1) pts[ipt] = new Coordinate(ei1.coord)
+    return pts
+  }
+  iterator() {
+    return this._nodeMap.values().iterator()
+  }
+  addSplitEdges(edgeList) {
+    this.addEndpoints()
+    this.addCollapsedNodes()
+    const it = this.iterator()
+    let eiPrev = it.next()
+    while (it.hasNext()) {
+      const ei = it.next()
+      const newEdge = this.createSplitEdge(eiPrev, ei)
+      edgeList.add(newEdge)
+      eiPrev = ei
+    }
+  }
 }
 class NodeVertexIterator {
   constructor() {
@@ -183,15 +183,15 @@ class NodeVertexIterator {
     if (this._nextNode.segmentIndex > this._currNode.segmentIndex) {}
     return null
   }
-  remove() {
-    throw new UnsupportedOperationException(this.getClass().getName())
+  readNextNode() {
+    if (this._nodeIt.hasNext()) this._nextNode = this._nodeIt.next(); else this._nextNode = null
   }
   hasNext() {
     if (this._nextNode === null) return false
     return true
   }
-  readNextNode() {
-    if (this._nodeIt.hasNext()) this._nextNode = this._nodeIt.next(); else this._nextNode = null
+  remove() {
+    throw new UnsupportedOperationException(this.getClass().getName())
   }
   get interfaces_() {
     return [Iterator]

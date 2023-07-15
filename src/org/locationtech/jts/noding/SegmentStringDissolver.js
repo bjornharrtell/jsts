@@ -18,9 +18,8 @@ export default class SegmentStringDissolver {
       this._merger = merger
     }
   }
-  findMatching(oca, segString) {
-    const matchSS = this._ocaMap.get(oca)
-    return matchSS
+  add(oca, segString) {
+    this._ocaMap.put(oca, segString)
   }
   getDissolved() {
     return this._ocaMap.values()
@@ -45,8 +44,9 @@ export default class SegmentStringDissolver {
       
     }
   }
-  add(oca, segString) {
-    this._ocaMap.put(oca, segString)
+  findMatching(oca, segString) {
+    const matchSS = this._ocaMap.get(oca)
+    return matchSS
   }
 }
 function SegmentStringMerger() {}

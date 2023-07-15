@@ -1,14 +1,14 @@
-import Geometry from './Geometry.js'
-import CoordinateFilter from './CoordinateFilter.js'
 import hasInterface from '../../../../hasInterface.js'
 import GeometryComponentFilter from './GeometryComponentFilter.js'
 import Dimension from './Dimension.js'
+import Puntal from './Puntal.js'
+import IllegalStateException from '../../../../java/lang/IllegalStateException.js'
+import Geometry from './Geometry.js'
+import CoordinateFilter from './CoordinateFilter.js'
 import GeometryFilter from './GeometryFilter.js'
 import CoordinateSequenceFilter from './CoordinateSequenceFilter.js'
-import Puntal from './Puntal.js'
 import Envelope from './Envelope.js'
 import Assert from '../util/Assert.js'
-import IllegalStateException from '../../../../java/lang/IllegalStateException.js'
 export default class Point extends Geometry {
   constructor() {
     super()
@@ -51,13 +51,6 @@ export default class Point extends Geometry {
       return super.equalsExact.apply(this, arguments)
     }
   }
-  normalize() {}
-  getCoordinate() {
-    return this._coordinates.size() !== 0 ? this._coordinates.getCoordinate(0) : null
-  }
-  getBoundaryDimension() {
-    return Dimension.FALSE
-  }
   reverseInternal() {
     return this.getFactory().createPoint(this._coordinates.copy())
   }
@@ -75,6 +68,31 @@ export default class Point extends Geometry {
       throw new IllegalStateException('getX called on empty Point')
     
     return this.getCoordinate().x
+  }
+  getBoundary() {
+    return this.getFactory().createGeometryCollection()
+  }
+  getGeometryType() {
+    return Geometry.TYPENAME_POINT
+  }
+  getCoordinateSequence() {
+    return this._coordinates
+  }
+  getY() {
+    if (this.getCoordinate() === null) 
+      throw new IllegalStateException('getY called on empty Point')
+    
+    return this.getCoordinate().y
+  }
+  isSimple() {
+    return true
+  }
+  normalize() {}
+  getCoordinate() {
+    return this._coordinates.size() !== 0 ? this._coordinates.getCoordinate(0) : null
+  }
+  getBoundaryDimension() {
+    return Dimension.FALSE
   }
   compareToSameClass() {
     if (arguments.length === 1) {
@@ -107,21 +125,6 @@ export default class Point extends Geometry {
       filter.filter(this)
     }
   }
-  getBoundary() {
-    return this.getFactory().createGeometryCollection()
-  }
-  getGeometryType() {
-    return Geometry.TYPENAME_POINT
-  }
-  getCoordinateSequence() {
-    return this._coordinates
-  }
-  getY() {
-    if (this.getCoordinate() === null) 
-      throw new IllegalStateException('getY called on empty Point')
-    
-    return this.getCoordinate().y
-  }
   isEmpty() {
     return this._coordinates.size() === 0
   }
@@ -131,9 +134,6 @@ export default class Point extends Geometry {
     
     Assert.isTrue(coordinates.size() <= 1)
     this._coordinates = coordinates
-  }
-  isSimple() {
-    return true
   }
   get interfaces_() {
     return [Puntal]

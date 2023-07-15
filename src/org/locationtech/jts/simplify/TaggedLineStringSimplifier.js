@@ -78,6 +78,21 @@ export default class TaggedLineStringSimplifier {
     }
     return false
   }
+  hasInteriorIntersection(seg0, seg1) {
+    this._li.computeIntersection(seg0.p0, seg0.p1, seg1.p0, seg1.p1)
+    return this._li.isInteriorIntersection()
+  }
+  hasBadInputIntersection(parentLine, sectionIndex, candidateSeg) {
+    const querySegs = this._inputIndex.query(candidateSeg)
+    for (let i = querySegs.iterator(); i.hasNext(); ) {
+      const querySeg = i.next()
+      if (this.hasInteriorIntersection(querySeg, candidateSeg)) {
+        if (TaggedLineStringSimplifier.isInLineSection(parentLine, sectionIndex, querySeg)) continue
+        return true
+      }
+    }
+    return false
+  }
   findFurthestPoint(pts, i, j, maxDistance) {
     const seg = new LineSegment()
     seg.p0 = pts[i]
@@ -105,20 +120,5 @@ export default class TaggedLineStringSimplifier {
       const seg = line.getSegment(i)
       this._inputIndex.remove(seg)
     }
-  }
-  hasInteriorIntersection(seg0, seg1) {
-    this._li.computeIntersection(seg0.p0, seg0.p1, seg1.p0, seg1.p1)
-    return this._li.isInteriorIntersection()
-  }
-  hasBadInputIntersection(parentLine, sectionIndex, candidateSeg) {
-    const querySegs = this._inputIndex.query(candidateSeg)
-    for (let i = querySegs.iterator(); i.hasNext(); ) {
-      const querySeg = i.next()
-      if (this.hasInteriorIntersection(querySeg, candidateSeg)) {
-        if (TaggedLineStringSimplifier.isInLineSection(parentLine, sectionIndex, querySeg)) continue
-        return true
-      }
-    }
-    return false
   }
 }

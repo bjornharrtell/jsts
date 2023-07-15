@@ -16,34 +16,6 @@ export default class MonotoneChain {
     this._end = end
     this._context = context
   }
-  getLineSegment(index, ls) {
-    ls.p0 = this._pts[index]
-    ls.p1 = this._pts[index + 1]
-  }
-  computeSelect(searchEnv, start0, end0, mcs) {
-    const p0 = this._pts[start0]
-    const p1 = this._pts[end0]
-    if (end0 - start0 === 1) {
-      mcs.select(this, start0)
-      return null
-    }
-    if (!searchEnv.intersects(p0, p1)) return null
-    const mid = Math.trunc((start0 + end0) / 2)
-    if (start0 < mid) 
-      this.computeSelect(searchEnv, start0, mid, mcs)
-    
-    if (mid < end0) 
-      this.computeSelect(searchEnv, mid, end0, mcs)
-    
-  }
-  getCoordinates() {
-    const coord = new Array(this._end - this._start + 1).fill(null)
-    let index = 0
-    for (let i = this._start; i <= this._end; i++) 
-      coord[index++] = this._pts[i]
-    
-    return coord
-  }
   computeOverlaps() {
     if (arguments.length === 2) {
       const mc = arguments[0], mco = arguments[1]
@@ -95,5 +67,33 @@ export default class MonotoneChain {
   }
   getId() {
     return this._id
+  }
+  getLineSegment(index, ls) {
+    ls.p0 = this._pts[index]
+    ls.p1 = this._pts[index + 1]
+  }
+  computeSelect(searchEnv, start0, end0, mcs) {
+    const p0 = this._pts[start0]
+    const p1 = this._pts[end0]
+    if (end0 - start0 === 1) {
+      mcs.select(this, start0)
+      return null
+    }
+    if (!searchEnv.intersects(p0, p1)) return null
+    const mid = Math.trunc((start0 + end0) / 2)
+    if (start0 < mid) 
+      this.computeSelect(searchEnv, start0, mid, mcs)
+    
+    if (mid < end0) 
+      this.computeSelect(searchEnv, mid, end0, mcs)
+    
+  }
+  getCoordinates() {
+    const coord = new Array(this._end - this._start + 1).fill(null)
+    let index = 0
+    for (let i = this._start; i <= this._end; i++) 
+      coord[index++] = this._pts[i]
+    
+    return coord
   }
 }

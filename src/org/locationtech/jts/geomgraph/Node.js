@@ -27,10 +27,6 @@ export default class Node extends GraphComponent {
   getCoordinate() {
     return this._coord
   }
-  print(out) {
-    out.println('node ' + this._coord + ' lbl: ' + this._label)
-  }
-  computeIM(im) {}
   computeMergedLocation(label2, eltIndex) {
     let loc = Location.NONE
     loc = this._label.getLocation(eltIndex)
@@ -88,4 +84,8 @@ export default class Node extends GraphComponent {
     }
     this._label.setLocation(argIndex, newLoc)
   }
+  print(out) {
+    out.println('node ' + this._coord + ' lbl: ' + this._label)
+  }
+  computeIM(im) {}
 }

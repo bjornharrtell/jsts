@@ -13,27 +13,17 @@ export default class AxisPlaneCoordinateSequence {
     this._seq = seq
     this._indexMap = indexMap
   }
-  static projectToYZ(seq) {
-    return new AxisPlaneCoordinateSequence(seq, AxisPlaneCoordinateSequence.YZ_INDEX)
-  }
   static projectToXZ(seq) {
     return new AxisPlaneCoordinateSequence(seq, AxisPlaneCoordinateSequence.XZ_INDEX)
+  }
+  static projectToYZ(seq) {
+    return new AxisPlaneCoordinateSequence(seq, AxisPlaneCoordinateSequence.YZ_INDEX)
   }
   static projectToXY(seq) {
     return new AxisPlaneCoordinateSequence(seq, AxisPlaneCoordinateSequence.XY_INDEX)
   }
   setOrdinate(index, ordinateIndex, value) {
     throw new UnsupportedOperationException()
-  }
-  getZ(index) {
-    return this.getOrdinate(index, CoordinateSequence.Z)
-  }
-  size() {
-    return this._seq.size()
-  }
-  getOrdinate(index, ordinateIndex) {
-    if (ordinateIndex > 1) return 0
-    return this._seq.getOrdinate(index, this._indexMap[ordinateIndex])
   }
   getCoordinate() {
     if (arguments.length === 1) {
@@ -72,6 +62,16 @@ export default class AxisPlaneCoordinateSequence {
   }
   toCoordinateArray() {
     throw new UnsupportedOperationException()
+  }
+  getZ(index) {
+    return this.getOrdinate(index, CoordinateSequence.Z)
+  }
+  size() {
+    return this._seq.size()
+  }
+  getOrdinate(index, ordinateIndex) {
+    if (ordinateIndex > 1) return 0
+    return this._seq.getOrdinate(index, this._indexMap[ordinateIndex])
   }
   get interfaces_() {
     return [CoordinateSequence]

@@ -19,10 +19,10 @@ export default class SweepLineInterval {
   getMin() {
     return this._min
   }
-  getItem() {
-    return this._item
-  }
   getMax() {
     return this._max
+  }
+  getItem() {
+    return this._item
   }
 }

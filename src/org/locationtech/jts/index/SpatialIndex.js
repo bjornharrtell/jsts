@@ -1,6 +1,4 @@
 export default class SpatialIndex {
-  insert(itemEnv, item) {}
-  remove(itemEnv, item) {}
   query() {
     if (arguments.length === 1) {
       const searchEnv = arguments[0]
@@ -8,4 +6,6 @@ export default class SpatialIndex {
       const searchEnv = arguments[0], visitor = arguments[1]
     }
   }
+  insert(itemEnv, item) {}
+  remove(itemEnv, item) {}
 }

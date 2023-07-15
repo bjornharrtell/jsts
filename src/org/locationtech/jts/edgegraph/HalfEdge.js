@@ -1,9 +1,9 @@
 import WKTWriter from '../io/WKTWriter.js'
 import Coordinate from '../geom/Coordinate.js'
 import Orientation from '../algorithm/Orientation.js'
+import StringBuilder from '../../../../java/lang/StringBuilder.js'
 import Quadrant from '../geomgraph/Quadrant.js'
 import Assert from '../util/Assert.js'
-import StringBuilder from '../../../../java/lang/StringBuilder.js'
 export default class HalfEdge {
   constructor() {
     HalfEdge.constructor_.apply(this, arguments)
@@ -20,6 +20,57 @@ export default class HalfEdge {
     const e1 = new HalfEdge(p1)
     e0.link(e1)
     return e0
+  }
+  oNext() {
+    return this._sym._next
+  }
+  directionY() {
+    return this.directionPt().getY() - this._orig.getY()
+  }
+  equals() {
+    if (arguments.length === 2 && (arguments[1] instanceof Coordinate && arguments[0] instanceof Coordinate)) {
+      const p0 = arguments[0], p1 = arguments[1]
+      return this._orig.equals2D(p0) && this._sym._orig.equals(p1)
+    }
+  }
+  findLowest() {
+    let lowest = this
+    let e = this.oNext()
+    do {
+      if (e.compareTo(lowest) < 0) lowest = e
+      e = e.oNext()
+    } while (e !== this)
+    return lowest
+  }
+  compareTo(obj) {
+    const e = obj
+    const comp = this.compareAngularDirection(e)
+    return comp
+  }
+  toStringNode() {
+    const orig = this.orig()
+    const dest = this.dest()
+    const sb = new StringBuilder()
+    sb.append('Node( ' + WKTWriter.format(orig) + ' )' + '\n')
+    let e = this
+    do {
+      sb.append('  -> ' + e)
+      sb.append('\n')
+      e = e.oNext()
+    } while (e !== this)
+    return sb.toString()
+  }
+  link(sym) {
+    this.setSym(sym)
+    sym.setSym(this)
+    this.setNext(sym)
+    sym.setNext(this)
+  }
+  orig() {
+    return this._orig
+  }
+  setNext(e) {
+    this._next = e
   }
   find(dest) {
     let oNext = this
@@ -47,12 +98,6 @@ export default class HalfEdge {
     } while (e !== lowest)
     return true
   }
-  oNext() {
-    return this._sym._next
-  }
-  directionY() {
-    return this.directionPt().getY() - this._orig.getY()
-  }
   insert(eAdd) {
     if (this.oNext() === this) {
       this.insertAfter(eAdd)
@@ -75,21 +120,6 @@ export default class HalfEdge {
       e = e.oNext()
     } while (e !== this)
     return degree
-  }
-  equals() {
-    if (arguments.length === 2 && (arguments[1] instanceof Coordinate && arguments[0] instanceof Coordinate)) {
-      const p0 = arguments[0], p1 = arguments[1]
-      return this._orig.equals2D(p0) && this._sym._orig.equals(p1)
-    }
-  }
-  findLowest() {
-    let lowest = this
-    let e = this.oNext()
-    do {
-      if (e.compareTo(lowest) < 0) lowest = e
-      e = e.oNext()
-    } while (e !== this)
-    return lowest
   }
   directionPt() {
     return this.dest()
@@ -140,46 +170,16 @@ export default class HalfEdge {
     Assert.shouldNeverReachHere()
     return null
   }
-  compareTo(obj) {
-    const e = obj
-    const comp = this.compareAngularDirection(e)
-    return comp
-  }
-  toStringNode() {
-    const orig = this.orig()
-    const dest = this.dest()
-    const sb = new StringBuilder()
-    sb.append('Node( ' + WKTWriter.format(orig) + ' )' + '\n')
-    let e = this
-    do {
-      sb.append('  -> ' + e)
-      sb.append('\n')
-      e = e.oNext()
-    } while (e !== this)
-    return sb.toString()
-  }
-  link(sym) {
-    this.setSym(sym)
-    sym.setSym(this)
-    this.setNext(sym)
-    sym.setNext(this)
-  }
   next() {
     return this._next
   }
   setSym(e) {
     this._sym = e
   }
-  orig() {
-    return this._orig
-  }
   toString() {
     return 'HE(' + this._orig.x + ' ' + this._orig.y + ', ' + this._sym._orig.x + ' ' + this._sym._orig.y + ')'
   }
   toStringNodeEdge() {
     return '  -> (' + WKTWriter.format(this.dest())
-  }
-  setNext(e) {
-    this._next = e
   }
 }

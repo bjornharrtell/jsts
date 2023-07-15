@@ -11,9 +11,6 @@ export default class LineStringExtracter {
     const comps = arguments[0]
     this._comps = comps
   }
-  static getGeometry(geom) {
-    return geom.getFactory().buildGeometry(LineStringExtracter.getLines(geom))
-  }
   static getLines() {
     if (arguments.length === 1) {
       const geom = arguments[0]
@@ -27,6 +24,9 @@ export default class LineStringExtracter {
       
       return lines
     }
+  }
+  static getGeometry(geom) {
+    return geom.getFactory().buildGeometry(LineStringExtracter.getLines(geom))
   }
   filter(geom) {
     if (geom instanceof LineString) this._comps.add(geom)

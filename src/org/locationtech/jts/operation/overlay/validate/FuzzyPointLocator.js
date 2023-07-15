@@ -1,10 +1,10 @@
-import PointLocator from '../../../algorithm/PointLocator.js'
-import Location from '../../../geom/Location.js'
 import GeometryFactory from '../../../geom/GeometryFactory.js'
 import Polygon from '../../../geom/Polygon.js'
 import LineSegment from '../../../geom/LineSegment.js'
 import ArrayList from '../../../../../../java/util/ArrayList.js'
 import GeometryFilter from '../../../geom/GeometryFilter.js'
+import PointLocator from '../../../algorithm/PointLocator.js'
+import Location from '../../../geom/Location.js'
 export default class FuzzyPointLocator {
   constructor() {
     FuzzyPointLocator.constructor_.apply(this, arguments)
@@ -20,6 +20,17 @@ export default class FuzzyPointLocator {
     this._boundaryDistanceTolerance = boundaryDistanceTolerance
     this._linework = this.extractLinework(g)
   }
+  extractLinework(g) {
+    const extracter = new PolygonalLineworkExtracter()
+    g.apply(extracter)
+    const linework = extracter.getLinework()
+    const lines = GeometryFactory.toLineStringArray(linework)
+    return g.getFactory().createMultiLineString(lines)
+  }
+  getLocation(pt) {
+    if (this.isWithinToleranceOfBoundary(pt)) return Location.BOUNDARY
+    return this._ptLocator.locate(pt, this._g)
+  }
   isWithinToleranceOfBoundary(pt) {
     for (let i = 0; i < this._linework.getNumGeometries(); i++) {
       const line = this._linework.getGeometryN(i)
@@ -33,17 +44,6 @@ export default class FuzzyPointLocator {
     }
     return false
   }
-  getLocation(pt) {
-    if (this.isWithinToleranceOfBoundary(pt)) return Location.BOUNDARY
-    return this._ptLocator.locate(pt, this._g)
-  }
-  extractLinework(g) {
-    const extracter = new PolygonalLineworkExtracter()
-    g.apply(extracter)
-    const linework = extracter.getLinework()
-    const lines = GeometryFactory.toLineStringArray(linework)
-    return g.getFactory().createMultiLineString(lines)
-  }
 }
 class PolygonalLineworkExtracter {
   constructor() {
@@ -53,9 +53,6 @@ class PolygonalLineworkExtracter {
     this._linework = null
     this._linework = new ArrayList()
   }
-  getLinework() {
-    return this._linework
-  }
   filter(g) {
     if (g instanceof Polygon) {
       const poly = g
@@ -64,6 +61,9 @@ class PolygonalLineworkExtracter {
         this._linework.add(poly.getInteriorRingN(i))
       
     }
+  }
+  getLinework() {
+    return this._linework
   }
   get interfaces_() {
     return [GeometryFilter]

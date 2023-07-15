@@ -46,9 +46,6 @@ class HotPixelSnapAction extends MonotoneChainSelectAction {
     this._parentEdge = parentEdge
     this._hotPixelVertexIndex = hotPixelVertexIndex
   }
-  isNodeAdded() {
-    return this._isNodeAdded
-  }
   select() {
     if (arguments.length === 2 && (Number.isInteger(arguments[1]) && arguments[0] instanceof MonotoneChain)) {
       const mc = arguments[0], startIndex = arguments[1]
@@ -60,6 +57,9 @@ class HotPixelSnapAction extends MonotoneChainSelectAction {
     } else {
       return super.select.apply(this, arguments)
     }
+  }
+  isNodeAdded() {
+    return this._isNodeAdded
   }
 }
 MCIndexPointSnapper.HotPixelSnapAction = HotPixelSnapAction

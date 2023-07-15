@@ -1,16 +1,16 @@
 import GeometryFactory from '../../geom/GeometryFactory.js'
 import SpatialIndex from '../SpatialIndex.js'
 import Double from '../../../../../java/lang/Double.js'
-import Integer from '../../../../../java/lang/Integer.js'
-import HilbertEncoder from './HilbertEncoder.js'
 import Collections from '../../../../../java/util/Collections.js'
 import System from '../../../../../java/lang/System.js'
-import ArrayList from '../../../../../java/util/ArrayList.js'
-import Comparator from '../../../../../java/util/Comparator.js'
 import Item from './Item.js'
 import ArrayListVisitor from '../ArrayListVisitor.js'
 import Envelope from '../../geom/Envelope.js'
 import IllegalStateException from '../../../../../java/lang/IllegalStateException.js'
+import Integer from '../../../../../java/lang/Integer.js'
+import HilbertEncoder from './HilbertEncoder.js'
+import ArrayList from '../../../../../java/util/ArrayList.js'
+import Comparator from '../../../../../java/util/Comparator.js'
 export default class HPRtree {
   constructor() {
     HPRtree.constructor_.apply(this, arguments)
@@ -93,38 +93,6 @@ export default class HPRtree {
     const isBeyond = env.getMaxX() < this._nodeBounds[nodeIndex] || env.getMaxY() < this._nodeBounds[nodeIndex + 1] || env.getMinX() > this._nodeBounds[nodeIndex + 2] || env.getMinY() > this._nodeBounds[nodeIndex + 3]
     return !isBeyond
   }
-  query() {
-    if (arguments.length === 1) {
-      const searchEnv = arguments[0]
-      this.build()
-      if (!this._totalExtent.intersects(searchEnv)) return new ArrayList()
-      const visitor = new ArrayListVisitor()
-      this.query(searchEnv, visitor)
-      return visitor.getItems()
-    } else if (arguments.length === 2) {
-      const searchEnv = arguments[0], visitor = arguments[1]
-      this.build()
-      if (!this._totalExtent.intersects(searchEnv)) return null
-      if (this._layerStartIndex === null) 
-        this.queryItems(0, searchEnv, visitor)
-      else 
-        this.queryTopLayer(searchEnv, visitor)
-      
-    }
-  }
-  build() {
-    if (this._isBuilt) return null
-    this._isBuilt = true
-    if (this._items.size() <= this._nodeCapacity) return null
-    this.sortItems()
-    this._layerStartIndex = HPRtree.computeLayerIndices(this._items.size(), this._nodeCapacity)
-    const nodeCount = Math.trunc(this._layerStartIndex[this._layerStartIndex.length - 1] / 4)
-    this._nodeBounds = HPRtree.createBoundsArray(nodeCount)
-    this.computeLeafNodes(this._layerStartIndex[1])
-    for (let i = 1; i < this._layerStartIndex.length - 1; i++) 
-      this.computeLayerNodes(i)
-    
-  }
   getNodeEnvelope(i) {
     return new Envelope(this._nodeBounds[i], this._nodeBounds[i + 1], this._nodeBounds[i + 2], this._nodeBounds[i + 3])
   }
@@ -200,6 +168,38 @@ export default class HPRtree {
     const layerStart = this._layerStartIndex[layerIndex]
     const layerEnd = this._layerStartIndex[layerIndex + 1]
     return layerEnd - layerStart
+  }
+  query() {
+    if (arguments.length === 1) {
+      const searchEnv = arguments[0]
+      this.build()
+      if (!this._totalExtent.intersects(searchEnv)) return new ArrayList()
+      const visitor = new ArrayListVisitor()
+      this.query(searchEnv, visitor)
+      return visitor.getItems()
+    } else if (arguments.length === 2) {
+      const searchEnv = arguments[0], visitor = arguments[1]
+      this.build()
+      if (!this._totalExtent.intersects(searchEnv)) return null
+      if (this._layerStartIndex === null) 
+        this.queryItems(0, searchEnv, visitor)
+      else 
+        this.queryTopLayer(searchEnv, visitor)
+      
+    }
+  }
+  build() {
+    if (this._isBuilt) return null
+    this._isBuilt = true
+    if (this._items.size() <= this._nodeCapacity) return null
+    this.sortItems()
+    this._layerStartIndex = HPRtree.computeLayerIndices(this._items.size(), this._nodeCapacity)
+    const nodeCount = Math.trunc(this._layerStartIndex[this._layerStartIndex.length - 1] / 4)
+    this._nodeBounds = HPRtree.createBoundsArray(nodeCount)
+    this.computeLeafNodes(this._layerStartIndex[1])
+    for (let i = 1; i < this._layerStartIndex.length - 1; i++) 
+      this.computeLayerNodes(i)
+    
   }
   computeLeafNodeBounds(nodeIndex, blockStart) {
     for (let i = 0; i <= this._nodeCapacity; i++) {

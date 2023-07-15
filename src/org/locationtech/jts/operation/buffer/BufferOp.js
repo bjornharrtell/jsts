@@ -1,12 +1,12 @@
 import BufferParameters from './BufferParameters.js'
-import Geometry from '../../geom/Geometry.js'
-import BufferBuilder from './BufferBuilder.js'
 import ScaledNoder from '../../noding/ScaledNoder.js'
 import TopologyException from '../../geom/TopologyException.js'
 import MathUtil from '../../math/MathUtil.js'
 import PrecisionModel from '../../geom/PrecisionModel.js'
 import RuntimeException from '../../../../../java/lang/RuntimeException.js'
 import MCIndexSnapRounder from '../../noding/snapround/MCIndexSnapRounder.js'
+import Geometry from '../../geom/Geometry.js'
+import BufferBuilder from './BufferBuilder.js'
 export default class BufferOp {
   constructor() {
     BufferOp.constructor_.apply(this, arguments)
@@ -91,15 +91,6 @@ export default class BufferOp {
       this.bufferFixedPrecision(fixedPM)
     }
   }
-  computeGeometry() {
-    this.bufferOriginalPrecision()
-    if (this._resultGeometry !== null) return null
-    const argPM = this._argGeom.getFactory().getPrecisionModel()
-    if (argPM.getType() === PrecisionModel.FIXED) this.bufferFixedPrecision(argPM); else this.bufferReducedPrecision()
-  }
-  setQuadrantSegments(quadrantSegments) {
-    this._bufParams.setQuadrantSegments(quadrantSegments)
-  }
   bufferOriginalPrecision() {
     try {
       const bufBuilder = new BufferBuilder(this._bufParams)
@@ -117,6 +108,15 @@ export default class BufferOp {
   }
   setEndCapStyle(endCapStyle) {
     this._bufParams.setEndCapStyle(endCapStyle)
+  }
+  computeGeometry() {
+    this.bufferOriginalPrecision()
+    if (this._resultGeometry !== null) return null
+    const argPM = this._argGeom.getFactory().getPrecisionModel()
+    if (argPM.getType() === PrecisionModel.FIXED) this.bufferFixedPrecision(argPM); else this.bufferReducedPrecision()
+  }
+  setQuadrantSegments(quadrantSegments) {
+    this._bufParams.setQuadrantSegments(quadrantSegments)
   }
 }
 BufferOp.CAP_ROUND = BufferParameters.CAP_ROUND

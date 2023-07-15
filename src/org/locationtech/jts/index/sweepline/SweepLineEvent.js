@@ -19,6 +19,12 @@ export default class SweepLineEvent {
   getInterval() {
     return this.sweepInt
   }
+  isInsert() {
+    return this._insertEvent === null
+  }
+  getDeleteEventIndex() {
+    return this._deleteEventIndex
+  }
   isDelete() {
     return this._insertEvent !== null
   }
@@ -35,12 +41,6 @@ export default class SweepLineEvent {
   }
   getInsertEvent() {
     return this._insertEvent
-  }
-  isInsert() {
-    return this._insertEvent === null
-  }
-  getDeleteEventIndex() {
-    return this._deleteEventIndex
   }
   get interfaces_() {
     return [Comparable]

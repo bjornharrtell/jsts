@@ -20,42 +20,15 @@ export default class BufferResultValidator {
     this._distance = distance
     this._result = result
   }
-  static isValidMsg(g, distance, result) {
-    const validator = new BufferResultValidator(g, distance, result)
-    if (!validator.isValid()) return validator.getErrorMessage()
-    return null
-  }
   static isValid(g, distance, result) {
     const validator = new BufferResultValidator(g, distance, result)
     if (validator.isValid()) return true
     return false
   }
-  isValid() {
-    this.checkPolygonal()
-    if (!this._isValid) return this._isValid
-    this.checkExpectedEmpty()
-    if (!this._isValid) return this._isValid
-    this.checkEnvelope()
-    if (!this._isValid) return this._isValid
-    this.checkArea()
-    if (!this._isValid) return this._isValid
-    this.checkDistance()
-    return this._isValid
-  }
-  checkEnvelope() {
-    if (this._distance < 0.0) return null
-    let padding = this._distance * BufferResultValidator.MAX_ENV_DIFF_FRAC
-    if (padding === 0.0) padding = 0.001
-    const expectedEnv = new Envelope(this._input.getEnvelopeInternal())
-    expectedEnv.expandBy(this._distance)
-    const bufEnv = new Envelope(this._result.getEnvelopeInternal())
-    bufEnv.expandBy(padding)
-    if (!bufEnv.contains(expectedEnv)) {
-      this._isValid = false
-      this._errorMsg = 'Buffer envelope is incorrect'
-      this._errorIndicator = this._input.getFactory().toGeometry(bufEnv)
-    }
-    this.report('Envelope')
+  static isValidMsg(g, distance, result) {
+    const validator = new BufferResultValidator(g, distance, result)
+    if (!validator.isValid()) return validator.getErrorMessage()
+    return null
   }
   checkDistance() {
     const distValid = new BufferDistanceValidator(this._input, this._distance, this._result)
@@ -91,6 +64,40 @@ export default class BufferResultValidator {
   getErrorIndicator() {
     return this._errorIndicator
   }
+  report(checkName) {
+    if (!BufferResultValidator.VERBOSE) return null
+    System.out.println('Check ' + checkName + ': ' + (this._isValid ? 'passed' : 'FAILED'))
+  }
+  getErrorMessage() {
+    return this._errorMsg
+  }
+  isValid() {
+    this.checkPolygonal()
+    if (!this._isValid) return this._isValid
+    this.checkExpectedEmpty()
+    if (!this._isValid) return this._isValid
+    this.checkEnvelope()
+    if (!this._isValid) return this._isValid
+    this.checkArea()
+    if (!this._isValid) return this._isValid
+    this.checkDistance()
+    return this._isValid
+  }
+  checkEnvelope() {
+    if (this._distance < 0.0) return null
+    let padding = this._distance * BufferResultValidator.MAX_ENV_DIFF_FRAC
+    if (padding === 0.0) padding = 0.001
+    const expectedEnv = new Envelope(this._input.getEnvelopeInternal())
+    expectedEnv.expandBy(this._distance)
+    const bufEnv = new Envelope(this._result.getEnvelopeInternal())
+    bufEnv.expandBy(padding)
+    if (!bufEnv.contains(expectedEnv)) {
+      this._isValid = false
+      this._errorMsg = 'Buffer envelope is incorrect'
+      this._errorIndicator = this._input.getFactory().toGeometry(bufEnv)
+    }
+    this.report('Envelope')
+  }
   getErrorLocation() {
     return this._errorLocation
   }
@@ -103,13 +110,6 @@ export default class BufferResultValidator {
       this._errorIndicator = this._result
     }
     this.report('ExpectedEmpty')
-  }
-  report(checkName) {
-    if (!BufferResultValidator.VERBOSE) return null
-    System.out.println('Check ' + checkName + ': ' + (this._isValid ? 'passed' : 'FAILED'))
-  }
-  getErrorMessage() {
-    return this._errorMsg
   }
 }
 BufferResultValidator.VERBOSE = false

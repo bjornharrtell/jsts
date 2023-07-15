@@ -36,12 +36,6 @@ export default class InputExtracter {
   getFactory() {
     return this._geomFactory
   }
-  recordDimension(dim) {
-    if (dim > this._dimension) this._dimension = dim
-  }
-  getDimension() {
-    return this._dimension
-  }
   filter(geom) {
     this.recordDimension(geom.getDimension())
     if (geom instanceof GeometryCollection) 
@@ -71,6 +65,12 @@ export default class InputExtracter {
     }
     Assert.shouldNeverReachHere('Invalid dimension: ' + dim)
     return null
+  }
+  recordDimension(dim) {
+    if (dim > this._dimension) this._dimension = dim
+  }
+  getDimension() {
+    return this._dimension
   }
   isEmpty() {
     return this._polygons.isEmpty() && this._lines.isEmpty() && this._points.isEmpty()

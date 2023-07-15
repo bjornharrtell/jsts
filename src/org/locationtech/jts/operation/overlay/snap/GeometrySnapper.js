@@ -1,10 +1,10 @@
 import TreeSet from '../../../../../../java/util/TreeSet.js'
-import GeometryTransformer from '../../../geom/util/GeometryTransformer.js'
-import hasInterface from '../../../../../../hasInterface.js'
 import Double from '../../../../../../java/lang/Double.js'
 import LineStringSnapper from './LineStringSnapper.js'
 import PrecisionModel from '../../../geom/PrecisionModel.js'
 import Polygonal from '../../../geom/Polygonal.js'
+import GeometryTransformer from '../../../geom/util/GeometryTransformer.js'
+import hasInterface from '../../../../../../hasInterface.js'
 export default class GeometrySnapper {
   constructor() {
     GeometrySnapper.constructor_.apply(this, arguments)
@@ -14,13 +14,11 @@ export default class GeometrySnapper {
     const srcGeom = arguments[0]
     this._srcGeom = srcGeom
   }
-  static snap(g0, g1, snapTolerance) {
-    const snapGeom = new Array(2).fill(null)
-    const snapper0 = new GeometrySnapper(g0)
-    snapGeom[0] = snapper0.snapTo(g1, snapTolerance)
-    const snapper1 = new GeometrySnapper(g1)
-    snapGeom[1] = snapper1.snapTo(snapGeom[0], snapTolerance)
-    return snapGeom
+  static computeSizeBasedSnapTolerance(g) {
+    const env = g.getEnvelopeInternal()
+    const minDimension = Math.min(env.getHeight(), env.getWidth())
+    const snapTol = minDimension * GeometrySnapper.SNAP_PRECISION_FACTOR
+    return snapTol
   }
   static computeOverlaySnapTolerance() {
     if (arguments.length === 1) {
@@ -37,15 +35,22 @@ export default class GeometrySnapper {
       return Math.min(GeometrySnapper.computeOverlaySnapTolerance(g0), GeometrySnapper.computeOverlaySnapTolerance(g1))
     }
   }
-  static computeSizeBasedSnapTolerance(g) {
-    const env = g.getEnvelopeInternal()
-    const minDimension = Math.min(env.getHeight(), env.getWidth())
-    const snapTol = minDimension * GeometrySnapper.SNAP_PRECISION_FACTOR
-    return snapTol
-  }
   static snapToSelf(geom, snapTolerance, cleanResult) {
     const snapper0 = new GeometrySnapper(geom)
     return snapper0.snapToSelf(snapTolerance, cleanResult)
+  }
+  static snap(g0, g1, snapTolerance) {
+    const snapGeom = new Array(2).fill(null)
+    const snapper0 = new GeometrySnapper(g0)
+    snapGeom[0] = snapper0.snapTo(g1, snapTolerance)
+    const snapper1 = new GeometrySnapper(g1)
+    snapGeom[1] = snapper1.snapTo(snapGeom[0], snapTolerance)
+    return snapGeom
+  }
+  computeSnapTolerance(ringPts) {
+    const minSegLen = this.computeMinimumSegmentLength(ringPts)
+    const snapTol = minSegLen / 10
+    return snapTol
   }
   snapTo(snapGeom, snapTolerance) {
     const snapPts = this.extractTargetCoordinates(snapGeom)
@@ -61,11 +66,6 @@ export default class GeometrySnapper {
       result = snappedGeom.buffer(0)
     
     return result
-  }
-  computeSnapTolerance(ringPts) {
-    const minSegLen = this.computeMinimumSegmentLength(ringPts)
-    const snapTol = minSegLen / 10
-    return snapTol
   }
   extractTargetCoordinates(g) {
     const ptSet = new TreeSet()
@@ -105,14 +105,14 @@ class SnapTransformer extends GeometryTransformer {
       this._isSelfSnap = isSelfSnap
     }
   }
-  snapLine(srcPts, snapPts) {
-    const snapper = new LineStringSnapper(srcPts, this._snapTolerance)
-    snapper.setAllowSnappingToSourceVertices(this._isSelfSnap)
-    return snapper.snapTo(snapPts)
-  }
   transformCoordinates(coords, parent) {
     const srcPts = coords.toCoordinateArray()
     const newPts = this.snapLine(srcPts, this._snapPts)
     return this._factory.getCoordinateSequenceFactory().create(newPts)
+  }
+  snapLine(srcPts, snapPts) {
+    const snapper = new LineStringSnapper(srcPts, this._snapTolerance)
+    snapper.setAllowSnappingToSourceVertices(this._isSelfSnap)
+    return snapper.snapTo(snapPts)
   }
 }

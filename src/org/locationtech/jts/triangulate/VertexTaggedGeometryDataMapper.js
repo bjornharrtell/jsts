@@ -10,6 +10,14 @@ export default class VertexTaggedGeometryDataMapper {
   static constructor_() {
     this._coordDataMap = new TreeMap()
   }
+  transferData(targetGeom) {
+    for (let i = 0; i < targetGeom.getNumGeometries(); i++) {
+      const geom = targetGeom.getGeometryN(i)
+      const vertexKey = geom.getUserData()
+      if (vertexKey === null) continue
+      geom.setUserData(this._coordDataMap.get(vertexKey))
+    }
+  }
   loadSourceGeometries() {
     if (hasInterface(arguments[0], Collection)) {
       const geoms = arguments[0]
@@ -27,14 +35,6 @@ export default class VertexTaggedGeometryDataMapper {
   }
   getCoordinates() {
     return new ArrayList(this._coordDataMap.keySet())
-  }
-  transferData(targetGeom) {
-    for (let i = 0; i < targetGeom.getNumGeometries(); i++) {
-      const geom = targetGeom.getGeometryN(i)
-      const vertexKey = geom.getUserData()
-      if (vertexKey === null) continue
-      geom.setUserData(this._coordDataMap.get(vertexKey))
-    }
   }
   loadVertices(pts, data) {
     for (let i = 0; i < pts.length; i++) 

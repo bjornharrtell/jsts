@@ -22,13 +22,6 @@ export default class Segment {
       Segment.constructor_.call(this, new Coordinate(x1, y1, z1), new Coordinate(x2, y2, z2), data)
     }
   }
-  getLineSegment() {
-    return this._ls
-  }
-  getEndZ() {
-    const p = this._ls.getCoordinate(1)
-    return p.getZ()
-  }
   getStartZ() {
     const p = this._ls.getCoordinate(0)
     return p.getZ()
@@ -50,13 +43,6 @@ export default class Segment {
     const p = this._ls.getCoordinate(0)
     return p.x
   }
-  equalsTopo(s) {
-    return this._ls.equalsTopo(s.getLineSegment())
-  }
-  getStartY() {
-    const p = this._ls.getCoordinate(0)
-    return p.y
-  }
   setData(data) {
     this._data = data
   }
@@ -69,5 +55,19 @@ export default class Segment {
   }
   toString() {
     return this._ls.toString()
+  }
+  getLineSegment() {
+    return this._ls
+  }
+  getEndZ() {
+    const p = this._ls.getCoordinate(1)
+    return p.getZ()
+  }
+  equalsTopo(s) {
+    return this._ls.equalsTopo(s.getLineSegment())
+  }
+  getStartY() {
+    const p = this._ls.getCoordinate(0)
+    return p.y
   }
 }

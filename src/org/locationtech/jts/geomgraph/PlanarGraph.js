@@ -2,12 +2,12 @@ import Location from '../geom/Location.js'
 import Coordinate from '../geom/Coordinate.js'
 import Node from './Node.js'
 import NodeMap from './NodeMap.js'
-import Orientation from '../algorithm/Orientation.js'
-import DirectedEdge from './DirectedEdge.js'
 import System from '../../../../java/lang/System.js'
 import ArrayList from '../../../../java/util/ArrayList.js'
 import Quadrant from './Quadrant.js'
 import NodeFactory from './NodeFactory.js'
+import Orientation from '../algorithm/Orientation.js'
+import DirectedEdge from './DirectedEdge.js'
 export default class PlanarGraph {
   constructor() {
     PlanarGraph.constructor_.apply(this, arguments)
@@ -38,6 +38,43 @@ export default class PlanarGraph {
       e.eiList.print(out)
     }
   }
+  debugPrintln(o) {
+    System.out.println(o)
+  }
+  isBoundaryNode(geomIndex, coord) {
+    const node = this._nodes.find(coord)
+    if (node === null) return false
+    const label = node.getLabel()
+    if (label !== null && label.getLocation(geomIndex) === Location.BOUNDARY) return true
+    return false
+  }
+  linkAllDirectedEdges() {
+    for (let nodeit = this._nodes.iterator(); nodeit.hasNext(); ) {
+      const node = nodeit.next()
+      node.getEdges().linkAllDirectedEdges()
+    }
+  }
+  debugPrint(o) {
+    System.out.print(o)
+  }
+  findEdgeEnd(e) {
+    for (let i = this.getEdgeEnds().iterator(); i.hasNext(); ) {
+      const ee = i.next()
+      if (ee.getEdge() === e) return ee
+    }
+    return null
+  }
+  getNodes() {
+    return this._nodes.values()
+  }
+  findEdge(p0, p1) {
+    for (let i = 0; i < this._edges.size(); i++) {
+      const e = this._edges.get(i)
+      const eCoord = e.getCoordinates()
+      if (p0.equals(eCoord[0]) && p1.equals(eCoord[1])) return e
+    }
+    return null
+  }
   find(coord) {
     return this._nodes.find(coord)
   }
@@ -59,22 +96,6 @@ export default class PlanarGraph {
       node.getEdges().linkResultDirectedEdges()
     }
   }
-  debugPrintln(o) {
-    System.out.println(o)
-  }
-  isBoundaryNode(geomIndex, coord) {
-    const node = this._nodes.find(coord)
-    if (node === null) return false
-    const label = node.getLabel()
-    if (label !== null && label.getLocation(geomIndex) === Location.BOUNDARY) return true
-    return false
-  }
-  linkAllDirectedEdges() {
-    for (let nodeit = this._nodes.iterator(); nodeit.hasNext(); ) {
-      const node = nodeit.next()
-      node.getEdges().linkAllDirectedEdges()
-    }
-  }
   matchInSameDirection(p0, p1, ep0, ep1) {
     if (!p0.equals(ep0)) return false
     if (Orientation.index(p0, p1, ep1) === Orientation.COLLINEAR && Quadrant.quadrant(p0, p1) === Quadrant.quadrant(ep0, ep1)) return true
@@ -82,9 +103,6 @@ export default class PlanarGraph {
   }
   getEdgeEnds() {
     return this._edgeEndList
-  }
-  debugPrint(o) {
-    System.out.print(o)
   }
   getEdgeIterator() {
     return this._edges.iterator()
@@ -101,13 +119,6 @@ export default class PlanarGraph {
   insertEdge(e) {
     this._edges.add(e)
   }
-  findEdgeEnd(e) {
-    for (let i = this.getEdgeEnds().iterator(); i.hasNext(); ) {
-      const ee = i.next()
-      if (ee.getEdge() === e) return ee
-    }
-    return null
-  }
   addEdges(edgesToAdd) {
     for (let it = edgesToAdd.iterator(); it.hasNext(); ) {
       const e = it.next()
@@ -123,16 +134,5 @@ export default class PlanarGraph {
   add(e) {
     this._nodes.add(e)
     this._edgeEndList.add(e)
-  }
-  getNodes() {
-    return this._nodes.values()
-  }
-  findEdge(p0, p1) {
-    for (let i = 0; i < this._edges.size(); i++) {
-      const e = this._edges.get(i)
-      const eCoord = e.getCoordinates()
-      if (p0.equals(eCoord[0]) && p1.equals(eCoord[1])) return e
-    }
-    return null
   }
 }

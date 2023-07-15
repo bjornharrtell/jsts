@@ -1,8 +1,30 @@
-import Coordinate from '../geom/Coordinate.js'
-import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException.js'
 import Double from '../../../../java/lang/Double.js'
 import Vector3D from '../math/Vector3D.js'
+import Coordinate from '../geom/Coordinate.js'
+import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException.js'
 export default class CGAlgorithms3D {
+  static distancePointSegment(p, A, B) {
+    if (A.equals3D(B)) return CGAlgorithms3D.distance(p, A)
+    const len2 = (B.x - A.x) * (B.x - A.x) + (B.y - A.y) * (B.y - A.y) + (B.getZ() - A.getZ()) * (B.getZ() - A.getZ())
+    if (Double.isNaN(len2)) throw new IllegalArgumentException('Ordinates must not be NaN')
+    const r = ((p.x - A.x) * (B.x - A.x) + (p.y - A.y) * (B.y - A.y) + (p.getZ() - A.getZ()) * (B.getZ() - A.getZ())) / len2
+    if (r <= 0.0) return CGAlgorithms3D.distance(p, A)
+    if (r >= 1.0) return CGAlgorithms3D.distance(p, B)
+    const qx = A.x + r * (B.x - A.x)
+    const qy = A.y + r * (B.y - A.y)
+    const qz = A.getZ() + r * (B.getZ() - A.getZ())
+    const dx = p.x - qx
+    const dy = p.y - qy
+    const dz = p.getZ() - qz
+    return Math.sqrt(dx * dx + dy * dy + dz * dz)
+  }
+  static distance(p0, p1) {
+    if (Double.isNaN(p0.getZ()) || Double.isNaN(p1.getZ())) return p0.distance(p1)
+    const dx = p0.x - p1.x
+    const dy = p0.y - p1.y
+    const dz = p0.getZ() - p1.getZ()
+    return Math.sqrt(dx * dx + dy * dy + dz * dz)
+  }
   static distanceSegmentSegment(A, B, C, D) {
     if (A.equals3D(B)) return CGAlgorithms3D.distancePointSegment(A, C, D)
     if (C.equals3D(B)) return CGAlgorithms3D.distancePointSegment(C, A, B)
@@ -32,27 +54,5 @@ export default class CGAlgorithms3D {
     const y2 = C.y + t * (D.y - C.y)
     const z2 = C.getZ() + t * (D.getZ() - C.getZ())
     return CGAlgorithms3D.distance(new Coordinate(x1, y1, z1), new Coordinate(x2, y2, z2))
-  }
-  static distance(p0, p1) {
-    if (Double.isNaN(p0.getZ()) || Double.isNaN(p1.getZ())) return p0.distance(p1)
-    const dx = p0.x - p1.x
-    const dy = p0.y - p1.y
-    const dz = p0.getZ() - p1.getZ()
-    return Math.sqrt(dx * dx + dy * dy + dz * dz)
-  }
-  static distancePointSegment(p, A, B) {
-    if (A.equals3D(B)) return CGAlgorithms3D.distance(p, A)
-    const len2 = (B.x - A.x) * (B.x - A.x) + (B.y - A.y) * (B.y - A.y) + (B.getZ() - A.getZ()) * (B.getZ() - A.getZ())
-    if (Double.isNaN(len2)) throw new IllegalArgumentException('Ordinates must not be NaN')
-    const r = ((p.x - A.x) * (B.x - A.x) + (p.y - A.y) * (B.y - A.y) + (p.getZ() - A.getZ()) * (B.getZ() - A.getZ())) / len2
-    if (r <= 0.0) return CGAlgorithms3D.distance(p, A)
-    if (r >= 1.0) return CGAlgorithms3D.distance(p, B)
-    const qx = A.x + r * (B.x - A.x)
-    const qy = A.y + r * (B.y - A.y)
-    const qz = A.getZ() + r * (B.getZ() - A.getZ())
-    const dx = p.x - qx
-    const dy = p.y - qy
-    const dz = p.getZ() - qz
-    return Math.sqrt(dx * dx + dy * dy + dz * dz)
   }
 }

@@ -39,6 +39,19 @@ export default class RayCrossingCounter {
       return counter.getLocation()
     }
   }
+  getLocation() {
+    if (this._isPointOnSegment) return Location.BOUNDARY
+    if (this._crossingCount % 2 === 1) 
+      return Location.INTERIOR
+    
+    return Location.EXTERIOR
+  }
+  isPointInPolygon() {
+    return this.getLocation() !== Location.EXTERIOR
+  }
+  isOnSegment() {
+    return this._isPointOnSegment
+  }
   countSegment(p1, p2) {
     if (p1.x < this._p.x && p2.x < this._p.x) return null
     if (this._p.x === p2.x && this._p.y === p2.y) {
@@ -70,18 +83,5 @@ export default class RayCrossingCounter {
         this._crossingCount++
       
     }
-  }
-  isPointInPolygon() {
-    return this.getLocation() !== Location.EXTERIOR
-  }
-  getLocation() {
-    if (this._isPointOnSegment) return Location.BOUNDARY
-    if (this._crossingCount % 2 === 1) 
-      return Location.INTERIOR
-    
-    return Location.EXTERIOR
-  }
-  isOnSegment() {
-    return this._isPointOnSegment
   }
 }

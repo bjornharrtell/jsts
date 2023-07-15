@@ -37,10 +37,6 @@ export default class SierpinskiCarpetBuilder extends GeometricShapeBuilder {
     this.addHoles(n, originX, originY, width, holeList)
     return GeometryFactory.toLinearRingArray(holeList)
   }
-  createSquareHole(x, y, width) {
-    const pts = [new Coordinate(x, y), new Coordinate(x + width, y), new Coordinate(x + width, y + width), new Coordinate(x, y + width), new Coordinate(x, y)]
-    return this._geomFactory.createLinearRing(pts)
-  }
   getGeometry() {
     const level = SierpinskiCarpetBuilder.recursionLevelForSize(this._numPts)
     const baseLine = this.getSquareBaseLine()
@@ -48,5 +44,9 @@ export default class SierpinskiCarpetBuilder extends GeometricShapeBuilder {
     const holes = this.getHoles(level, origin.x, origin.y, this.getDiameter())
     const shell = this._geomFactory.toGeometry(this.getSquareExtent()).getExteriorRing()
     return this._geomFactory.createPolygon(shell, holes)
+  }
+  createSquareHole(x, y, width) {
+    const pts = [new Coordinate(x, y), new Coordinate(x + width, y), new Coordinate(x + width, y + width), new Coordinate(x, y + width), new Coordinate(x, y)]
+    return this._geomFactory.createLinearRing(pts)
   }
 }

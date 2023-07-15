@@ -13,11 +13,6 @@ export default class GeometryExtracter {
     this._geometryType = geometryType
     this._comps = comps
   }
-  static isOfType(geom, geometryType) {
-    if (geom.getGeometryType() === geometryType) return true
-    if (geometryType === Geometry.TYPENAME_LINESTRING && geom.getGeometryType() === Geometry.TYPENAME_LINEARRING) return true
-    return false
-  }
   static extract() {
     if (arguments.length === 2) {
       const geom = arguments[0], geometryType = arguments[1]
@@ -31,6 +26,11 @@ export default class GeometryExtracter {
       
       return list
     }
+  }
+  static isOfType(geom, geometryType) {
+    if (geom.getGeometryType() === geometryType) return true
+    if (geometryType === Geometry.TYPENAME_LINESTRING && geom.getGeometryType() === Geometry.TYPENAME_LINEARRING) return true
+    return false
   }
   filter(geom) {
     if (this._geometryType === null || GeometryExtracter.isOfType(geom, this._geometryType)) this._comps.add(geom)

@@ -17,18 +17,17 @@ export default class MinimumClearance {
     const geom = arguments[0]
     this._inputGeom = geom
   }
-  static getLine(g) {
-    const rp = new MinimumClearance(g)
-    return rp.getLine()
-  }
   static getDistance(g) {
     const rp = new MinimumClearance(g)
     return rp.getDistance()
   }
-  getLine() {
+  static getLine(g) {
+    const rp = new MinimumClearance(g)
+    return rp.getLine()
+  }
+  getDistance() {
     this.compute()
-    if (this._minClearancePts === null || this._minClearancePts[0] === null) return this._inputGeom.getFactory().createLineString()
-    return this._inputGeom.getFactory().createLineString(this._minClearancePts)
+    return this._minClearance
   }
   compute() {
     if (this._minClearancePts !== null) return null
@@ -43,9 +42,10 @@ export default class MinimumClearance {
     this._minClearance = mcd.distance(nearest[0], nearest[1])
     this._minClearancePts = mcd.getCoordinates()
   }
-  getDistance() {
+  getLine() {
     this.compute()
-    return this._minClearance
+    if (this._minClearancePts === null || this._minClearancePts[0] === null) return this._inputGeom.getFactory().createLineString()
+    return this._inputGeom.getFactory().createLineString(this._minClearancePts)
   }
 }
 class MinClearanceDistance {

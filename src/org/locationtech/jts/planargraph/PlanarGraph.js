@@ -27,6 +27,38 @@ export default class PlanarGraph {
   edgeIterator() {
     return this._edges.iterator()
   }
+  getEdges() {
+    return this._edges
+  }
+  nodeIterator() {
+    return this._nodeMap.iterator()
+  }
+  contains() {
+    if (arguments[0] instanceof Edge) {
+      const e = arguments[0]
+      return this._edges.contains(e)
+    } else if (arguments[0] instanceof DirectedEdge) {
+      const de = arguments[0]
+      return this._dirEdges.contains(de)
+    }
+  }
+  add() {
+    if (arguments[0] instanceof Node) {
+      const node = arguments[0]
+      this._nodeMap.add(node)
+    } else if (arguments[0] instanceof Edge) {
+      const edge = arguments[0]
+      this._edges.add(edge)
+      this.add(edge.getDirEdge(0))
+      this.add(edge.getDirEdge(1))
+    } else if (arguments[0] instanceof DirectedEdge) {
+      const dirEdge = arguments[0]
+      this._dirEdges.add(dirEdge)
+    }
+  }
+  getNodes() {
+    return this._nodeMap.values()
+  }
   remove() {
     if (arguments[0] instanceof Edge) {
       const edge = arguments[0]
@@ -60,37 +92,5 @@ export default class PlanarGraph {
   }
   findNode(pt) {
     return this._nodeMap.find(pt)
-  }
-  getEdges() {
-    return this._edges
-  }
-  nodeIterator() {
-    return this._nodeMap.iterator()
-  }
-  contains() {
-    if (arguments[0] instanceof Edge) {
-      const e = arguments[0]
-      return this._edges.contains(e)
-    } else if (arguments[0] instanceof DirectedEdge) {
-      const de = arguments[0]
-      return this._dirEdges.contains(de)
-    }
-  }
-  add() {
-    if (arguments[0] instanceof Node) {
-      const node = arguments[0]
-      this._nodeMap.add(node)
-    } else if (arguments[0] instanceof Edge) {
-      const edge = arguments[0]
-      this._edges.add(edge)
-      this.add(edge.getDirEdge(0))
-      this.add(edge.getDirEdge(1))
-    } else if (arguments[0] instanceof DirectedEdge) {
-      const dirEdge = arguments[0]
-      this._dirEdges.add(dirEdge)
-    }
-  }
-  getNodes() {
-    return this._nodeMap.values()
   }
 }

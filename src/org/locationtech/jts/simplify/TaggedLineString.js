@@ -39,12 +39,6 @@ export default class TaggedLineString {
     const resultSegsSize = this._resultSegs.size()
     return resultSegsSize === 0 ? 0 : resultSegsSize + 1
   }
-  getParent() {
-    return this._parentLine
-  }
-  getSegment(i) {
-    return this._segs[i]
-  }
   getParentCoordinates() {
     return this._parentLine.getCoordinates()
   }
@@ -67,5 +61,11 @@ export default class TaggedLineString {
   }
   getResultCoordinates() {
     return TaggedLineString.extractCoordinates(this._resultSegs)
+  }
+  getParent() {
+    return this._parentLine
+  }
+  getSegment(i) {
+    return this._segs[i]
   }
 }

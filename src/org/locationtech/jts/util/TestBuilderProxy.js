@@ -1,17 +1,6 @@
 import Geometry from '../geom/Geometry.js'
 import Exception from '../../../../java/lang/Exception.js'
 export default class TestBuilderProxy {
-  static showIndicator(geom) {
-    TestBuilderProxy.init()
-    if (TestBuilderProxy.methodShowIndicator === null) return null
-    try {
-      TestBuilderProxy.methodShowIndicator.invoke(null, geom)
-    } catch (e) {
-      if (e instanceof Exception) {} else {
-        throw e
-      }
-    } finally {}
-  }
   static init() {
     if (TestBuilderProxy.tbClass !== null) return null
     try {
@@ -20,6 +9,17 @@ export default class TestBuilderProxy {
     } catch (ex) {
       if (ex instanceof Exception) {} else {
         throw ex
+      }
+    } finally {}
+  }
+  static showIndicator(geom) {
+    TestBuilderProxy.init()
+    if (TestBuilderProxy.methodShowIndicator === null) return null
+    try {
+      TestBuilderProxy.methodShowIndicator.invoke(null, geom)
+    } catch (e) {
+      if (e instanceof Exception) {} else {
+        throw e
       }
     } finally {}
   }

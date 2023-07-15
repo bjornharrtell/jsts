@@ -25,10 +25,6 @@ export default class AffineTransformationBuilder {
     this._dest1 = dest1
     this._dest2 = dest2
   }
-  solve(b) {
-    const a = [[this._src0.x, this._src0.y, 1], [this._src1.x, this._src1.y, 1], [this._src2.x, this._src2.y, 1]]
-    return Matrix.solve(a, b)
-  }
   compute() {
     const bx = [this._dest0.x, this._dest1.x, this._dest2.x]
     const row0 = this.solve(bx)
@@ -48,5 +44,9 @@ export default class AffineTransformationBuilder {
     const isSolvable = this.compute()
     if (isSolvable) return new AffineTransformation(this._m00, this._m01, this._m02, this._m10, this._m11, this._m12)
     return null
+  }
+  solve(b) {
+    const a = [[this._src0.x, this._src0.y, 1], [this._src1.x, this._src1.y, 1], [this._src2.x, this._src2.y, 1]]
+    return Matrix.solve(a, b)
   }
 }

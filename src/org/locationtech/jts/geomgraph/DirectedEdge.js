@@ -33,21 +33,8 @@ export default class DirectedEdge extends EdgeEnd {
     if (currLocation === Location.EXTERIOR && nextLocation === Location.INTERIOR) return 1; else if (currLocation === Location.INTERIOR && nextLocation === Location.EXTERIOR) return -1
     return 0
   }
-  getNextMin() {
-    return this._nextMin
-  }
-  getDepth(position) {
-    return this._depth[position]
-  }
   setVisited(isVisited) {
     this._isVisited = isVisited
-  }
-  computeDirectedLabel() {
-    this._label = new Label(this._edge.getLabel())
-    if (!this._isForward) this._label.flip()
-  }
-  getNext() {
-    return this._next
   }
   setDepth(position, depthVal) {
     if (this._depth[position] !== -999) 
@@ -76,6 +63,32 @@ export default class DirectedEdge extends EdgeEnd {
   setMinEdgeRing(minEdgeRing) {
     this._minEdgeRing = minEdgeRing
   }
+  getSym() {
+    return this._sym
+  }
+  isForward() {
+    return this._isForward
+  }
+  setSym(de) {
+    this._sym = de
+  }
+  setVisitedEdge(isVisited) {
+    this.setVisited(isVisited)
+    this._sym.setVisited(isVisited)
+  }
+  getNextMin() {
+    return this._nextMin
+  }
+  getDepth(position) {
+    return this._depth[position]
+  }
+  computeDirectedLabel() {
+    this._label = new Label(this._edge.getLabel())
+    if (!this._isForward) this._label.flip()
+  }
+  getNext() {
+    return this._next
+  }
   isLineEdge() {
     const isLine = this._label.isLine(0) || this._label.isLine(1)
     const isExteriorIfArea0 = !this._label.isArea(0) || this._label.allPositionsEqual(0, Location.EXTERIOR)
@@ -96,12 +109,6 @@ export default class DirectedEdge extends EdgeEnd {
   setInResult(isInResult) {
     this._isInResult = isInResult
   }
-  getSym() {
-    return this._sym
-  }
-  isForward() {
-    return this._isForward
-  }
   getEdge() {
     return this._edge
   }
@@ -109,13 +116,6 @@ export default class DirectedEdge extends EdgeEnd {
     this.print(out)
     out.print(' ')
     if (this._isForward) this._edge.print(out); else this._edge.printReverse(out)
-  }
-  setSym(de) {
-    this._sym = de
-  }
-  setVisitedEdge(isVisited) {
-    this.setVisited(isVisited)
-    this._sym.setVisited(isVisited)
   }
   setEdgeDepths(position, depth) {
     let depthDelta = this.getEdge().getDepthDelta()

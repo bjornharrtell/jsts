@@ -26,11 +26,11 @@ export default class GeometryGraphOperation {
       this._arg[1] = new GeometryGraph(1, g1, boundaryNodeRule)
     }
   }
-  getArgGeometry(i) {
-    return this._arg[i].getGeometry()
-  }
   setComputationPrecision(pm) {
     this._resultPrecisionModel = pm
     this._li.setPrecisionModel(this._resultPrecisionModel)
+  }
+  getArgGeometry(i) {
+    return this._arg[i].getGeometry()
   }
 }

@@ -10,6 +10,11 @@ export default class SweepLineIndex {
     this._indexBuilt = null
     this._nOverlaps = null
   }
+  add(sweepInt) {
+    const insertEvent = new SweepLineEvent(sweepInt.getMin(), null, sweepInt)
+    this.events.add(insertEvent)
+    this.events.add(new SweepLineEvent(sweepInt.getMax(), insertEvent, sweepInt))
+  }
   computeOverlaps(action) {
     this._nOverlaps = 0
     this.buildIndex()
@@ -40,10 +45,5 @@ export default class SweepLineIndex {
       
     }
     this._indexBuilt = true
-  }
-  add(sweepInt) {
-    const insertEvent = new SweepLineEvent(sweepInt.getMin(), null, sweepInt)
-    this.events.add(insertEvent)
-    this.events.add(new SweepLineEvent(sweepInt.getMax(), insertEvent, sweepInt))
   }
 }

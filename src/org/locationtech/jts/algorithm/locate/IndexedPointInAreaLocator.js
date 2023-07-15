@@ -5,11 +5,11 @@ import PointOnGeometryLocator from './PointOnGeometryLocator.js'
 import LinearRing from '../../geom/LinearRing.js'
 import SortedPackedIntervalRTree from '../../index/intervalrtree/SortedPackedIntervalRTree.js'
 import LineSegment from '../../geom/LineSegment.js'
-import Polygonal from '../../geom/Polygonal.js'
-import ArrayList from '../../../../../java/util/ArrayList.js'
 import LinearComponentExtracter from '../../geom/util/LinearComponentExtracter.js'
 import ArrayListVisitor from '../../index/ArrayListVisitor.js'
 import RayCrossingCounter from '../RayCrossingCounter.js'
+import Polygonal from '../../geom/Polygonal.js'
+import ArrayList from '../../../../../java/util/ArrayList.js'
 export default class IndexedPointInAreaLocator {
   constructor() {
     IndexedPointInAreaLocator.constructor_.apply(this, arguments)

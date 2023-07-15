@@ -5,17 +5,6 @@ import ArrayList from '../../../../java/util/ArrayList.js'
 import LinearComponentExtracter from '../geom/util/LinearComponentExtracter.js'
 import List from '../../../../java/util/List.js'
 export default class SegmentStringUtil {
-  static toGeometry(segStrings, geomFact) {
-    const lines = new Array(segStrings.size()).fill(null)
-    let index = 0
-    for (let i = segStrings.iterator(); i.hasNext(); ) {
-      const ss = i.next()
-      const line = geomFact.createLineString(ss.getCoordinates())
-      lines[index++] = line
-    }
-    if (lines.length === 1) return lines[0]
-    return geomFact.createMultiLineString(lines)
-  }
   static extractNodedSegmentStrings(geom) {
     const segStr = new ArrayList()
     const lines = LinearComponentExtracter.getLines(geom)
@@ -26,8 +15,16 @@ export default class SegmentStringUtil {
     }
     return segStr
   }
-  static extractSegmentStrings(geom) {
-    return SegmentStringUtil.extractNodedSegmentStrings(geom)
+  static toGeometry(segStrings, geomFact) {
+    const lines = new Array(segStrings.size()).fill(null)
+    let index = 0
+    for (let i = segStrings.iterator(); i.hasNext(); ) {
+      const ss = i.next()
+      const line = geomFact.createLineString(ss.getCoordinates())
+      lines[index++] = line
+    }
+    if (lines.length === 1) return lines[0]
+    return geomFact.createMultiLineString(lines)
   }
   static toString() {
     if (arguments.length === 1 && hasInterface(arguments[0], List)) {
@@ -40,5 +37,8 @@ export default class SegmentStringUtil {
       }
       return buf.toString()
     }
+  }
+  static extractSegmentStrings(geom) {
+    return SegmentStringUtil.extractNodedSegmentStrings(geom)
   }
 }

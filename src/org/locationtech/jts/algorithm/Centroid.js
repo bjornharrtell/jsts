@@ -1,10 +1,10 @@
 import LineString from '../geom/LineString.js'
 import Geometry from '../geom/Geometry.js'
-import Coordinate from '../geom/Coordinate.js'
-import Point from '../geom/Point.js'
 import Polygon from '../geom/Polygon.js'
 import Orientation from './Orientation.js'
 import GeometryCollection from '../geom/GeometryCollection.js'
+import Coordinate from '../geom/Coordinate.js'
+import Point from '../geom/Point.js'
 export default class Centroid {
   constructor() {
     Centroid.constructor_.apply(this, arguments)
@@ -22,9 +22,6 @@ export default class Centroid {
     this._areaBasePt = null
     this.add(geom)
   }
-  static area2(p1, p2, p3) {
-    return (p2.x - p1.x) * (p3.y - p1.y) - (p3.x - p1.x) * (p2.y - p1.y)
-  }
   static centroid3(p1, p2, p3, c) {
     c.x = p1.x + p2.x + p3.x
     c.y = p1.y + p2.y + p3.y
@@ -33,6 +30,9 @@ export default class Centroid {
   static getCentroid(geom) {
     const cent = new Centroid(geom)
     return cent.getCentroid()
+  }
+  static area2(p1, p2, p3) {
+    return (p2.x - p1.x) * (p3.y - p1.y) - (p3.x - p1.x) * (p2.y - p1.y)
   }
   setAreaBasePoint(basePt) {
     this._areaBasePt = basePt
@@ -79,22 +79,6 @@ export default class Centroid {
     }
     return cent
   }
-  addShell(pts) {
-    if (pts.length > 0) this.setAreaBasePoint(pts[0])
-    const isPositiveArea = !Orientation.isCCW(pts)
-    for (let i = 0; i < pts.length - 1; i++) 
-      this.addTriangle(this._areaBasePt, pts[i], pts[i + 1], isPositiveArea)
-    
-    this.addLineSegments(pts)
-  }
-  addTriangle(p0, p1, p2, isPositiveArea) {
-    const sign = isPositiveArea ? 1.0 : -1.0
-    Centroid.centroid3(p0, p1, p2, this._triangleCent3)
-    const area2 = Centroid.area2(p0, p1, p2)
-    this._cg3.x += sign * area2 * this._triangleCent3.x
-    this._cg3.y += sign * area2 * this._triangleCent3.y
-    this._areasum2 += sign * area2
-  }
   add() {
     if (arguments[0] instanceof Polygon) {
       const poly = arguments[0]
@@ -119,5 +103,21 @@ export default class Centroid {
         
       }
     }
+  }
+  addShell(pts) {
+    if (pts.length > 0) this.setAreaBasePoint(pts[0])
+    const isPositiveArea = !Orientation.isCCW(pts)
+    for (let i = 0; i < pts.length - 1; i++) 
+      this.addTriangle(this._areaBasePt, pts[i], pts[i + 1], isPositiveArea)
+    
+    this.addLineSegments(pts)
+  }
+  addTriangle(p0, p1, p2, isPositiveArea) {
+    const sign = isPositiveArea ? 1.0 : -1.0
+    Centroid.centroid3(p0, p1, p2, this._triangleCent3)
+    const area2 = Centroid.area2(p0, p1, p2)
+    this._cg3.x += sign * area2 * this._triangleCent3.x
+    this._cg3.y += sign * area2 * this._triangleCent3.y
+    this._areasum2 += sign * area2
   }
 }

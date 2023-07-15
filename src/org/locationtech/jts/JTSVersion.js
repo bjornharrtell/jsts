@@ -3,14 +3,14 @@ export default class JTSVersion {
   static main(args) {
     System.out.println(JTSVersion.CURRENT_VERSION)
   }
-  getMajor() {
-    return JTSVersion.MAJOR
+  getMinor() {
+    return JTSVersion.MINOR
   }
   getPatch() {
     return JTSVersion.PATCH
   }
-  getMinor() {
-    return JTSVersion.MINOR
+  getMajor() {
+    return JTSVersion.MAJOR
   }
   toString() {
     const ver = JTSVersion.MAJOR + '.' + JTSVersion.MINOR + '.' + JTSVersion.PATCH

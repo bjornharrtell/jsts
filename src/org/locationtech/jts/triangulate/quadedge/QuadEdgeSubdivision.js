@@ -1,18 +1,18 @@
 import QuadEdge from './QuadEdge.js'
 import CoordinateList from '../../geom/CoordinateList.js'
-import HashSet from '../../../../../java/util/HashSet.js'
-import WKTWriter from '../../io/WKTWriter.js'
 import GeometryFactory from '../../geom/GeometryFactory.js'
-import Coordinate from '../../geom/Coordinate.js'
-import IllegalArgumentException from '../../../../../java/lang/IllegalArgumentException.js'
 import Stack from '../../../../../java/util/Stack.js'
 import LastFoundQuadEdgeLocator from './LastFoundQuadEdgeLocator.js'
 import LocateFailureException from './LocateFailureException.js'
 import Vertex from './Vertex.js'
-import System from '../../../../../java/lang/System.js'
-import LineSegment from '../../geom/LineSegment.js'
 import ArrayList from '../../../../../java/util/ArrayList.js'
 import Envelope from '../../geom/Envelope.js'
+import HashSet from '../../../../../java/util/HashSet.js'
+import WKTWriter from '../../io/WKTWriter.js'
+import Coordinate from '../../geom/Coordinate.js'
+import IllegalArgumentException from '../../../../../java/lang/IllegalArgumentException.js'
+import System from '../../../../../java/lang/System.js'
+import LineSegment from '../../geom/LineSegment.js'
 import Triangle from '../../geom/Triangle.js'
 import TriangleVisitor from './TriangleVisitor.js'
 export default class QuadEdgeSubdivision {
@@ -65,6 +65,91 @@ export default class QuadEdgeSubdivision {
     this._quadEdges.add(q)
     return q
   }
+  visitTriangles(triVisitor, includeFrame) {
+    this._visitedKey++
+    const edgeStack = new Stack()
+    edgeStack.push(this._startingEdge)
+    const visitedEdges = new HashSet()
+    while (!edgeStack.empty()) {
+      const edge = edgeStack.pop()
+      if (!visitedEdges.contains(edge)) {
+        const triEdges = this.fetchTriangleToVisit(edge, edgeStack, includeFrame, visitedEdges)
+        if (triEdges !== null) triVisitor.visit(triEdges)
+      }
+    }
+  }
+  isFrameEdge(e) {
+    if (this.isFrameVertex(e.orig()) || this.isFrameVertex(e.dest())) return true
+    return false
+  }
+  isOnEdge(e, p) {
+    this._seg.setCoordinates(e.orig().getCoordinate(), e.dest().getCoordinate())
+    const dist = this._seg.distance(p)
+    return dist < this._edgeCoincidenceTolerance
+  }
+  getEnvelope() {
+    return new Envelope(this._frameEnv)
+  }
+  getVertexUniqueEdges(includeFrame) {
+    const edges = new ArrayList()
+    const visitedVertices = new HashSet()
+    for (let i = this._quadEdges.iterator(); i.hasNext(); ) {
+      const qe = i.next()
+      const v = qe.orig()
+      if (!visitedVertices.contains(v)) {
+        visitedVertices.add(v)
+        if (includeFrame || !this.isFrameVertex(v)) 
+          edges.add(qe)
+        
+      }
+      const qd = qe.sym()
+      const vd = qd.orig()
+      if (!visitedVertices.contains(vd)) {
+        visitedVertices.add(vd)
+        if (includeFrame || !this.isFrameVertex(vd)) 
+          edges.add(qd)
+        
+      }
+    }
+    return edges
+  }
+  locateFromEdge(v, startEdge) {
+    let iter = 0
+    const maxIter = this._quadEdges.size()
+    let e = startEdge
+    while (true) {
+      iter++
+      if (iter > maxIter) 
+        throw new LocateFailureException(e.toLineSegment())
+      
+      if (v.equals(e.orig()) || v.equals(e.dest())) 
+        break
+      else if (v.rightOf(e)) 
+        e = e.sym()
+      else if (!v.rightOf(e.oNext())) 
+        e = e.oNext()
+      else if (!v.rightOf(e.dPrev())) 
+        e = e.dPrev()
+      else 
+        break
+      
+    }
+    return e
+  }
+  getVoronoiDiagram(geomFact) {
+    const vorCells = this.getVoronoiCellPolygons(geomFact)
+    return geomFact.createGeometryCollection(GeometryFactory.toGeometryArray(vorCells))
+  }
+  getTriangles(geomFact) {
+    const triPtsList = this.getTriangleCoordinates(false)
+    const tris = new Array(triPtsList.size()).fill(null)
+    let i = 0
+    for (let it = triPtsList.iterator(); it.hasNext(); ) {
+      const triPt = it.next()
+      tris[i++] = geomFact.createPolygon(geomFact.createLinearRing(triPt))
+    }
+    return geomFact.createGeometryCollection(tris)
+  }
   getVoronoiCellPolygon(qe, geomFact) {
     const cellPts = new ArrayList()
     const startQE = qe
@@ -113,31 +198,6 @@ export default class QuadEdgeSubdivision {
     const q = QuadEdge.makeEdge(o, d)
     this._quadEdges.add(q)
     return q
-  }
-  visitTriangles(triVisitor, includeFrame) {
-    this._visitedKey++
-    const edgeStack = new Stack()
-    edgeStack.push(this._startingEdge)
-    const visitedEdges = new HashSet()
-    while (!edgeStack.empty()) {
-      const edge = edgeStack.pop()
-      if (!visitedEdges.contains(edge)) {
-        const triEdges = this.fetchTriangleToVisit(edge, edgeStack, includeFrame, visitedEdges)
-        if (triEdges !== null) triVisitor.visit(triEdges)
-      }
-    }
-  }
-  isFrameEdge(e) {
-    if (this.isFrameVertex(e.orig()) || this.isFrameVertex(e.dest())) return true
-    return false
-  }
-  isOnEdge(e, p) {
-    this._seg.setCoordinates(e.orig().getCoordinate(), e.dest().getCoordinate())
-    const dist = this._seg.distance(p)
-    return dist < this._edgeCoincidenceTolerance
-  }
-  getEnvelope() {
-    return new Envelope(this._frameEnv)
   }
   createFrame(env) {
     const deltaX = env.getWidth()
@@ -201,29 +261,6 @@ export default class QuadEdgeSubdivision {
       return geomFact.createMultiLineString(edges)
     }
   }
-  getVertexUniqueEdges(includeFrame) {
-    const edges = new ArrayList()
-    const visitedVertices = new HashSet()
-    for (let i = this._quadEdges.iterator(); i.hasNext(); ) {
-      const qe = i.next()
-      const v = qe.orig()
-      if (!visitedVertices.contains(v)) {
-        visitedVertices.add(v)
-        if (includeFrame || !this.isFrameVertex(v)) 
-          edges.add(qe)
-        
-      }
-      const qd = qe.sym()
-      const vd = qd.orig()
-      if (!visitedVertices.contains(vd)) {
-        visitedVertices.add(vd)
-        if (includeFrame || !this.isFrameVertex(vd)) 
-          edges.add(qd)
-        
-      }
-    }
-    return edges
-  }
   getTriangleEdges(includeFrame) {
     const visitor = new TriangleEdgesListVisitor()
     this.visitTriangles(visitor, includeFrame)
@@ -263,29 +300,6 @@ export default class QuadEdgeSubdivision {
     eRot.delete()
     eRotSym.delete()
   }
-  locateFromEdge(v, startEdge) {
-    let iter = 0
-    const maxIter = this._quadEdges.size()
-    let e = startEdge
-    while (true) {
-      iter++
-      if (iter > maxIter) 
-        throw new LocateFailureException(e.toLineSegment())
-      
-      if (v.equals(e.orig()) || v.equals(e.dest())) 
-        break
-      else if (v.rightOf(e)) 
-        e = e.sym()
-      else if (!v.rightOf(e.oNext())) 
-        e = e.oNext()
-      else if (!v.rightOf(e.dPrev())) 
-        e = e.dPrev()
-      else 
-        break
-      
-    }
-    return e
-  }
   getTolerance() {
     return this._tolerance
   }
@@ -298,20 +312,6 @@ export default class QuadEdgeSubdivision {
       cells.add(this.getVoronoiCellPolygon(qe, geomFact))
     }
     return cells
-  }
-  getVoronoiDiagram(geomFact) {
-    const vorCells = this.getVoronoiCellPolygons(geomFact)
-    return geomFact.createGeometryCollection(GeometryFactory.toGeometryArray(vorCells))
-  }
-  getTriangles(geomFact) {
-    const triPtsList = this.getTriangleCoordinates(false)
-    const tris = new Array(triPtsList.size()).fill(null)
-    let i = 0
-    for (let it = triPtsList.iterator(); it.hasNext(); ) {
-      const triPt = it.next()
-      tris[i++] = geomFact.createPolygon(geomFact.createLinearRing(triPt))
-    }
-    return geomFact.createGeometryCollection(tris)
   }
   insertSite(v) {
     let e = this.locate(v)
@@ -390,11 +390,11 @@ class TriangleVertexListVisitor {
   static constructor_() {
     this._triList = new ArrayList()
   }
-  visit(triEdges) {
-    this._triList.add([triEdges[0].orig(), triEdges[1].orig(), triEdges[2].orig()])
-  }
   getTriangleVertices() {
     return this._triList
+  }
+  visit(triEdges) {
+    this._triList.add([triEdges[0].orig(), triEdges[1].orig(), triEdges[2].orig()])
   }
   get interfaces_() {
     return [TriangleVisitor]

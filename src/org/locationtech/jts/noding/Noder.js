@@ -1,4 +1,4 @@
 export default class Noder {
-  computeNodes(segStrings) {}
   getNodedSubstrings() {}
+  computeNodes(segStrings) {}
 }

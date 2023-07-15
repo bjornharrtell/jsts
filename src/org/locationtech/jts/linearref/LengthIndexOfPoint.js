@@ -19,8 +19,11 @@ export default class LengthIndexOfPoint {
     const locater = new LengthIndexOfPoint(linearGeom)
     return locater.indexOfAfter(inputPt, minIndex)
   }
-  indexOf(inputPt) {
-    return this.indexOfFromStart(inputPt, -1.0)
+  segmentNearestMeasure(seg, inputPt, segmentStartMeasure) {
+    const projFactor = seg.projectionFactor(inputPt)
+    if (projFactor <= 0.0) return segmentStartMeasure
+    if (projFactor <= 1.0) return segmentStartMeasure + projFactor * seg.getLength()
+    return segmentStartMeasure + seg.getLength()
   }
   indexOfFromStart(inputPt, minIndex) {
     let minDistance = Double.MAX_VALUE
@@ -44,6 +47,9 @@ export default class LengthIndexOfPoint {
     }
     return ptMeasure
   }
+  indexOf(inputPt) {
+    return this.indexOfFromStart(inputPt, -1.0)
+  }
   indexOfAfter(inputPt, minIndex) {
     if (minIndex < 0.0) return this.indexOf(inputPt)
     const endIndex = this._linearGeom.getLength()
@@ -51,11 +57,5 @@ export default class LengthIndexOfPoint {
     const closestAfter = this.indexOfFromStart(inputPt, minIndex)
     Assert.isTrue(closestAfter >= minIndex, 'computed index is before specified minimum index')
     return closestAfter
-  }
-  segmentNearestMeasure(seg, inputPt, segmentStartMeasure) {
-    const projFactor = seg.projectionFactor(inputPt)
-    if (projFactor <= 0.0) return segmentStartMeasure
-    if (projFactor <= 1.0) return segmentStartMeasure + projFactor * seg.getLength()
-    return segmentStartMeasure + seg.getLength()
   }
 }

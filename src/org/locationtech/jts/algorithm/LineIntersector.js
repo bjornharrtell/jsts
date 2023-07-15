@@ -21,6 +21,13 @@ export default class LineIntersector {
     this._pb = this._intPt[1]
     this._result = 0
   }
+  static nonRobustComputeEdgeDistance(p, p1, p2) {
+    const dx = p.x - p1.x
+    const dy = p.y - p1.y
+    const dist = Math.sqrt(dx * dx + dy * dy)
+    Assert.isTrue(!(dist === 0.0 && !p.equals(p1)), 'Invalid distance calculation')
+    return dist
+  }
   static computeEdgeDistance(p, p0, p1) {
     const dx = Math.abs(p1.x - p0.x)
     const dy = Math.abs(p1.y - p0.y)
@@ -39,24 +46,6 @@ export default class LineIntersector {
     }
     Assert.isTrue(!(dist === 0.0 && !p.equals(p0)), 'Bad distance calculation')
     return dist
-  }
-  static nonRobustComputeEdgeDistance(p, p1, p2) {
-    const dx = p.x - p1.x
-    const dy = p.y - p1.y
-    const dist = Math.sqrt(dx * dx + dy * dy)
-    Assert.isTrue(!(dist === 0.0 && !p.equals(p1)), 'Invalid distance calculation')
-    return dist
-  }
-  getIndexAlongSegment(segmentIndex, intIndex) {
-    this.computeIntLineIndex()
-    return this._intLineIndex[segmentIndex][intIndex]
-  }
-  getTopologySummary() {
-    const catBuilder = new StringBuilder()
-    if (this.isEndPoint()) catBuilder.append(' endpoint')
-    if (this._isProper) catBuilder.append(' proper')
-    if (this.isCollinear()) catBuilder.append(' collinear')
-    return catBuilder.toString()
   }
   computeIntersection(p1, p2, p3, p4) {
     this._inputLines[0][0] = p1
@@ -88,12 +77,6 @@ export default class LineIntersector {
       }
     }
   }
-  isProper() {
-    return this.hasIntersection() && this._isProper
-  }
-  setPrecisionModel(precisionModel) {
-    this._precisionModel = precisionModel
-  }
   isInteriorIntersection() {
     if (arguments.length === 0) {
       if (this.isInteriorIntersection(0)) return true
@@ -112,12 +95,6 @@ export default class LineIntersector {
   getIntersection(intIndex) {
     return this._intPt[intIndex]
   }
-  isEndPoint() {
-    return this.hasIntersection() && !this._isProper
-  }
-  hasIntersection() {
-    return this._result !== LineIntersector.NO_INTERSECTION
-  }
   getEdgeDistance(segmentIndex, intIndex) {
     const dist = LineIntersector.computeEdgeDistance(this._intPt[intIndex], this._inputLines[segmentIndex][0], this._inputLines[segmentIndex][1])
     return dist
@@ -130,6 +107,29 @@ export default class LineIntersector {
   }
   getEndpoint(segmentIndex, ptIndex) {
     return this._inputLines[segmentIndex][ptIndex]
+  }
+  getIndexAlongSegment(segmentIndex, intIndex) {
+    this.computeIntLineIndex()
+    return this._intLineIndex[segmentIndex][intIndex]
+  }
+  getTopologySummary() {
+    const catBuilder = new StringBuilder()
+    if (this.isEndPoint()) catBuilder.append(' endpoint')
+    if (this._isProper) catBuilder.append(' proper')
+    if (this.isCollinear()) catBuilder.append(' collinear')
+    return catBuilder.toString()
+  }
+  isProper() {
+    return this.hasIntersection() && this._isProper
+  }
+  setPrecisionModel(precisionModel) {
+    this._precisionModel = precisionModel
+  }
+  isEndPoint() {
+    return this.hasIntersection() && !this._isProper
+  }
+  hasIntersection() {
+    return this._result !== LineIntersector.NO_INTERSECTION
   }
   isIntersection(pt) {
     for (let i = 0; i < this._result; i++) 

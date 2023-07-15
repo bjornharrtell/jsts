@@ -1,13 +1,13 @@
 import LineString from '../../geom/LineString.js'
 import Geometry from '../../geom/Geometry.js'
+import GeometryLocation from '../distance/GeometryLocation.js'
+import Double from '../../../../../java/lang/Double.js'
+import LineSegment from '../../geom/LineSegment.js'
 import Coordinate from '../../geom/Coordinate.js'
 import IllegalArgumentException from '../../../../../java/lang/IllegalArgumentException.js'
 import Point from '../../geom/Point.js'
 import PlanarPolygon3D from './PlanarPolygon3D.js'
 import Polygon from '../../geom/Polygon.js'
-import GeometryLocation from '../distance/GeometryLocation.js'
-import Double from '../../../../../java/lang/Double.js'
-import LineSegment from '../../geom/LineSegment.js'
 import GeometryCollection from '../../geom/GeometryCollection.js'
 import CGAlgorithms3D from '../../algorithm/CGAlgorithms3D.js'
 export default class Distance3DOp {
@@ -179,6 +179,20 @@ export default class Distance3DOp {
     const nearestPts = [this._minDistanceLocation[0].getCoordinate(), this._minDistanceLocation[1].getCoordinate()]
     return nearestPts
   }
+  computeMinDistancePolygonLine(poly, line, flip) {
+    const intPt = this.intersection(poly, line)
+    if (intPt !== null) {
+      this.updateDistance(0, new GeometryLocation(poly.getPolygon(), 0, intPt), new GeometryLocation(line, 0, intPt), flip)
+      return null
+    }
+    this.computeMinDistanceLineLine(poly.getPolygon().getExteriorRing(), line, flip)
+    if (this._isDone) return null
+    const nHole = poly.getPolygon().getNumInteriorRing()
+    for (let i = 0; i < nHole; i++) {
+      this.computeMinDistanceLineLine(poly.getPolygon().getInteriorRingN(i), line, flip)
+      if (this._isDone) return null
+    }
+  }
   computeMinDistance() {
     if (arguments.length === 0) {
       if (this._minDistanceLocation !== null) return null
@@ -248,20 +262,6 @@ export default class Distance3DOp {
         if (this._isDone) return null
       }
     
-  }
-  computeMinDistancePolygonLine(poly, line, flip) {
-    const intPt = this.intersection(poly, line)
-    if (intPt !== null) {
-      this.updateDistance(0, new GeometryLocation(poly.getPolygon(), 0, intPt), new GeometryLocation(line, 0, intPt), flip)
-      return null
-    }
-    this.computeMinDistanceLineLine(poly.getPolygon().getExteriorRing(), line, flip)
-    if (this._isDone) return null
-    const nHole = poly.getPolygon().getNumInteriorRing()
-    for (let i = 0; i < nHole; i++) {
-      this.computeMinDistanceLineLine(poly.getPolygon().getInteriorRingN(i), line, flip)
-      if (this._isDone) return null
-    }
   }
   distance() {
     if (this._geom[0] === null || this._geom[1] === null) throw new IllegalArgumentException('null geometries are not supported')

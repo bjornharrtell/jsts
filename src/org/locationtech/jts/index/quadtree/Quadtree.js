@@ -1,9 +1,9 @@
 import Root from './Root.js'
 import SpatialIndex from '../SpatialIndex.js'
 import ArrayList from '../../../../../java/util/ArrayList.js'
+import Envelope from '../../geom/Envelope.js'
 import ArrayListVisitor from '../ArrayListVisitor.js'
 import Serializable from '../../../../../java/io/Serializable.js'
-import Envelope from '../../geom/Envelope.js'
 export default class Quadtree {
   constructor() {
     Quadtree.constructor_.apply(this, arguments)

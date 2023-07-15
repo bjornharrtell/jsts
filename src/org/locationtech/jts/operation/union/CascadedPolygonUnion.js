@@ -2,12 +2,12 @@ import PolygonExtracter from '../../geom/util/PolygonExtracter.js'
 import OverlapUnion from './OverlapUnion.js'
 import STRtree from '../../index/strtree/STRtree.js'
 import Geometry from '../../geom/Geometry.js'
+import List from '../../../../../java/util/List.js'
+import IllegalStateException from '../../../../../java/lang/IllegalStateException.js'
 import hasInterface from '../../../../../hasInterface.js'
 import GeometryFactory from '../../geom/GeometryFactory.js'
 import Polygonal from '../../geom/Polygonal.js'
 import ArrayList from '../../../../../java/util/ArrayList.js'
-import List from '../../../../../java/util/List.js'
-import IllegalStateException from '../../../../../java/lang/IllegalStateException.js'
 export default class CascadedPolygonUnion {
   constructor() {
     CascadedPolygonUnion.constructor_.apply(this, arguments)
@@ -19,14 +19,6 @@ export default class CascadedPolygonUnion {
     this._inputPolys = polys
     if (this._inputPolys === null) this._inputPolys = new ArrayList()
   }
-  static restrictToPolygons(g) {
-    if (hasInterface(g, Polygonal)) 
-      return g
-    
-    const polygons = PolygonExtracter.getPolygons(g)
-    if (polygons.size() === 1) return polygons.get(0)
-    return g.getFactory().createMultiPolygon(GeometryFactory.toPolygonArray(polygons))
-  }
   static getGeometry(list, index) {
     if (index >= list.size()) return null
     return list.get(index)
@@ -34,6 +26,14 @@ export default class CascadedPolygonUnion {
   static union(polys) {
     const op = new CascadedPolygonUnion(polys)
     return op.union()
+  }
+  static restrictToPolygons(g) {
+    if (hasInterface(g, Polygonal)) 
+      return g
+    
+    const polygons = PolygonExtracter.getPolygons(g)
+    if (polygons.size() === 1) return polygons.get(0)
+    return g.getFactory().createMultiPolygon(GeometryFactory.toPolygonArray(polygons))
   }
   reduceToGeometries(geomTree) {
     const geoms = new ArrayList()

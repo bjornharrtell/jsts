@@ -9,13 +9,13 @@ export default class Item {
     this._env = env
     this._item = item
   }
-  getEnvelope() {
-    return this._env
-  }
   getItem() {
     return this._item
   }
   toString() {
     return 'Item: ' + this._env.toString()
+  }
+  getEnvelope() {
+    return this._env
   }
 }

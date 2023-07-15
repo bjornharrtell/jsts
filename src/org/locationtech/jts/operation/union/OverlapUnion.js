@@ -1,10 +1,11 @@
 import HashSet from '../../../../../java/util/HashSet.js'
 import UnionOp from './UnionOp.js'
 import TopologyException from '../../geom/TopologyException.js'
-import GeometryCombiner from '../../geom/util/GeometryCombiner.js'
 import LineSegment from '../../geom/LineSegment.js'
 import ArrayList from '../../../../../java/util/ArrayList.js'
 import CoordinateSequenceFilter from '../../geom/CoordinateSequenceFilter.js'
+import BufferOp from '../buffer/BufferOp.js'
+import GeometryCombiner from '../../geom/util/GeometryCombiner.js'
 export default class OverlapUnion {
   constructor() {
     OverlapUnion.constructor_.apply(this, arguments)
@@ -68,7 +69,7 @@ export default class OverlapUnion {
   static unionBuffer(g0, g1) {
     const factory = g0.getFactory()
     const gColl = factory.createGeometryCollection([g0, g1])
-    const union = gColl.buffer(0.0)
+    const union = BufferOp.bufferOp(gColl, 0.0)
     return union
   }
   isBorderSegmentsSame(result, env) {
@@ -76,6 +77,35 @@ export default class OverlapUnion {
     const segsAfter = new ArrayList()
     OverlapUnion.extractBorderSegments(result, env, segsAfter)
     return this.isEqual(segsBefore, segsAfter)
+  }
+  union() {
+    const overlapEnv = OverlapUnion.overlapEnvelope(this._g0, this._g1)
+    if (overlapEnv.isNull()) {
+      const g0Copy = this._g0.copy()
+      const g1Copy = this._g1.copy()
+      return GeometryCombiner.combine(g0Copy, g1Copy)
+    }
+    const disjointPolys = new ArrayList()
+    const g0Overlap = this.extractByEnvelope(overlapEnv, this._g0, disjointPolys)
+    const g1Overlap = this.extractByEnvelope(overlapEnv, this._g1, disjointPolys)
+    const unionGeom = this.unionFull(g0Overlap, g1Overlap)
+    let result = null
+    this._isUnionSafe = this.isBorderSegmentsSame(unionGeom, overlapEnv)
+    if (!this._isUnionSafe) 
+      result = this.unionFull(this._g0, this._g1)
+    else 
+      result = this.combine(unionGeom, disjointPolys)
+    
+    return result
+  }
+  extractBorderSegments(geom0, geom1, env) {
+    const segs = new ArrayList()
+    OverlapUnion.extractBorderSegments(geom0, env, segs)
+    if (geom1 !== null) OverlapUnion.extractBorderSegments(geom1, env, segs)
+    return segs
+  }
+  isUnionOptimized() {
+    return this._isUnionSafe
   }
   extractByEnvelope(env, geom, disjointGeoms) {
     const intersectingGeoms = new ArrayList()
@@ -100,26 +130,6 @@ export default class OverlapUnion {
     
     return true
   }
-  union() {
-    const overlapEnv = OverlapUnion.overlapEnvelope(this._g0, this._g1)
-    if (overlapEnv.isNull()) {
-      const g0Copy = this._g0.copy()
-      const g1Copy = this._g1.copy()
-      return GeometryCombiner.combine(g0Copy, g1Copy)
-    }
-    const disjointPolys = new ArrayList()
-    const g0Overlap = this.extractByEnvelope(overlapEnv, this._g0, disjointPolys)
-    const g1Overlap = this.extractByEnvelope(overlapEnv, this._g1, disjointPolys)
-    const unionGeom = this.unionFull(g0Overlap, g1Overlap)
-    let result = null
-    this._isUnionSafe = this.isBorderSegmentsSame(unionGeom, overlapEnv)
-    if (!this._isUnionSafe) 
-      result = this.unionFull(this._g0, this._g1)
-    else 
-      result = this.combine(unionGeom, disjointPolys)
-    
-    return result
-  }
   combine(unionGeom, disjointPolys) {
     if (disjointPolys.size() <= 0) return unionGeom
     disjointPolys.add(unionGeom)
@@ -134,14 +144,5 @@ export default class OverlapUnion {
         return OverlapUnion.unionBuffer(geom0, geom1)
       else throw ex
     } finally {}
-  }
-  extractBorderSegments(geom0, geom1, env) {
-    const segs = new ArrayList()
-    OverlapUnion.extractBorderSegments(geom0, env, segs)
-    if (geom1 !== null) OverlapUnion.extractBorderSegments(geom1, env, segs)
-    return segs
-  }
-  isUnionOptimized() {
-    return this._isUnionSafe
   }
 }

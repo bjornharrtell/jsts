@@ -16,17 +16,20 @@ export default class MinimumBoundingCircle {
     const geom = arguments[0]
     this._input = geom
   }
-  static farthestPoints(pts) {
-    const dist01 = pts[0].distance(pts[1])
-    const dist12 = pts[1].distance(pts[2])
-    const dist20 = pts[2].distance(pts[0])
-    if (dist01 >= dist12 && dist01 >= dist20) 
-      return [pts[0], pts[1]]
-    
-    if (dist12 >= dist01 && dist12 >= dist20) 
-      return [pts[1], pts[2]]
-    
-    return [pts[2], pts[0]]
+  static pointWithMinAngleWithSegment(pts, P, Q) {
+    let minAng = Double.MAX_VALUE
+    let minAngPt = null
+    for (let i = 0; i < pts.length; i++) {
+      const p = pts[i]
+      if (p === P) continue
+      if (p === Q) continue
+      const ang = Angle.angleBetween(P, p, Q)
+      if (ang < minAng) {
+        minAng = ang
+        minAngPt = p
+      }
+    }
+    return minAngPt
   }
   static pointWitMinAngleWithX(pts, P) {
     let minSin = Double.MAX_VALUE
@@ -53,20 +56,17 @@ export default class MinimumBoundingCircle {
     
     return min
   }
-  static pointWithMinAngleWithSegment(pts, P, Q) {
-    let minAng = Double.MAX_VALUE
-    let minAngPt = null
-    for (let i = 0; i < pts.length; i++) {
-      const p = pts[i]
-      if (p === P) continue
-      if (p === Q) continue
-      const ang = Angle.angleBetween(P, p, Q)
-      if (ang < minAng) {
-        minAng = ang
-        minAngPt = p
-      }
-    }
-    return minAngPt
+  static farthestPoints(pts) {
+    const dist01 = pts[0].distance(pts[1])
+    const dist12 = pts[1].distance(pts[2])
+    const dist20 = pts[2].distance(pts[0])
+    if (dist01 >= dist12 && dist01 >= dist20) 
+      return [pts[0], pts[1]]
+    
+    if (dist12 >= dist01 && dist12 >= dist20) 
+      return [pts[1], pts[2]]
+    
+    return [pts[2], pts[0]]
   }
   getRadius() {
     this.compute()

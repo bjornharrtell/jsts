@@ -61,15 +61,24 @@ export default class DirectedEdge extends GraphComponent {
   getAngle() {
     return this._angle
   }
+  getSym() {
+    return this._sym
+  }
+  getEdge() {
+    return this._parentEdge
+  }
+  getToNode() {
+    return this._to
+  }
+  getEdgeDirection() {
+    return this._edgeDirection
+  }
   compareTo(obj) {
     const de = obj
     return this.compareDirection(de)
   }
   getFromNode() {
     return this._from
-  }
-  getSym() {
-    return this._sym
   }
   setEdge(parentEdge) {
     this._parentEdge = parentEdge
@@ -78,20 +87,11 @@ export default class DirectedEdge extends GraphComponent {
     this._sym = null
     this._parentEdge = null
   }
-  getEdge() {
-    return this._parentEdge
-  }
   getQuadrant() {
     return this._quadrant
   }
   setSym(sym) {
     this._sym = sym
-  }
-  getToNode() {
-    return this._to
-  }
-  getEdgeDirection() {
-    return this._edgeDirection
   }
   get interfaces_() {
     return [Comparable]

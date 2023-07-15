@@ -11,6 +11,9 @@ export default class SweepLineSegment {
     this.ptIndex = ptIndex
     this.pts = edge.getCoordinates()
   }
+  computeIntersections(ss, si) {
+    si.addIntersections(this.edge, this.ptIndex, ss.edge, ss.ptIndex)
+  }
   getMaxX() {
     const x1 = this.pts[this.ptIndex].x
     const x2 = this.pts[this.ptIndex + 1].x
@@ -20,8 +23,5 @@ export default class SweepLineSegment {
     const x1 = this.pts[this.ptIndex].x
     const x2 = this.pts[this.ptIndex + 1].x
     return x1 < x2 ? x1 : x2
-  }
-  computeIntersections(ss, si) {
-    si.addIntersections(this.edge, this.ptIndex, ss.edge, ss.ptIndex)
   }
 }

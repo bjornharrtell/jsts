@@ -12,24 +12,9 @@ export default class OffsetPointGenerator {
     const g = arguments[0]
     this._g = g
   }
-  extractPoints(line, offsetDistance, offsetPts) {
-    const pts = line.getCoordinates()
-    for (let i = 0; i < pts.length - 1; i++) 
-      this.computeOffsetPoints(pts[i], pts[i + 1], offsetDistance, offsetPts)
-    
-  }
   setSidesToGenerate(doLeft, doRight) {
     this._doLeft = doLeft
     this._doRight = doRight
-  }
-  getPoints(offsetDistance) {
-    const offsetPts = new ArrayList()
-    const lines = LinearComponentExtracter.getLines(this._g)
-    for (let i = lines.iterator(); i.hasNext(); ) {
-      const line = i.next()
-      this.extractPoints(line, offsetDistance, offsetPts)
-    }
-    return offsetPts
   }
   computeOffsetPoints(p0, p1, offsetDistance, offsetPts) {
     const dx = p1.x - p0.x
@@ -47,5 +32,20 @@ export default class OffsetPointGenerator {
       const offsetRight = new Coordinate(midX + uy, midY - ux)
       offsetPts.add(offsetRight)
     }
+  }
+  extractPoints(line, offsetDistance, offsetPts) {
+    const pts = line.getCoordinates()
+    for (let i = 0; i < pts.length - 1; i++) 
+      this.computeOffsetPoints(pts[i], pts[i + 1], offsetDistance, offsetPts)
+    
+  }
+  getPoints(offsetDistance) {
+    const offsetPts = new ArrayList()
+    const lines = LinearComponentExtracter.getLines(this._g)
+    for (let i = lines.iterator(); i.hasNext(); ) {
+      const line = i.next()
+      this.extractPoints(line, offsetDistance, offsetPts)
+    }
+    return offsetPts
   }
 }

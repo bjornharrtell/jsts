@@ -41,6 +41,12 @@ export default class CoordinateList extends ArrayList {
     
     return clone
   }
+  closeRing() {
+    if (this.size() > 0) {
+      const duplicate = this.get(0).copy()
+      this.add(duplicate, false)
+    }
+  }
   toCoordinateArray() {
     if (arguments.length === 0) {
       return this.toArray(CoordinateList.coordArrayType)
@@ -118,12 +124,6 @@ export default class CoordinateList extends ArrayList {
         this.add(coord[i], allowRepeated)
       
       return true
-    }
-  }
-  closeRing() {
-    if (this.size() > 0) {
-      const duplicate = this.get(0).copy()
-      this.add(duplicate, false)
     }
   }
 }

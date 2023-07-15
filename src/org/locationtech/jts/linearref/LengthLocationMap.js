@@ -9,10 +9,6 @@ export default class LengthLocationMap {
     const linearGeom = arguments[0]
     this._linearGeom = linearGeom
   }
-  static getLength(linearGeom, loc) {
-    const locater = new LengthLocationMap(linearGeom)
-    return locater.getLength(loc)
-  }
   static getLocation() {
     if (arguments.length === 2) {
       const linearGeom = arguments[0], length = arguments[1]
@@ -24,31 +20,9 @@ export default class LengthLocationMap {
       return locater.getLocation(length, resolveLower)
     }
   }
-  getLength(loc) {
-    let totalLength = 0.0
-    const it = new LinearIterator(this._linearGeom)
-    while (it.hasNext()) {
-      if (!it.isEndOfLine()) {
-        const p0 = it.getSegmentStart()
-        const p1 = it.getSegmentEnd()
-        const segLen = p1.distance(p0)
-        if (loc.getComponentIndex() === it.getComponentIndex() && loc.getSegmentIndex() === it.getVertexIndex()) 
-          return totalLength + segLen * loc.getSegmentFraction()
-        
-        totalLength += segLen
-      }
-      it.next()
-    }
-    return totalLength
-  }
-  resolveHigher(loc) {
-    if (!loc.isEndpoint(this._linearGeom)) return loc
-    let compIndex = loc.getComponentIndex()
-    if (compIndex >= this._linearGeom.getNumGeometries() - 1) return loc
-    do 
-      compIndex++
-    while (compIndex < this._linearGeom.getNumGeometries() - 1 && this._linearGeom.getGeometryN(compIndex).getLength() === 0)
-    return new LinearLocation(compIndex, 0, 0.0)
+  static getLength(linearGeom, loc) {
+    const locater = new LengthLocationMap(linearGeom)
+    return locater.getLength(loc)
   }
   getLocation() {
     if (arguments.length === 1) {
@@ -94,5 +68,31 @@ export default class LengthLocationMap {
       it.next()
     }
     return LinearLocation.getEndLocation(this._linearGeom)
+  }
+  getLength(loc) {
+    let totalLength = 0.0
+    const it = new LinearIterator(this._linearGeom)
+    while (it.hasNext()) {
+      if (!it.isEndOfLine()) {
+        const p0 = it.getSegmentStart()
+        const p1 = it.getSegmentEnd()
+        const segLen = p1.distance(p0)
+        if (loc.getComponentIndex() === it.getComponentIndex() && loc.getSegmentIndex() === it.getVertexIndex()) 
+          return totalLength + segLen * loc.getSegmentFraction()
+        
+        totalLength += segLen
+      }
+      it.next()
+    }
+    return totalLength
+  }
+  resolveHigher(loc) {
+    if (!loc.isEndpoint(this._linearGeom)) return loc
+    let compIndex = loc.getComponentIndex()
+    if (compIndex >= this._linearGeom.getNumGeometries() - 1) return loc
+    do 
+      compIndex++
+    while (compIndex < this._linearGeom.getNumGeometries() - 1 && this._linearGeom.getGeometryN(compIndex).getLength() === 0)
+    return new LinearLocation(compIndex, 0, 0.0)
   }
 }

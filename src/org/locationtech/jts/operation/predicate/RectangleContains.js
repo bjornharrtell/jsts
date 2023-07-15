@@ -1,7 +1,7 @@
 import LineString from '../../geom/LineString.js'
+import Polygon from '../../geom/Polygon.js'
 import Coordinate from '../../geom/Coordinate.js'
 import Point from '../../geom/Point.js'
-import Polygon from '../../geom/Polygon.js'
 export default class RectangleContains {
   constructor() {
     RectangleContains.constructor_.apply(this, arguments)

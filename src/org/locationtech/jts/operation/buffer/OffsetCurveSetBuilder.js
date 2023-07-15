@@ -2,20 +2,20 @@ import Location from '../../geom/Location.js'
 import LineString from '../../geom/LineString.js'
 import Position from '../../geomgraph/Position.js'
 import Point from '../../geom/Point.js'
-import NodedSegmentString from '../../noding/NodedSegmentString.js'
-import Polygon from '../../geom/Polygon.js'
-import MultiPoint from '../../geom/MultiPoint.js'
 import LinearRing from '../../geom/LinearRing.js'
 import Orientation from '../../algorithm/Orientation.js'
 import MultiPolygon from '../../geom/MultiPolygon.js'
 import Label from '../../geomgraph/Label.js'
-import GeometryCollection from '../../geom/GeometryCollection.js'
-import UnsupportedOperationException from '../../../../../java/lang/UnsupportedOperationException.js'
 import CoordinateArrays from '../../geom/CoordinateArrays.js'
 import ArrayList from '../../../../../java/util/ArrayList.js'
 import Distance from '../../algorithm/Distance.js'
 import MultiLineString from '../../geom/MultiLineString.js'
 import Triangle from '../../geom/Triangle.js'
+import NodedSegmentString from '../../noding/NodedSegmentString.js'
+import Polygon from '../../geom/Polygon.js'
+import MultiPoint from '../../geom/MultiPoint.js'
+import GeometryCollection from '../../geom/GeometryCollection.js'
+import UnsupportedOperationException from '../../../../../java/lang/UnsupportedOperationException.js'
 export default class OffsetCurveSetBuilder {
   constructor() {
     OffsetCurveSetBuilder.constructor_.apply(this, arguments)
@@ -87,6 +87,10 @@ export default class OffsetCurveSetBuilder {
       this.addCurve(curve, Location.EXTERIOR, Location.INTERIOR)
     }
   }
+  add(g) {
+    if (g.isEmpty()) return null
+    if (g instanceof Polygon) this.addPolygon(g); else if (g instanceof LineString) this.addLineString(g); else if (g instanceof Point) this.addPoint(g); else if (g instanceof MultiPoint) this.addCollection(g); else if (g instanceof MultiLineString) this.addCollection(g); else if (g instanceof MultiPolygon) this.addCollection(g); else if (g instanceof GeometryCollection) this.addCollection(g); else throw new UnsupportedOperationException(g.getGeometryType())
+  }
   addCurve(coord, leftLoc, rightLoc) {
     if (coord === null || coord.length < 2) return null
     const e = new NodedSegmentString(coord, new Label(0, Location.BOUNDARY, leftLoc, rightLoc))
@@ -95,10 +99,6 @@ export default class OffsetCurveSetBuilder {
   getCurves() {
     this.add(this._inputGeom)
     return this._curveList
-  }
-  add(g) {
-    if (g.isEmpty()) return null
-    if (g instanceof Polygon) this.addPolygon(g); else if (g instanceof LineString) this.addLineString(g); else if (g instanceof Point) this.addPoint(g); else if (g instanceof MultiPoint) this.addCollection(g); else if (g instanceof MultiLineString) this.addCollection(g); else if (g instanceof MultiPolygon) this.addCollection(g); else if (g instanceof GeometryCollection) this.addCollection(g); else throw new UnsupportedOperationException(g.getGeometryType())
   }
   isErodedCompletely(ring, bufferDistance) {
     const ringCoord = ring.getCoordinates()

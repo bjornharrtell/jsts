@@ -67,12 +67,6 @@ export default class NodingIntersectionFinder {
     finder.setInteriorIntersectionsOnly(true)
     return finder
   }
-  setCheckEndSegmentsOnly(isCheckEndSegmentsOnly) {
-    this._isCheckEndSegmentsOnly = isCheckEndSegmentsOnly
-  }
-  getIntersectionSegments() {
-    return this._intSegments
-  }
   count() {
     return this._intersectionCount
   }
@@ -132,6 +126,12 @@ export default class NodingIntersectionFinder {
   }
   setInteriorIntersectionsOnly(isInteriorIntersectionsOnly) {
     this._isInteriorIntersectionsOnly = isInteriorIntersectionsOnly
+  }
+  setCheckEndSegmentsOnly(isCheckEndSegmentsOnly) {
+    this._isCheckEndSegmentsOnly = isCheckEndSegmentsOnly
+  }
+  getIntersectionSegments() {
+    return this._intSegments
   }
   get interfaces_() {
     return [SegmentIntersector]

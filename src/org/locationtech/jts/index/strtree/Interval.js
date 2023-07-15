@@ -21,9 +21,6 @@ export default class Interval {
     this._min = Math.min(this._min, other._min)
     return this
   }
-  getCentre() {
-    return (this._min + this._max) / 2
-  }
   intersects(other) {
     return !(other._min > this._max || other._max < this._min)
   }
@@ -33,5 +30,8 @@ export default class Interval {
     
     const other = o
     return this._min === other._min && this._max === other._max
+  }
+  getCentre() {
+    return (this._min + this._max) / 2
   }
 }

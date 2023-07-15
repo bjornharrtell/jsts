@@ -1,7 +1,7 @@
 import NodeBase from './NodeBase.js'
+import Key from './Key.js'
 import Envelope from '../../geom/Envelope.js'
 import Assert from '../../util/Assert.js'
-import Key from './Key.js'
 export default class Node extends NodeBase {
   constructor() {
     super()

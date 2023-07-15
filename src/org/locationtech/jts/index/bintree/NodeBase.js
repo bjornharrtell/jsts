@@ -13,15 +13,6 @@ export default class NodeBase {
     if (interval.max <= centre) subnodeIndex = 0
     return subnodeIndex
   }
-  hasChildren() {
-    for (let i = 0; i < 2; i++) 
-      if (this._subnode[i] !== null) return true
-    
-    return false
-  }
-  isPrunable() {
-    return !(this.hasChildren() || this.hasItems())
-  }
   addAllItems(items) {
     items.addAll(this._items)
     for (let i = 0; i < 2; i++) 
@@ -89,5 +80,14 @@ export default class NodeBase {
   }
   add(item) {
     this._items.add(item)
+  }
+  hasChildren() {
+    for (let i = 0; i < 2; i++) 
+      if (this._subnode[i] !== null) return true
+    
+    return false
+  }
+  isPrunable() {
+    return !(this.hasChildren() || this.hasItems())
   }
 }

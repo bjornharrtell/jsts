@@ -12,6 +12,13 @@ export default class Plane3D {
     this._normal = normal
     this._basePt = basePt
   }
+  orientedDistance(p) {
+    const pb = new Vector3D(p, this._basePt)
+    const pbdDotNormal = pb.dot(this._normal)
+    if (Double.isNaN(pbdDotNormal)) throw new IllegalArgumentException('3D Coordinate has NaN ordinate')
+    const d = pbdDotNormal / this._normal.length()
+    return d
+  }
   closestAxisPlane() {
     const xmag = Math.abs(this._normal.getX())
     const ymag = Math.abs(this._normal.getY())
@@ -22,13 +29,6 @@ export default class Plane3D {
       return Plane3D.XY_PLANE
     
     return Plane3D.XZ_PLANE
-  }
-  orientedDistance(p) {
-    const pb = new Vector3D(p, this._basePt)
-    const pbdDotNormal = pb.dot(this._normal)
-    if (Double.isNaN(pbdDotNormal)) throw new IllegalArgumentException('3D Coordinate has NaN ordinate')
-    const d = pbdDotNormal / this._normal.length()
-    return d
   }
 }
 Plane3D.XY_PLANE = 1

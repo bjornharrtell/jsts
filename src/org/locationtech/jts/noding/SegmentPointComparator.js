@@ -5,6 +5,13 @@ export default class SegmentPointComparator {
     if (x0 > x1) return 1
     return 0
   }
+  static compareValue(compareSign0, compareSign1) {
+    if (compareSign0 < 0) return -1
+    if (compareSign0 > 0) return 1
+    if (compareSign1 < 0) return -1
+    if (compareSign1 > 0) return 1
+    return 0
+  }
   static compare(octant, p0, p1) {
     if (p0.equals2D(p1)) return 0
     const xSign = SegmentPointComparator.relativeSign(p0.x, p1.x)
@@ -28,13 +35,6 @@ export default class SegmentPointComparator {
       return SegmentPointComparator.compareValue(xSign, -ySign)
     }
     Assert.shouldNeverReachHere('invalid octant value')
-    return 0
-  }
-  static compareValue(compareSign0, compareSign1) {
-    if (compareSign0 < 0) return -1
-    if (compareSign0 > 0) return 1
-    if (compareSign1 < 0) return -1
-    if (compareSign1 > 0) return 1
     return 0
   }
 }

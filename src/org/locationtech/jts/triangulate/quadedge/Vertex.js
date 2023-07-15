@@ -1,8 +1,8 @@
 import NotRepresentableException from '../../algorithm/NotRepresentableException.js'
-import Coordinate from '../../geom/Coordinate.js'
-import TrianglePredicate from './TrianglePredicate.js'
 import System from '../../../../../java/lang/System.js'
 import HCoordinate from '../../algorithm/HCoordinate.js'
+import Coordinate from '../../geom/Coordinate.js'
+import TrianglePredicate from './TrianglePredicate.js'
 export default class Vertex {
   constructor() {
     Vertex.constructor_.apply(this, arguments)
@@ -45,6 +45,80 @@ export default class Vertex {
       return z
     }
   }
+  magn() {
+    return Math.sqrt(this._p.x * this._p.x + this._p.y * this._p.y)
+  }
+  equals() {
+    if (arguments.length === 1) {
+      const _x = arguments[0]
+      if (this._p.x === _x.getX() && this._p.y === _x.getY()) 
+        return true
+      else 
+        return false
+      
+    } else if (arguments.length === 2) {
+      const _x = arguments[0], tolerance = arguments[1]
+      if (this._p.distance(_x.getCoordinate()) < tolerance) 
+        return true
+      else 
+        return false
+      
+    }
+  }
+  rightOf(e) {
+    return this.isCCW(e.dest(), e.orig())
+  }
+  isCCW(b, c) {
+    return (b._p.x - this._p.x) * (c._p.y - this._p.y) - (b._p.y - this._p.y) * (c._p.x - this._p.x) > 0
+  }
+  getX() {
+    return this._p.x
+  }
+  crossProduct(v) {
+    return this._p.x * v.getY() - this._p.y * v.getX()
+  }
+  setZ(_z) {
+    this._p.setZ(_z)
+  }
+  times(c) {
+    return new Vertex(c * this._p.x, c * this._p.y)
+  }
+  cross() {
+    return new Vertex(this._p.y, -this._p.x)
+  }
+  leftOf(e) {
+    return this.isCCW(e.orig(), e.dest())
+  }
+  getY() {
+    return this._p.y
+  }
+  classify(p0, p1) {
+    const p2 = this
+    const a = p1.sub(p0)
+    const b = p2.sub(p0)
+    const sa = a.crossProduct(b)
+    if (sa > 0.0) return Vertex.LEFT
+    if (sa < 0.0) return Vertex.RIGHT
+    if (a.getX() * b.getX() < 0.0 || a.getY() * b.getY() < 0.0) return Vertex.BEHIND
+    if (a.magn() < b.magn()) return Vertex.BEYOND
+    if (p0.equals(p2)) return Vertex.ORIGIN
+    if (p1.equals(p2)) return Vertex.DESTINATION
+    return Vertex.BETWEEN
+  }
+  circumRadiusRatio(b, c) {
+    const x = this.circleCenter(b, c)
+    const radius = this.distance(x, b)
+    let edgeLength = this.distance(this, b)
+    let el = this.distance(b, c)
+    if (el < edgeLength) 
+      edgeLength = el
+    
+    el = this.distance(c, this)
+    if (el < edgeLength) 
+      edgeLength = el
+    
+    return radius / edgeLength
+  }
   circleCenter(b, c) {
     const a = new Vertex(this.getX(), this.getY())
     const cab = this.bisector(a, b)
@@ -66,9 +140,6 @@ export default class Vertex {
   dot(v) {
     return this._p.x * v.getX() + this._p.y * v.getY()
   }
-  magn() {
-    return Math.sqrt(this._p.x * this._p.x + this._p.y * this._p.y)
-  }
   getZ() {
     return this._p.getZ()
   }
@@ -78,23 +149,6 @@ export default class Vertex {
     const l1 = new HCoordinate(a.getX() + dx / 2.0, a.getY() + dy / 2.0, 1.0)
     const l2 = new HCoordinate(a.getX() - dy + dx / 2.0, a.getY() + dx + dy / 2.0, 1.0)
     return new HCoordinate(l1, l2)
-  }
-  equals() {
-    if (arguments.length === 1) {
-      const _x = arguments[0]
-      if (this._p.x === _x.getX() && this._p.y === _x.getY()) 
-        return true
-      else 
-        return false
-      
-    } else if (arguments.length === 2) {
-      const _x = arguments[0], tolerance = arguments[1]
-      if (this._p.distance(_x.getCoordinate()) < tolerance) 
-        return true
-      else 
-        return false
-      
-    }
   }
   getCoordinate() {
     return this._p
@@ -123,71 +177,17 @@ export default class Vertex {
     const zm = (this._p.getZ() + a.getZ()) / 2.0
     return new Vertex(xm, ym, zm)
   }
-  rightOf(e) {
-    return this.isCCW(e.dest(), e.orig())
-  }
-  isCCW(b, c) {
-    return (b._p.x - this._p.x) * (c._p.y - this._p.y) - (b._p.y - this._p.y) * (c._p.x - this._p.x) > 0
-  }
-  getX() {
-    return this._p.x
-  }
-  crossProduct(v) {
-    return this._p.x * v.getY() - this._p.y * v.getX()
-  }
-  setZ(_z) {
-    this._p.setZ(_z)
-  }
-  times(c) {
-    return new Vertex(c * this._p.x, c * this._p.y)
-  }
-  cross() {
-    return new Vertex(this._p.y, -this._p.x)
-  }
-  leftOf(e) {
-    return this.isCCW(e.orig(), e.dest())
-  }
   toString() {
     return 'POINT (' + this._p.x + ' ' + this._p.y + ')'
   }
   sub(v) {
     return new Vertex(this._p.x - v.getX(), this._p.y - v.getY())
   }
-  getY() {
-    return this._p.y
-  }
-  classify(p0, p1) {
-    const p2 = this
-    const a = p1.sub(p0)
-    const b = p2.sub(p0)
-    const sa = a.crossProduct(b)
-    if (sa > 0.0) return Vertex.LEFT
-    if (sa < 0.0) return Vertex.RIGHT
-    if (a.getX() * b.getX() < 0.0 || a.getY() * b.getY() < 0.0) return Vertex.BEHIND
-    if (a.magn() < b.magn()) return Vertex.BEYOND
-    if (p0.equals(p2)) return Vertex.ORIGIN
-    if (p1.equals(p2)) return Vertex.DESTINATION
-    return Vertex.BETWEEN
-  }
   sum(v) {
     return new Vertex(this._p.x + v.getX(), this._p.y + v.getY())
   }
   distance(v1, v2) {
     return Math.sqrt(Math.pow(v2.getX() - v1.getX(), 2.0) + Math.pow(v2.getY() - v1.getY(), 2.0))
-  }
-  circumRadiusRatio(b, c) {
-    const x = this.circleCenter(b, c)
-    const radius = this.distance(x, b)
-    let edgeLength = this.distance(this, b)
-    let el = this.distance(b, c)
-    if (el < edgeLength) 
-      edgeLength = el
-    
-    el = this.distance(c, this)
-    if (el < edgeLength) 
-      edgeLength = el
-    
-    return radius / edgeLength
   }
 }
 Vertex.LEFT = 0

@@ -21,15 +21,6 @@ export default class LinearComponentExtracter {
       this._isForcedToLineString = isForcedToLineString
     }
   }
-  static getGeometry() {
-    if (arguments.length === 1) {
-      const geom = arguments[0]
-      return geom.getFactory().buildGeometry(LinearComponentExtracter.getLines(geom))
-    } else if (arguments.length === 2) {
-      const geom = arguments[0], forceToLineString = arguments[1]
-      return geom.getFactory().buildGeometry(LinearComponentExtracter.getLines(geom, forceToLineString))
-    }
-  }
   static getLines() {
     if (arguments.length === 1) {
       const geom = arguments[0]
@@ -69,6 +60,15 @@ export default class LinearComponentExtracter {
         geom.apply(new LinearComponentExtracter(lines, forceToLineString))
         return lines
       }
+    }
+  }
+  static getGeometry() {
+    if (arguments.length === 1) {
+      const geom = arguments[0]
+      return geom.getFactory().buildGeometry(LinearComponentExtracter.getLines(geom))
+    } else if (arguments.length === 2) {
+      const geom = arguments[0], forceToLineString = arguments[1]
+      return geom.getFactory().buildGeometry(LinearComponentExtracter.getLines(geom, forceToLineString))
     }
   }
   filter(geom) {

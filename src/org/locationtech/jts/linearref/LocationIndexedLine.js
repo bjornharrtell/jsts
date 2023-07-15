@@ -36,12 +36,6 @@ export default class LocationIndexedLine {
       return indexLow.getSegment(this._linearGeom).pointAlongOffset(indexLow.getSegmentFraction(), offsetDistance)
     }
   }
-  isValidIndex(index) {
-    return index.isValid(this._linearGeom)
-  }
-  getEndIndex() {
-    return LinearLocation.getEndLocation(this._linearGeom)
-  }
   getStartIndex() {
     return new LinearLocation()
   }
@@ -50,6 +44,12 @@ export default class LocationIndexedLine {
   }
   extractLine(startIndex, endIndex) {
     return ExtractLineByLocation.extract(this._linearGeom, startIndex, endIndex)
+  }
+  isValidIndex(index) {
+    return index.isValid(this._linearGeom)
+  }
+  getEndIndex() {
+    return LinearLocation.getEndLocation(this._linearGeom)
   }
   indexOf(pt) {
     return LocationIndexOfPoint.indexOf(this._linearGeom, pt)

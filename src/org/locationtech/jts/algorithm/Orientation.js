@@ -3,9 +3,6 @@ import IllegalArgumentException from '../../../../java/lang/IllegalArgumentExcep
 import CGAlgorithmsDD from './CGAlgorithmsDD.js'
 import CoordinateSequence from '../geom/CoordinateSequence.js'
 export default class Orientation {
-  static index(p1, p2, q) {
-    return CGAlgorithmsDD.orientationIndex(p1, p2, q)
-  }
   static isCCW() {
     if (arguments[0] instanceof Array) {
       const ring = arguments[0]
@@ -76,6 +73,9 @@ export default class Orientation {
       
       return isCCW
     }
+  }
+  static index(p1, p2, q) {
+    return CGAlgorithmsDD.orientationIndex(p1, p2, q)
   }
 }
 Orientation.CLOCKWISE = -1

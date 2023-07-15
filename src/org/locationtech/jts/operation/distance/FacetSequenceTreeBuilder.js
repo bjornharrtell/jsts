@@ -1,9 +1,9 @@
 import LineString from '../../geom/LineString.js'
-import FacetSequence from './FacetSequence.js'
-import STRtree from '../../index/strtree/STRtree.js'
 import Point from '../../geom/Point.js'
 import GeometryComponentFilter from '../../geom/GeometryComponentFilter.js'
 import ArrayList from '../../../../../java/util/ArrayList.js'
+import FacetSequence from './FacetSequence.js'
+import STRtree from '../../index/strtree/STRtree.js'
 export default class FacetSequenceTreeBuilder {
   static addFacetSequences(geom, pts, sections) {
     let i = 0
@@ -15,6 +15,16 @@ export default class FacetSequenceTreeBuilder {
       sections.add(sect)
       i = i + FacetSequenceTreeBuilder.FACET_SEQUENCE_SIZE
     }
+  }
+  static build(g) {
+    const tree = new STRtree(FacetSequenceTreeBuilder.STR_TREE_NODE_CAPACITY)
+    const sections = FacetSequenceTreeBuilder.computeFacetSequences(g)
+    for (let i = sections.iterator(); i.hasNext(); ) {
+      const section = i.next()
+      tree.insert(section.getEnvelope(), section)
+    }
+    tree.build()
+    return tree
   }
   static computeFacetSequences(g) {
     const sections = new ArrayList()
@@ -34,16 +44,6 @@ export default class FacetSequenceTreeBuilder {
       }
     })())
     return sections
-  }
-  static build(g) {
-    const tree = new STRtree(FacetSequenceTreeBuilder.STR_TREE_NODE_CAPACITY)
-    const sections = FacetSequenceTreeBuilder.computeFacetSequences(g)
-    for (let i = sections.iterator(); i.hasNext(); ) {
-      const section = i.next()
-      tree.insert(section.getEnvelope(), section)
-    }
-    tree.build()
-    return tree
   }
 }
 FacetSequenceTreeBuilder.FACET_SEQUENCE_SIZE = 6

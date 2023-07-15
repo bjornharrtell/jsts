@@ -80,15 +80,6 @@ export default class BufferDistanceValidator {
       this._errMsg = 'Distance between buffer curve and input is too small ' + '(' + this._minDistanceFound + ' at ' + WKTWriter.toLineString(pts[0], pts[1]) + ' )'
     }
   }
-  checkPositiveValid() {
-    const bufCurve = this._result.getBoundary()
-    this.checkMinimumDistance(this._input, bufCurve, this._minValidDistance)
-    if (!this._isValid) return null
-    this.checkMaximumDistance(this._input, bufCurve, this._maxValidDistance)
-  }
-  getErrorLocation() {
-    return this._errorLocation
-  }
   getPolygonLines(g) {
     const lines = new ArrayList()
     const lineExtracter = new LinearComponentExtracter(lines)
@@ -101,6 +92,15 @@ export default class BufferDistanceValidator {
   }
   getErrorMessage() {
     return this._errMsg
+  }
+  checkPositiveValid() {
+    const bufCurve = this._result.getBoundary()
+    this.checkMinimumDistance(this._input, bufCurve, this._minValidDistance)
+    if (!this._isValid) return null
+    this.checkMaximumDistance(this._input, bufCurve, this._maxValidDistance)
+  }
+  getErrorLocation() {
+    return this._errorLocation
   }
 }
 BufferDistanceValidator.VERBOSE = false

@@ -44,9 +44,6 @@ export default class GeometryCollectionIterator {
     }
     return obj
   }
-  remove() {
-    throw new UnsupportedOperationException(this.getClass().getName())
-  }
   hasNext() {
     if (this._atStart) 
       return true
@@ -61,6 +58,9 @@ export default class GeometryCollectionIterator {
       return false
     
     return true
+  }
+  remove() {
+    throw new UnsupportedOperationException(this.getClass().getName())
   }
   get interfaces_() {
     return [Iterator]

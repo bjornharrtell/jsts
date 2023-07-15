@@ -1,10 +1,10 @@
 import Location from '../../geom/Location.js'
 import PriorityQueue from '../../../../../java/util/PriorityQueue.js'
-import Coordinate from '../../geom/Coordinate.js'
-import IllegalArgumentException from '../../../../../java/lang/IllegalArgumentException.js'
 import Polygon from '../../geom/Polygon.js'
 import MultiPolygon from '../../geom/MultiPolygon.js'
 import Centroid from '../Centroid.js'
+import Coordinate from '../../geom/Coordinate.js'
+import IllegalArgumentException from '../../../../../java/lang/IllegalArgumentException.js'
 import Comparable from '../../../../../java/lang/Comparable.js'
 import IndexedFacetDistance from '../../operation/distance/IndexedFacetDistance.js'
 import Envelope from '../../geom/Envelope.js'
@@ -64,6 +64,32 @@ export default class MaximumInscribedCircle {
     const radiusLine = this._factory.createLineString([this._centerPt.copy(), this._radiusPt.copy()])
     return radiusLine
   }
+  createCentroidCell(geom) {
+    const p = this._factory.createPoint(Centroid.getCentroid(geom))
+    return new Cell(p.getX(), p.getY(), 0, this.distanceToBoundary(p))
+  }
+  getCenter() {
+    this.compute()
+    return this._centerPoint
+  }
+  createCell(x, y, hSide) {
+    return new Cell(x, y, hSide, this.distanceToBoundary(x, y))
+  }
+  createInitialGrid(env, cellQueue) {
+    const minX = env.getMinX()
+    const maxX = env.getMaxX()
+    const minY = env.getMinY()
+    const maxY = env.getMaxY()
+    const width = env.getWidth()
+    const height = env.getHeight()
+    const cellSize = Math.min(width, height)
+    const hSide = cellSize / 2.0
+    for (let x = minX; x < maxX; x += cellSize) 
+      for (let y = minY; y < maxY; y += cellSize) 
+        cellQueue.add(this.createCell(x + hSide, y + hSide, hSide))
+      
+    
+  }
   compute() {
     if (this._centerCell !== null) return null
     const cellQueue = new PriorityQueue()
@@ -94,32 +120,6 @@ export default class MaximumInscribedCircle {
     this.compute()
     return this._radiusPoint
   }
-  createCentroidCell(geom) {
-    const p = this._factory.createPoint(Centroid.getCentroid(geom))
-    return new Cell(p.getX(), p.getY(), 0, this.distanceToBoundary(p))
-  }
-  getCenter() {
-    this.compute()
-    return this._centerPoint
-  }
-  createCell(x, y, hSide) {
-    return new Cell(x, y, hSide, this.distanceToBoundary(x, y))
-  }
-  createInitialGrid(env, cellQueue) {
-    const minX = env.getMinX()
-    const maxX = env.getMaxX()
-    const minY = env.getMinY()
-    const maxY = env.getMaxY()
-    const width = env.getWidth()
-    const height = env.getHeight()
-    const cellSize = Math.min(width, height)
-    const hSide = cellSize / 2.0
-    for (let x = minX; x < maxX; x += cellSize) 
-      for (let y = minY; y < maxY; y += cellSize) 
-        cellQueue.add(this.createCell(x + hSide, y + hSide, hSide))
-      
-    
-  }
 }
 class Cell {
   constructor() {
@@ -144,12 +144,6 @@ class Cell {
   compareTo(o) {
     return Math.trunc(o._maxDist - this._maxDist)
   }
-  getX() {
-    return this._x
-  }
-  getMaxDistance() {
-    return this._maxDist
-  }
   getEnvelope() {
     return new Envelope(this._x - this._hSide, this._x + this._hSide, this._y - this._hSide, this._y + this._hSide)
   }
@@ -158,6 +152,12 @@ class Cell {
   }
   getY() {
     return this._y
+  }
+  getX() {
+    return this._x
+  }
+  getMaxDistance() {
+    return this._maxDist
   }
   get interfaces_() {
     return [Comparable]

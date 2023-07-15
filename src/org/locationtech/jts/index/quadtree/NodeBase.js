@@ -20,33 +20,6 @@ export default class NodeBase {
     }
     return subnodeIndex
   }
-  hasChildren() {
-    for (let i = 0; i < 4; i++) 
-      if (this._subnode[i] !== null) return true
-    
-    return false
-  }
-  isPrunable() {
-    return !(this.hasChildren() || this.hasItems())
-  }
-  addAllItems(resultItems) {
-    resultItems.addAll(this._items)
-    for (let i = 0; i < 4; i++) 
-      if (this._subnode[i] !== null) 
-        this._subnode[i].addAllItems(resultItems)
-      
-    
-    return resultItems
-  }
-  getNodeCount() {
-    let subSize = 0
-    for (let i = 0; i < 4; i++) 
-      if (this._subnode[i] !== null) 
-        subSize += this._subnode[i].size()
-      
-    
-    return subSize + 1
-  }
   size() {
     let subSize = 0
     for (let i = 0; i < 4; i++) 
@@ -110,6 +83,33 @@ export default class NodeBase {
       }
     
     return maxSubDepth + 1
+  }
+  hasChildren() {
+    for (let i = 0; i < 4; i++) 
+      if (this._subnode[i] !== null) return true
+    
+    return false
+  }
+  isPrunable() {
+    return !(this.hasChildren() || this.hasItems())
+  }
+  addAllItems(resultItems) {
+    resultItems.addAll(this._items)
+    for (let i = 0; i < 4; i++) 
+      if (this._subnode[i] !== null) 
+        this._subnode[i].addAllItems(resultItems)
+      
+    
+    return resultItems
+  }
+  getNodeCount() {
+    let subSize = 0
+    for (let i = 0; i < 4; i++) 
+      if (this._subnode[i] !== null) 
+        subSize += this._subnode[i].size()
+      
+    
+    return subSize + 1
   }
   isEmpty() {
     let isEmpty = true

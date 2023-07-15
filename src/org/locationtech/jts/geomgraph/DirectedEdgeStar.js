@@ -1,10 +1,10 @@
 import Location from '../geom/Location.js'
 import Position from './Position.js'
 import TopologyException from '../geom/TopologyException.js'
-import EdgeEndStar from './EdgeEndStar.js'
-import System from '../../../../java/lang/System.js'
 import Label from './Label.js'
 import ArrayList from '../../../../java/util/ArrayList.js'
+import EdgeEndStar from './EdgeEndStar.js'
+import System from '../../../../java/lang/System.js'
 import Quadrant from './Quadrant.js'
 import Assert from '../util/Assert.js'
 export default class DirectedEdgeStar extends EdgeEndStar {
@@ -70,27 +70,6 @@ export default class DirectedEdgeStar extends EdgeEndStar {
     }
     Assert.shouldNeverReachHere('found two horizontal edges incident on node')
     return null
-  }
-  print(out) {
-    System.out.println('DirectedEdgeStar: ' + this.getCoordinate())
-    for (let it = this.iterator(); it.hasNext(); ) {
-      const de = it.next()
-      out.print('out ')
-      de.print(out)
-      out.println()
-      out.print('in ')
-      de.getSym().print(out)
-      out.println()
-    }
-  }
-  getResultAreaEdges() {
-    if (this._resultAreaEdgeList !== null) return this._resultAreaEdgeList
-    this._resultAreaEdgeList = new ArrayList()
-    for (let it = this.iterator(); it.hasNext(); ) {
-      const de = it.next()
-      if (de.isInResult() || de.getSym().isInResult()) this._resultAreaEdgeList.add(de)
-    }
-    return this._resultAreaEdgeList
   }
   updateLabelling(nodeLabel) {
     for (let it = this.iterator(); it.hasNext(); ) {
@@ -229,5 +208,26 @@ export default class DirectedEdgeStar extends EdgeEndStar {
         if (eLoc === Location.INTERIOR || eLoc === Location.BOUNDARY) this._label.setLocation(i, Location.INTERIOR)
       }
     }
+  }
+  print(out) {
+    System.out.println('DirectedEdgeStar: ' + this.getCoordinate())
+    for (let it = this.iterator(); it.hasNext(); ) {
+      const de = it.next()
+      out.print('out ')
+      de.print(out)
+      out.println()
+      out.print('in ')
+      de.getSym().print(out)
+      out.println()
+    }
+  }
+  getResultAreaEdges() {
+    if (this._resultAreaEdgeList !== null) return this._resultAreaEdgeList
+    this._resultAreaEdgeList = new ArrayList()
+    for (let it = this.iterator(); it.hasNext(); ) {
+      const de = it.next()
+      if (de.isInResult() || de.getSym().isInResult()) this._resultAreaEdgeList.add(de)
+    }
+    return this._resultAreaEdgeList
   }
 }

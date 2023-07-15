@@ -1,7 +1,5 @@
 import Location from '../geom/Location.js'
 import LineString from '../geom/LineString.js'
-import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException.js'
-import Point from '../geom/Point.js'
 import Polygon from '../geom/Polygon.js'
 import PointLocation from './PointLocation.js'
 import BoundaryNodeRule from './BoundaryNodeRule.js'
@@ -9,6 +7,8 @@ import MultiPolygon from '../geom/MultiPolygon.js'
 import GeometryCollectionIterator from '../geom/GeometryCollectionIterator.js'
 import GeometryCollection from '../geom/GeometryCollection.js'
 import MultiLineString from '../geom/MultiLineString.js'
+import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException.js'
+import Point from '../geom/Point.js'
 export default class PointLocator {
   constructor() {
     PointLocator.constructor_.apply(this, arguments)

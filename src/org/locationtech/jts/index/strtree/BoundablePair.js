@@ -49,6 +49,19 @@ export default class BoundablePair {
   isLeaves() {
     return !(BoundablePair.isComposite(this._boundable1) || BoundablePair.isComposite(this._boundable2))
   }
+  getBoundable(i) {
+    if (i === 0) return this._boundable1
+    return this._boundable2
+  }
+  getDistance() {
+    return this._distance
+  }
+  distance() {
+    if (this.isLeaves()) 
+      return this._itemDistance.distance(this._boundable1, this._boundable2)
+    
+    return this._boundable1.getBounds().distance(this._boundable2.getBounds())
+  }
   compareTo(o) {
     const nd = o
     if (this._distance < nd._distance) return -1
@@ -69,19 +82,6 @@ export default class BoundablePair {
         priQ.add(bp)
       
     }
-  }
-  getBoundable(i) {
-    if (i === 0) return this._boundable1
-    return this._boundable2
-  }
-  getDistance() {
-    return this._distance
-  }
-  distance() {
-    if (this.isLeaves()) 
-      return this._itemDistance.distance(this._boundable1, this._boundable2)
-    
-    return this._boundable1.getBounds().distance(this._boundable2.getBounds())
   }
   get interfaces_() {
     return [Comparable]

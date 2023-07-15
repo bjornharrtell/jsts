@@ -48,6 +48,12 @@ export default class UnionInteracting {
       return interactsWithAny
     }
   }
+  bufferUnion(g0, g1) {
+    const factory = g0.getFactory()
+    const gColl = factory.createGeometryCollection([g0, g1])
+    const unionAll = gColl.buffer(0.0)
+    return unionAll
+  }
   union() {
     this.computeInteracting()
     const int0 = this.extractElements(this._g0, this._interacts0, true)
@@ -60,11 +66,5 @@ export default class UnionInteracting {
     const disjoint1 = this.extractElements(this._g1, this._interacts1, false)
     const overallUnion = GeometryCombiner.combine(union, disjoint0, disjoint1)
     return overallUnion
-  }
-  bufferUnion(g0, g1) {
-    const factory = g0.getFactory()
-    const gColl = factory.createGeometryCollection([g0, g1])
-    const unionAll = gColl.buffer(0.0)
-    return unionAll
   }
 }

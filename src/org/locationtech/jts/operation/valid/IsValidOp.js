@@ -1,23 +1,23 @@
 import Location from '../../geom/Location.js'
-import TreeSet from '../../../../../java/util/TreeSet.js'
-import LineString from '../../geom/LineString.js'
 import Geometry from '../../geom/Geometry.js'
 import ConnectedInteriorTester from './ConnectedInteriorTester.js'
+import PointLocation from '../../algorithm/PointLocation.js'
+import ConsistentAreaTester from './ConsistentAreaTester.js'
+import IndexedNestedRingTester from './IndexedNestedRingTester.js'
+import RobustLineIntersector from '../../algorithm/RobustLineIntersector.js'
+import TopologyValidationError from './TopologyValidationError.js'
+import TreeSet from '../../../../../java/util/TreeSet.js'
+import LineString from '../../geom/LineString.js'
 import Coordinate from '../../geom/Coordinate.js'
 import Point from '../../geom/Point.js'
 import Polygon from '../../geom/Polygon.js'
 import MultiPoint from '../../geom/MultiPoint.js'
-import PointLocation from '../../algorithm/PointLocation.js'
 import LinearRing from '../../geom/LinearRing.js'
 import Double from '../../../../../java/lang/Double.js'
 import GeometryGraph from '../../geomgraph/GeometryGraph.js'
 import MultiPolygon from '../../geom/MultiPolygon.js'
-import ConsistentAreaTester from './ConsistentAreaTester.js'
 import GeometryCollection from '../../geom/GeometryCollection.js'
 import UnsupportedOperationException from '../../../../../java/lang/UnsupportedOperationException.js'
-import IndexedNestedRingTester from './IndexedNestedRingTester.js'
-import RobustLineIntersector from '../../algorithm/RobustLineIntersector.js'
-import TopologyValidationError from './TopologyValidationError.js'
 import IndexedPointInAreaLocator from '../../algorithm/locate/IndexedPointInAreaLocator.js'
 import Assert from '../../util/Assert.js'
 export default class IsValidOp {
@@ -129,6 +129,53 @@ export default class IsValidOp {
       if (this._validErr !== null) return null
     }
   }
+  checkHolesInShell(p, graph) {
+    if (p.getNumInteriorRing() <= 0) return null
+    const shell = p.getExteriorRing()
+    const isShellEmpty = shell.isEmpty()
+    const pir = new IndexedPointInAreaLocator(shell)
+    for (let i = 0; i < p.getNumInteriorRing(); i++) {
+      const hole = p.getInteriorRingN(i)
+      let holePt = null
+      if (hole.isEmpty()) continue
+      holePt = IsValidOp.findPtNotNode(hole.getCoordinates(), shell, graph)
+      if (holePt === null) return null
+      const outside = isShellEmpty || Location.EXTERIOR === pir.locate(holePt)
+      if (outside) {
+        this._validErr = new TopologyValidationError(TopologyValidationError.HOLE_OUTSIDE_SHELL, holePt)
+        return null
+      }
+    }
+  }
+  checkShellNotNested(shell, p, graph) {
+    const shellPts = shell.getCoordinates()
+    const polyShell = p.getExteriorRing()
+    if (polyShell.isEmpty()) return null
+    const polyPts = polyShell.getCoordinates()
+    const shellPt = IsValidOp.findPtNotNode(shellPts, polyShell, graph)
+    if (shellPt === null) return null
+    const insidePolyShell = PointLocation.isInRing(shellPt, polyPts)
+    if (!insidePolyShell) return null
+    if (p.getNumInteriorRing() <= 0) {
+      this._validErr = new TopologyValidationError(TopologyValidationError.NESTED_SHELLS, shellPt)
+      return null
+    }
+    let badNestedPt = null
+    for (let i = 0; i < p.getNumInteriorRing(); i++) {
+      const hole = p.getInteriorRingN(i)
+      badNestedPt = this.checkShellInsideHole(shell, hole, graph)
+      if (badNestedPt === null) return null
+    }
+    this._validErr = new TopologyValidationError(TopologyValidationError.NESTED_SHELLS, badNestedPt)
+  }
+  checkClosedRings(poly) {
+    this.checkClosedRing(poly.getExteriorRing())
+    if (this._validErr !== null) return null
+    for (let i = 0; i < poly.getNumInteriorRing(); i++) {
+      this.checkClosedRing(poly.getInteriorRingN(i))
+      if (this._validErr !== null) return null
+    }
+  }
   checkConnectedInteriors(graph) {
     const cit = new ConnectedInteriorTester(graph)
     if (!cit.isInteriorsConnected()) this._validErr = new TopologyValidationError(TopologyValidationError.DISCONNECTED_INTERIOR, cit.getCoordinate())
@@ -147,24 +194,6 @@ export default class IsValidOp {
         return null
       } else {
         nodeSet.add(ei.coord)
-      }
-    }
-  }
-  checkHolesInShell(p, graph) {
-    if (p.getNumInteriorRing() <= 0) return null
-    const shell = p.getExteriorRing()
-    const isShellEmpty = shell.isEmpty()
-    const pir = new IndexedPointInAreaLocator(shell)
-    for (let i = 0; i < p.getNumInteriorRing(); i++) {
-      const hole = p.getInteriorRingN(i)
-      let holePt = null
-      if (hole.isEmpty()) continue
-      holePt = IsValidOp.findPtNotNode(hole.getCoordinates(), shell, graph)
-      if (holePt === null) return null
-      const outside = isShellEmpty || Location.EXTERIOR === pir.locate(holePt)
-      if (outside) {
-        this._validErr = new TopologyValidationError(TopologyValidationError.HOLE_OUTSIDE_SHELL, holePt)
-        return null
       }
     }
   }
@@ -270,35 +299,6 @@ export default class IsValidOp {
   }
   setSelfTouchingRingFormingHoleValid(isValid) {
     this._isSelfTouchingRingFormingHoleValid = isValid
-  }
-  checkShellNotNested(shell, p, graph) {
-    const shellPts = shell.getCoordinates()
-    const polyShell = p.getExteriorRing()
-    if (polyShell.isEmpty()) return null
-    const polyPts = polyShell.getCoordinates()
-    const shellPt = IsValidOp.findPtNotNode(shellPts, polyShell, graph)
-    if (shellPt === null) return null
-    const insidePolyShell = PointLocation.isInRing(shellPt, polyPts)
-    if (!insidePolyShell) return null
-    if (p.getNumInteriorRing() <= 0) {
-      this._validErr = new TopologyValidationError(TopologyValidationError.NESTED_SHELLS, shellPt)
-      return null
-    }
-    let badNestedPt = null
-    for (let i = 0; i < p.getNumInteriorRing(); i++) {
-      const hole = p.getInteriorRingN(i)
-      badNestedPt = this.checkShellInsideHole(shell, hole, graph)
-      if (badNestedPt === null) return null
-    }
-    this._validErr = new TopologyValidationError(TopologyValidationError.NESTED_SHELLS, badNestedPt)
-  }
-  checkClosedRings(poly) {
-    this.checkClosedRing(poly.getExteriorRing())
-    if (this._validErr !== null) return null
-    for (let i = 0; i < poly.getNumInteriorRing(); i++) {
-      this.checkClosedRing(poly.getInteriorRingN(i))
-      if (this._validErr !== null) return null
-    }
   }
   checkClosedRing(ring) {
     if (ring.isEmpty()) return null

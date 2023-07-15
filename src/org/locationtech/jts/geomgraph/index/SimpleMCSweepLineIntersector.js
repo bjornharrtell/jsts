@@ -1,11 +1,11 @@
 import hasInterface from '../../../../../hasInterface.js'
-import MonotoneChain from './MonotoneChain.js'
-import SweepLineEvent from './SweepLineEvent.js'
 import EdgeSetIntersector from './EdgeSetIntersector.js'
 import Collections from '../../../../../java/util/Collections.js'
 import SegmentIntersector from './SegmentIntersector.js'
 import ArrayList from '../../../../../java/util/ArrayList.js'
 import List from '../../../../../java/util/List.js'
+import MonotoneChain from './MonotoneChain.js'
+import SweepLineEvent from './SweepLineEvent.js'
 export default class SimpleMCSweepLineIntersector extends EdgeSetIntersector {
   constructor() {
     super()

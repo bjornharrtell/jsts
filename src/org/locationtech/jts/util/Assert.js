@@ -1,13 +1,5 @@
 import AssertionFailedException from './AssertionFailedException.js'
 export default class Assert {
-  static shouldNeverReachHere() {
-    if (arguments.length === 0) {
-      Assert.shouldNeverReachHere(null)
-    } else if (arguments.length === 1) {
-      const message = arguments[0]
-      throw new AssertionFailedException('Should never reach here' + (message !== null ? ': ' + message : ''))
-    }
-  }
   static isTrue() {
     if (arguments.length === 1) {
       const assertion = arguments[0]
@@ -21,6 +13,14 @@ export default class Assert {
           throw new AssertionFailedException(message)
         
       
+    }
+  }
+  static shouldNeverReachHere() {
+    if (arguments.length === 0) {
+      Assert.shouldNeverReachHere(null)
+    } else if (arguments.length === 1) {
+      const message = arguments[0]
+      throw new AssertionFailedException('Should never reach here' + (message !== null ? ': ' + message : ''))
     }
   }
   static equals() {

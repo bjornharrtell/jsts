@@ -44,8 +44,8 @@ class EnvelopeIntersectsVisitor extends ShortCircuitedGeometryVisitor {
     const rectEnv = arguments[0]
     this._rectEnv = rectEnv
   }
-  isDone() {
-    return this._intersects === true
+  intersects() {
+    return this._intersects
   }
   visit(element) {
     const elementEnv = element.getEnvelopeInternal()
@@ -65,8 +65,8 @@ class EnvelopeIntersectsVisitor extends ShortCircuitedGeometryVisitor {
       return null
     }
   }
-  intersects() {
-    return this._intersects
+  isDone() {
+    return this._intersects === true
   }
 }
 class GeometryContainsPointVisitor extends ShortCircuitedGeometryVisitor {
@@ -81,9 +81,6 @@ class GeometryContainsPointVisitor extends ShortCircuitedGeometryVisitor {
     const rectangle = arguments[0]
     this._rectSeq = rectangle.getExteriorRing().getCoordinateSequence()
     this._rectEnv = rectangle.getEnvelopeInternal()
-  }
-  isDone() {
-    return this._containsPoint === true
   }
   visit(geom) {
     if (!(geom instanceof Polygon)) return null
@@ -101,6 +98,9 @@ class GeometryContainsPointVisitor extends ShortCircuitedGeometryVisitor {
   }
   containsPoint() {
     return this._containsPoint
+  }
+  isDone() {
+    return this._containsPoint === true
   }
 }
 class RectangleIntersectsSegmentVisitor extends ShortCircuitedGeometryVisitor {

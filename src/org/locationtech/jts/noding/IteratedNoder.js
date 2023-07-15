@@ -17,8 +17,8 @@ export default class IteratedNoder {
     this._pm = pm
     this._li.setPrecisionModel(pm)
   }
-  setMaximumIterations(maxIter) {
-    this._maxIter = maxIter
+  getNodedSubstrings() {
+    return this._nodedSegStrings
   }
   node(segStrings, numInteriorIntersections) {
     const si = new IntersectionAdder(this._li)
@@ -43,8 +43,8 @@ export default class IteratedNoder {
       lastNodesCreated = nodesCreated
     } while (lastNodesCreated > 0)
   }
-  getNodedSubstrings() {
-    return this._nodedSegStrings
+  setMaximumIterations(maxIter) {
+    this._maxIter = maxIter
   }
   get interfaces_() {
     return [Noder]

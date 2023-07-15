@@ -33,18 +33,6 @@ export default class CoordinateXY extends Coordinate {
       throw new IllegalArgumentException('Invalid ordinate index: ' + ordinateIndex)
     }
   }
-  getZ() {
-    return Coordinate.NULL_ORDINATE
-  }
-  getOrdinate(ordinateIndex) {
-    switch (ordinateIndex) {
-    case CoordinateXY.X:
-      return this.x
-    case CoordinateXY.Y:
-      return this.y
-    }
-    throw new IllegalArgumentException('Invalid ordinate index: ' + ordinateIndex)
-  }
   setZ(z) {
     throw new IllegalArgumentException('CoordinateXY dimension 2 does not support z-ordinate')
   }
@@ -58,6 +46,18 @@ export default class CoordinateXY extends Coordinate {
     this.x = other.x
     this.y = other.y
     this.z = other.getZ()
+  }
+  getZ() {
+    return Coordinate.NULL_ORDINATE
+  }
+  getOrdinate(ordinateIndex) {
+    switch (ordinateIndex) {
+    case CoordinateXY.X:
+      return this.x
+    case CoordinateXY.Y:
+      return this.y
+    }
+    throw new IllegalArgumentException('Invalid ordinate index: ' + ordinateIndex)
   }
 }
 CoordinateXY.X = 0

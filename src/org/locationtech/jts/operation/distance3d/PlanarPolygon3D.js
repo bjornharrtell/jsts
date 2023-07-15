@@ -1,11 +1,11 @@
 import Location from '../../geom/Location.js'
 import hasInterface from '../../../../../hasInterface.js'
 import Coordinate from '../../geom/Coordinate.js'
-import AxisPlaneCoordinateSequence from './AxisPlaneCoordinateSequence.js'
-import Vector3D from '../../math/Vector3D.js'
 import CoordinateSequence from '../../geom/CoordinateSequence.js'
 import Plane3D from '../../math/Plane3D.js'
 import RayCrossingCounter from '../../algorithm/RayCrossingCounter.js'
+import AxisPlaneCoordinateSequence from './AxisPlaneCoordinateSequence.js'
+import Vector3D from '../../math/Vector3D.js'
 export default class PlanarPolygon3D {
   constructor() {
     PlanarPolygon3D.constructor_.apply(this, arguments)
@@ -77,6 +77,12 @@ export default class PlanarPolygon3D {
   getPlane() {
     return this._plane
   }
+  locate(pt, ring) {
+    const seq = ring.getCoordinateSequence()
+    const seqProj = PlanarPolygon3D.project(seq, this._facingPlane)
+    const ptProj = PlanarPolygon3D.project(pt, this._facingPlane)
+    return RayCrossingCounter.locatePointInRing(ptProj, seqProj)
+  }
   findBestFitPlane(poly) {
     const seq = poly.getExteriorRing().getCoordinateSequence()
     const basePt = this.averagePoint(seq)
@@ -100,11 +106,5 @@ export default class PlanarPolygon3D {
     sum.setZ(sum.getZ() / n)
     const norm = Vector3D.create(sum).normalize()
     return norm
-  }
-  locate(pt, ring) {
-    const seq = ring.getCoordinateSequence()
-    const seqProj = PlanarPolygon3D.project(seq, this._facingPlane)
-    const ptProj = PlanarPolygon3D.project(pt, this._facingPlane)
-    return RayCrossingCounter.locatePointInRing(ptProj, seqProj)
   }
 }

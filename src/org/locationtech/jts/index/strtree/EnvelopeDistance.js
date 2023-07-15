@@ -1,11 +1,4 @@
 export default class EnvelopeDistance {
-  static maxDistance(ax1, ay1, ax2, ay2, bx1, by1, bx2, by2) {
-    let dist = EnvelopeDistance.distance(ax1, ay1, bx1, by1)
-    dist = Math.max(dist, EnvelopeDistance.distance(ax1, ay1, bx2, by2))
-    dist = Math.max(dist, EnvelopeDistance.distance(ax2, ay2, bx1, by1))
-    dist = Math.max(dist, EnvelopeDistance.distance(ax2, ay2, bx2, by2))
-    return dist
-  }
   static distance(x1, y1, x2, y2) {
     const dx = x2 - x1
     const dy = y2 - y1
@@ -43,6 +36,13 @@ export default class EnvelopeDistance {
     dist = Math.min(dist, EnvelopeDistance.maxDistance(amaxx, amaxy, amaxx, aminy, bminx, bminy, bmaxx, bminy))
     dist = Math.min(dist, EnvelopeDistance.maxDistance(amaxx, amaxy, amaxx, aminy, bmaxx, bmaxy, bminx, bmaxy))
     dist = Math.min(dist, EnvelopeDistance.maxDistance(amaxx, amaxy, amaxx, aminy, bmaxx, bmaxy, bmaxx, bminy))
+    return dist
+  }
+  static maxDistance(ax1, ay1, ax2, ay2, bx1, by1, bx2, by2) {
+    let dist = EnvelopeDistance.distance(ax1, ay1, bx1, by1)
+    dist = Math.max(dist, EnvelopeDistance.distance(ax1, ay1, bx2, by2))
+    dist = Math.max(dist, EnvelopeDistance.distance(ax2, ay2, bx1, by1))
+    dist = Math.max(dist, EnvelopeDistance.distance(ax2, ay2, bx2, by2))
     return dist
   }
 }

@@ -1,21 +1,21 @@
+import hasInterface from '../../../../hasInterface.js'
+import LinearRing from './LinearRing.js'
+import CoordinateArraySequenceFactory from './impl/CoordinateArraySequenceFactory.js'
+import MultiPolygon from './MultiPolygon.js'
+import CoordinateSequences from './CoordinateSequences.js'
+import PrecisionModel from './PrecisionModel.js'
+import Serializable from '../../../../java/io/Serializable.js'
+import Assert from '../util/Assert.js'
+import MultiLineString from './MultiLineString.js'
 import CoordinateSequenceFactory from './CoordinateSequenceFactory.js'
 import LineString from './LineString.js'
-import hasInterface from '../../../../hasInterface.js'
 import Coordinate from './Coordinate.js'
 import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException.js'
 import Point from './Point.js'
 import Polygon from './Polygon.js'
 import MultiPoint from './MultiPoint.js'
-import LinearRing from './LinearRing.js'
-import CoordinateArraySequenceFactory from './impl/CoordinateArraySequenceFactory.js'
-import MultiPolygon from './MultiPolygon.js'
-import CoordinateSequences from './CoordinateSequences.js'
 import CoordinateSequence from './CoordinateSequence.js'
 import GeometryCollection from './GeometryCollection.js'
-import PrecisionModel from './PrecisionModel.js'
-import Serializable from '../../../../java/io/Serializable.js'
-import Assert from '../util/Assert.js'
-import MultiLineString from './MultiLineString.js'
 export default class GeometryFactory {
   constructor() {
     GeometryFactory.constructor_.apply(this, arguments)
@@ -131,60 +131,6 @@ export default class GeometryFactory {
       return new MultiLineString(lineStrings, this)
     }
   }
-  buildGeometry(geomList) {
-    let geomType = null
-    let isHeterogeneous = false
-    let hasGeometryCollection = false
-    for (let i = geomList.iterator(); i.hasNext(); ) {
-      const geom = i.next()
-      const partType = geom.getTypeCode()
-      if (geomType === null) 
-        geomType = partType
-      
-      if (partType !== geomType) 
-        isHeterogeneous = true
-      
-      if (geom instanceof GeometryCollection) hasGeometryCollection = true
-    }
-    if (geomType === null) 
-      return this.createGeometryCollection()
-    
-    if (isHeterogeneous || hasGeometryCollection) 
-      return this.createGeometryCollection(GeometryFactory.toGeometryArray(geomList))
-    
-    const geom0 = geomList.iterator().next()
-    const isCollection = geomList.size() > 1
-    if (isCollection) {
-      if (geom0 instanceof Polygon) 
-        return this.createMultiPolygon(GeometryFactory.toPolygonArray(geomList))
-      else if (geom0 instanceof LineString) 
-        return this.createMultiLineString(GeometryFactory.toLineStringArray(geomList))
-      else if (geom0 instanceof Point) 
-        return this.createMultiPoint(GeometryFactory.toPointArray(geomList))
-      
-      Assert.shouldNeverReachHere('Unhandled geometry type: ' + geom0.getGeometryType())
-    }
-    return geom0
-  }
-  createMultiPointFromCoords(coordinates) {
-    return this.createMultiPoint(coordinates !== null ? this.getCoordinateSequenceFactory().create(coordinates) : null)
-  }
-  createPoint() {
-    if (arguments.length === 0) 
-      return this.createPoint(this.getCoordinateSequenceFactory().create([]))
-    else if (arguments.length === 1) 
-      if (arguments[0] instanceof Coordinate) {
-        const coordinate = arguments[0]
-        return this.createPoint(coordinate !== null ? this.getCoordinateSequenceFactory().create([coordinate]) : null)
-      } else if (hasInterface(arguments[0], CoordinateSequence)) {
-        const coordinates = arguments[0]
-        return new Point(coordinates, this)
-      }
-    
-  }
-  getCoordinateSequenceFactory() {
-    return this._coordinateSequenceFactory
-  }
   createPolygon() {
     if (arguments.length === 0) {
       return this.createPolygon(null, null)
@@ -260,6 +206,60 @@ export default class GeometryFactory {
         return this.createMultiPoint(points)
       }
     
+  }
+  buildGeometry(geomList) {
+    let geomType = null
+    let isHeterogeneous = false
+    let hasGeometryCollection = false
+    for (let i = geomList.iterator(); i.hasNext(); ) {
+      const geom = i.next()
+      const partType = geom.getTypeCode()
+      if (geomType === null) 
+        geomType = partType
+      
+      if (partType !== geomType) 
+        isHeterogeneous = true
+      
+      if (geom instanceof GeometryCollection) hasGeometryCollection = true
+    }
+    if (geomType === null) 
+      return this.createGeometryCollection()
+    
+    if (isHeterogeneous || hasGeometryCollection) 
+      return this.createGeometryCollection(GeometryFactory.toGeometryArray(geomList))
+    
+    const geom0 = geomList.iterator().next()
+    const isCollection = geomList.size() > 1
+    if (isCollection) {
+      if (geom0 instanceof Polygon) 
+        return this.createMultiPolygon(GeometryFactory.toPolygonArray(geomList))
+      else if (geom0 instanceof LineString) 
+        return this.createMultiLineString(GeometryFactory.toLineStringArray(geomList))
+      else if (geom0 instanceof Point) 
+        return this.createMultiPoint(GeometryFactory.toPointArray(geomList))
+      
+      Assert.shouldNeverReachHere('Unhandled geometry type: ' + geom0.getGeometryType())
+    }
+    return geom0
+  }
+  createMultiPointFromCoords(coordinates) {
+    return this.createMultiPoint(coordinates !== null ? this.getCoordinateSequenceFactory().create(coordinates) : null)
+  }
+  createPoint() {
+    if (arguments.length === 0) 
+      return this.createPoint(this.getCoordinateSequenceFactory().create([]))
+    else if (arguments.length === 1) 
+      if (arguments[0] instanceof Coordinate) {
+        const coordinate = arguments[0]
+        return this.createPoint(coordinate !== null ? this.getCoordinateSequenceFactory().create([coordinate]) : null)
+      } else if (hasInterface(arguments[0], CoordinateSequence)) {
+        const coordinates = arguments[0]
+        return new Point(coordinates, this)
+      }
+    
+  }
+  getCoordinateSequenceFactory() {
+    return this._coordinateSequenceFactory
   }
   get interfaces_() {
     return [Serializable]

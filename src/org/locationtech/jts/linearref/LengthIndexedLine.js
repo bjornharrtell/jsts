@@ -1,7 +1,7 @@
 import LengthIndexOfPoint from './LengthIndexOfPoint.js'
+import ExtractLineByLocation from './ExtractLineByLocation.js'
 import LocationIndexOfLine from './LocationIndexOfLine.js'
 import LengthLocationMap from './LengthLocationMap.js'
-import ExtractLineByLocation from './ExtractLineByLocation.js'
 export default class LengthIndexedLine {
   constructor() {
     LengthIndexedLine.constructor_.apply(this, arguments)
@@ -47,12 +47,6 @@ export default class LengthIndexedLine {
       return locLow.getSegment(this._linearGeom).pointAlongOffset(locLow.getSegmentFraction(), offsetDistance)
     }
   }
-  isValidIndex(index) {
-    return index >= this.getStartIndex() && index <= this.getEndIndex()
-  }
-  getEndIndex() {
-    return this._linearGeom.getLength()
-  }
   getStartIndex() {
     return 0.0
   }
@@ -66,6 +60,12 @@ export default class LengthIndexedLine {
     const startLoc = this.locationOf(startIndex2, resolveStartLower)
     const endLoc = this.locationOf(endIndex2)
     return ExtractLineByLocation.extract(this._linearGeom, startLoc, endLoc)
+  }
+  isValidIndex(index) {
+    return index >= this.getStartIndex() && index <= this.getEndIndex()
+  }
+  getEndIndex() {
+    return this._linearGeom.getLength()
   }
   indexOf(pt) {
     return LengthIndexOfPoint.indexOf(this._linearGeom, pt)

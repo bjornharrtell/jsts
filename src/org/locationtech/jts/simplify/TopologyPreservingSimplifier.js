@@ -1,10 +1,10 @@
 import LineString from '../geom/LineString.js'
 import HashMap from '../../../../java/util/HashMap.js'
-import GeometryTransformer from '../geom/util/GeometryTransformer.js'
-import TaggedLinesSimplifier from './TaggedLinesSimplifier.js'
 import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException.js'
 import GeometryComponentFilter from '../geom/GeometryComponentFilter.js'
 import TaggedLineString from './TaggedLineString.js'
+import GeometryTransformer from '../geom/util/GeometryTransformer.js'
+import TaggedLinesSimplifier from './TaggedLinesSimplifier.js'
 export default class TopologyPreservingSimplifier {
   constructor() {
     TopologyPreservingSimplifier.constructor_.apply(this, arguments)
@@ -21,6 +21,10 @@ export default class TopologyPreservingSimplifier {
     tss.setDistanceTolerance(distanceTolerance)
     return tss.getResultGeometry()
   }
+  setDistanceTolerance(distanceTolerance) {
+    if (distanceTolerance < 0.0) throw new IllegalArgumentException('Tolerance must be non-negative')
+    this._lineSimplifier.setDistanceTolerance(distanceTolerance)
+  }
   getResultGeometry() {
     if (this._inputGeom.isEmpty()) return this._inputGeom.copy()
     this._linestringMap = new HashMap()
@@ -28,10 +32,6 @@ export default class TopologyPreservingSimplifier {
     this._lineSimplifier.simplify(this._linestringMap.values())
     const result = new LineStringTransformer(this._linestringMap).transform(this._inputGeom)
     return result
-  }
-  setDistanceTolerance(distanceTolerance) {
-    if (distanceTolerance < 0.0) throw new IllegalArgumentException('Tolerance must be non-negative')
-    this._lineSimplifier.setDistanceTolerance(distanceTolerance)
   }
 }
 class LineStringTransformer extends GeometryTransformer {

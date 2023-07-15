@@ -19,6 +19,30 @@ export default class RelateOp extends GeometryGraphOperation {
       this._relate = new RelateComputer(this._arg)
     }
   }
+  static equalsTopo(g1, g2) {
+    if (!g1.getEnvelopeInternal().equals(g2.getEnvelopeInternal())) return false
+    return RelateOp.relate(g1, g2).isEquals(g1.getDimension(), g2.getDimension())
+  }
+  static relate() {
+    if (arguments.length === 2) {
+      const a = arguments[0], b = arguments[1]
+      const relOp = new RelateOp(a, b)
+      const im = relOp.getIntersectionMatrix()
+      return im
+    } else if (arguments.length === 3) {
+      const a = arguments[0], b = arguments[1], boundaryNodeRule = arguments[2]
+      const relOp = new RelateOp(a, b, boundaryNodeRule)
+      const im = relOp.getIntersectionMatrix()
+      return im
+    }
+  }
+  static overlaps(g1, g2) {
+    if (!g1.getEnvelopeInternal().intersects(g2.getEnvelopeInternal())) return false
+    return new RelateOp(g1, g2).getIntersectionMatrix().isOverlaps(g1.getDimension(), g2.getDimension())
+  }
+  static disjoint(g1, g2) {
+    return !RelateOp.intersects(g1, g2)
+  }
   static covers(g1, g2) {
     if (g2.getDimension() === 2 && g1.getDimension() < 2) 
       return false
@@ -56,27 +80,6 @@ export default class RelateOp extends GeometryGraphOperation {
   static touches(g1, g2) {
     if (!g1.getEnvelopeInternal().intersects(g2.getEnvelopeInternal())) return false
     return new RelateOp(g1, g2).getIntersectionMatrix().isTouches(g1.getDimension(), g2.getDimension())
-  }
-  static equalsTopo(g1, g2) {
-    if (!g1.getEnvelopeInternal().equals(g2.getEnvelopeInternal())) return false
-    return RelateOp.relate(g1, g2).isEquals(g1.getDimension(), g2.getDimension())
-  }
-  static relate() {
-    if (arguments.length === 2) {
-      const a = arguments[0], b = arguments[1]
-      const relOp = new RelateOp(a, b)
-      const im = relOp.getIntersectionMatrix()
-      return im
-    } else if (arguments.length === 3) {
-      const a = arguments[0], b = arguments[1], boundaryNodeRule = arguments[2]
-      const relOp = new RelateOp(a, b, boundaryNodeRule)
-      const im = relOp.getIntersectionMatrix()
-      return im
-    }
-  }
-  static overlaps(g1, g2) {
-    if (!g1.getEnvelopeInternal().intersects(g2.getEnvelopeInternal())) return false
-    return new RelateOp(g1, g2).getIntersectionMatrix().isOverlaps(g1.getDimension(), g2.getDimension())
   }
   static crosses(g1, g2) {
     if (!g1.getEnvelopeInternal().intersects(g2.getEnvelopeInternal())) return false

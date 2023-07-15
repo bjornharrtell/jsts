@@ -9,17 +9,6 @@ export default class MonotoneChainIndexer {
     
     return array
   }
-  getChainStartIndices(pts) {
-    let start = 0
-    const startIndexList = new IntArrayList(Math.trunc(pts.length / 2))
-    startIndexList.add(start)
-    do {
-      const last = this.findChainEnd(pts, start)
-      startIndexList.add(last)
-      start = last
-    } while (start < pts.length - 1)
-    return startIndexList.toArray()
-  }
   findChainEnd(pts, start) {
     const chainQuad = Quadrant.quadrant(pts[start], pts[start + 1])
     let last = start + 1
@@ -41,5 +30,16 @@ export default class MonotoneChainIndexer {
     } while (start < pts.length - 1)
     const startIndex = MonotoneChainIndexer.toIntArray(startIndexList)
     return startIndex
+  }
+  getChainStartIndices(pts) {
+    let start = 0
+    const startIndexList = new IntArrayList(Math.trunc(pts.length / 2))
+    startIndexList.add(start)
+    do {
+      const last = this.findChainEnd(pts, start)
+      startIndexList.add(last)
+      start = last
+    } while (start < pts.length - 1)
+    return startIndexList.toArray()
   }
 }

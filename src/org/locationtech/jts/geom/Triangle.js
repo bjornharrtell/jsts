@@ -1,8 +1,8 @@
-import Coordinate from './Coordinate.js'
-import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException.js'
 import DD from '../math/DD.js'
 import Angle from '../algorithm/Angle.js'
 import HCoordinate from '../algorithm/HCoordinate.js'
+import Coordinate from './Coordinate.js'
+import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException.js'
 export default class Triangle {
   constructor() {
     Triangle.constructor_.apply(this, arguments)
@@ -15,6 +15,51 @@ export default class Triangle {
     this.p0 = p0
     this.p1 = p1
     this.p2 = p2
+  }
+  static isAcute(a, b, c) {
+    if (!Angle.isAcute(a, b, c)) return false
+    if (!Angle.isAcute(b, c, a)) return false
+    if (!Angle.isAcute(c, a, b)) return false
+    return true
+  }
+  static circumcentre(a, b, c) {
+    const cx = c.x
+    const cy = c.y
+    const ax = a.x - cx
+    const ay = a.y - cy
+    const bx = b.x - cx
+    const by = b.y - cy
+    const denom = 2 * Triangle.det(ax, ay, bx, by)
+    const numx = Triangle.det(ay, ax * ax + ay * ay, by, bx * bx + by * by)
+    const numy = Triangle.det(ax, ax * ax + ay * ay, bx, bx * bx + by * by)
+    const ccx = cx - numx / denom
+    const ccy = cy + numy / denom
+    return new Coordinate(ccx, ccy)
+  }
+  static perpendicularBisector(a, b) {
+    const dx = b.x - a.x
+    const dy = b.y - a.y
+    const l1 = new HCoordinate(a.x + dx / 2.0, a.y + dy / 2.0, 1.0)
+    const l2 = new HCoordinate(a.x - dy + dx / 2.0, a.y + dx + dy / 2.0, 1.0)
+    return new HCoordinate(l1, l2)
+  }
+  static angleBisector(a, b, c) {
+    const len0 = b.distance(a)
+    const len2 = b.distance(c)
+    const frac = len0 / (len0 + len2)
+    const dx = c.x - a.x
+    const dy = c.y - a.y
+    const splitPt = new Coordinate(a.x + frac * dx, a.y + frac * dy)
+    return splitPt
+  }
+  static inCentre(a, b, c) {
+    const len0 = b.distance(c)
+    const len1 = a.distance(c)
+    const len2 = a.distance(b)
+    const circum = len0 + len1 + len2
+    const inCentreX = (len0 * a.x + len1 * b.x + len2 * c.x) / circum
+    const inCentreY = (len0 * a.y + len1 * b.y + len2 * c.y) / circum
+    return new Coordinate(inCentreX, inCentreY)
   }
   static area(a, b, c) {
     return Math.abs(((c.x - a.x) * (b.y - a.y) - (b.x - a.x) * (c.y - a.y)) / 2)
@@ -63,42 +108,6 @@ export default class Triangle {
     const ccy = DD.valueOf(c.y).add(numy.divide(denom)).doubleValue()
     return new Coordinate(ccx, ccy)
   }
-  static isAcute(a, b, c) {
-    if (!Angle.isAcute(a, b, c)) return false
-    if (!Angle.isAcute(b, c, a)) return false
-    if (!Angle.isAcute(c, a, b)) return false
-    return true
-  }
-  static circumcentre(a, b, c) {
-    const cx = c.x
-    const cy = c.y
-    const ax = a.x - cx
-    const ay = a.y - cy
-    const bx = b.x - cx
-    const by = b.y - cy
-    const denom = 2 * Triangle.det(ax, ay, bx, by)
-    const numx = Triangle.det(ay, ax * ax + ay * ay, by, bx * bx + by * by)
-    const numy = Triangle.det(ax, ax * ax + ay * ay, bx, bx * bx + by * by)
-    const ccx = cx - numx / denom
-    const ccy = cy + numy / denom
-    return new Coordinate(ccx, ccy)
-  }
-  static perpendicularBisector(a, b) {
-    const dx = b.x - a.x
-    const dy = b.y - a.y
-    const l1 = new HCoordinate(a.x + dx / 2.0, a.y + dy / 2.0, 1.0)
-    const l2 = new HCoordinate(a.x - dy + dx / 2.0, a.y + dx + dy / 2.0, 1.0)
-    return new HCoordinate(l1, l2)
-  }
-  static angleBisector(a, b, c) {
-    const len0 = b.distance(a)
-    const len2 = b.distance(c)
-    const frac = len0 / (len0 + len2)
-    const dx = c.x - a.x
-    const dy = c.y - a.y
-    const splitPt = new Coordinate(a.x + frac * dx, a.y + frac * dy)
-    return splitPt
-  }
   static area3D(a, b, c) {
     const ux = b.x - a.x
     const uy = b.y - a.y
@@ -118,21 +127,6 @@ export default class Triangle {
     const y = (a.y + b.y + c.y) / 3
     return new Coordinate(x, y)
   }
-  static inCentre(a, b, c) {
-    const len0 = b.distance(c)
-    const len1 = a.distance(c)
-    const len2 = a.distance(b)
-    const circum = len0 + len1 + len2
-    const inCentreX = (len0 * a.x + len1 * b.x + len2 * c.x) / circum
-    const inCentreY = (len0 * a.y + len1 * b.y + len2 * c.y) / circum
-    return new Coordinate(inCentreX, inCentreY)
-  }
-  area() {
-    return Triangle.area(this.p0, this.p1, this.p2)
-  }
-  signedArea() {
-    return Triangle.signedArea(this.p0, this.p1, this.p2)
-  }
   interpolateZ(p) {
     if (p === null) throw new IllegalArgumentException('Supplied point is null.')
     return Triangle.interpolateZ(p, this.p0, this.p1, this.p2)
@@ -146,13 +140,19 @@ export default class Triangle {
   circumcentre() {
     return Triangle.circumcentre(this.p0, this.p1, this.p2)
   }
+  inCentre() {
+    return Triangle.inCentre(this.p0, this.p1, this.p2)
+  }
+  area() {
+    return Triangle.area(this.p0, this.p1, this.p2)
+  }
+  signedArea() {
+    return Triangle.signedArea(this.p0, this.p1, this.p2)
+  }
   area3D() {
     return Triangle.area3D(this.p0, this.p1, this.p2)
   }
   centroid() {
     return Triangle.centroid(this.p0, this.p1, this.p2)
-  }
-  inCentre() {
-    return Triangle.inCentre(this.p0, this.p1, this.p2)
   }
 }

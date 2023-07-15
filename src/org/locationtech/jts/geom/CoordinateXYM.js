@@ -26,6 +26,24 @@ export default class CoordinateXYM extends Coordinate {
       this._m = m
     }
   }
+  setM(m) {
+    this._m = m
+  }
+  setZ(z) {
+    throw new IllegalArgumentException('CoordinateXY dimension 2 does not support z-ordinate')
+  }
+  copy() {
+    return new CoordinateXYM(this)
+  }
+  toString() {
+    return '(' + this.x + ', ' + this.y + ' m=' + this.getM() + ')'
+  }
+  setCoordinate(other) {
+    this.x = other.x
+    this.y = other.y
+    this.z = other.getZ()
+    this._m = other.getM()
+  }
   getM() {
     return this._m
   }
@@ -44,9 +62,6 @@ export default class CoordinateXYM extends Coordinate {
       throw new IllegalArgumentException('Invalid ordinate index: ' + ordinateIndex)
     }
   }
-  setM(m) {
-    this._m = m
-  }
   getZ() {
     return Coordinate.NULL_ORDINATE
   }
@@ -60,21 +75,6 @@ export default class CoordinateXYM extends Coordinate {
       return this._m
     }
     throw new IllegalArgumentException('Invalid ordinate index: ' + ordinateIndex)
-  }
-  setZ(z) {
-    throw new IllegalArgumentException('CoordinateXY dimension 2 does not support z-ordinate')
-  }
-  copy() {
-    return new CoordinateXYM(this)
-  }
-  toString() {
-    return '(' + this.x + ', ' + this.y + ' m=' + this.getM() + ')'
-  }
-  setCoordinate(other) {
-    this.x = other.x
-    this.y = other.y
-    this.z = other.getZ()
-    this._m = other.getM()
   }
 }
 CoordinateXYM.X = 0

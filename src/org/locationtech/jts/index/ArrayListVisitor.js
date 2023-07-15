@@ -7,11 +7,11 @@ export default class ArrayListVisitor {
   static constructor_() {
     this._items = new ArrayList()
   }
-  visitItem(item) {
-    this._items.add(item)
-  }
   getItems() {
     return this._items
+  }
+  visitItem(item) {
+    this._items.add(item)
   }
   get interfaces_() {
     return [ItemVisitor]

@@ -1,14 +1,14 @@
 import CoordinateList from '../geom/CoordinateList.js'
-import Geometry from '../geom/Geometry.js'
-import Arrays from '../../../../java/util/Arrays.js'
 import hasInterface from '../../../../hasInterface.js'
 import Collection from '../../../../java/util/Collection.js'
-import IncrementalDelaunayTriangulator from './IncrementalDelaunayTriangulator.js'
-import QuadEdgeSubdivision from './quadedge/QuadEdgeSubdivision.js'
 import Vertex from './quadedge/Vertex.js'
 import CoordinateArrays from '../geom/CoordinateArrays.js'
 import ArrayList from '../../../../java/util/ArrayList.js'
 import Envelope from '../geom/Envelope.js'
+import Geometry from '../geom/Geometry.js'
+import Arrays from '../../../../java/util/Arrays.js'
+import IncrementalDelaunayTriangulator from './IncrementalDelaunayTriangulator.js'
+import QuadEdgeSubdivision from './quadedge/QuadEdgeSubdivision.js'
 export default class DelaunayTriangulationBuilder {
   constructor() {
     DelaunayTriangulationBuilder.constructor_.apply(this, arguments)
@@ -17,11 +17,6 @@ export default class DelaunayTriangulationBuilder {
     this._siteCoords = null
     this._tolerance = 0.0
     this._subdiv = null
-  }
-  static extractUniqueCoordinates(geom) {
-    if (geom === null) return new CoordinateList()
-    const coords = geom.getCoordinates()
-    return DelaunayTriangulationBuilder.unique(coords)
   }
   static envelope(coords) {
     const env = new Envelope()
@@ -36,6 +31,11 @@ export default class DelaunayTriangulationBuilder {
     Arrays.sort(coordsCopy)
     const coordList = new CoordinateList(coordsCopy, false)
     return coordList
+  }
+  static extractUniqueCoordinates(geom) {
+    if (geom === null) return new CoordinateList()
+    const coords = geom.getCoordinates()
+    return DelaunayTriangulationBuilder.unique(coords)
   }
   static toVertices(coords) {
     const verts = new ArrayList()

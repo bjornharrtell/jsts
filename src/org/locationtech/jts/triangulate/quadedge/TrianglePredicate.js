@@ -4,26 +4,6 @@ import DD from '../../math/DD.js'
 import System from '../../../../../java/lang/System.js'
 import Triangle from '../../geom/Triangle.js'
 export default class TrianglePredicate {
-  static triArea(a, b, c) {
-    return (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x)
-  }
-  static isInCircleDDNormalized(a, b, c, p) {
-    const adx = DD.valueOf(a.x).selfSubtract(p.x)
-    const ady = DD.valueOf(a.y).selfSubtract(p.y)
-    const bdx = DD.valueOf(b.x).selfSubtract(p.x)
-    const bdy = DD.valueOf(b.y).selfSubtract(p.y)
-    const cdx = DD.valueOf(c.x).selfSubtract(p.x)
-    const cdy = DD.valueOf(c.y).selfSubtract(p.y)
-    const abdet = adx.multiply(bdy).selfSubtract(bdx.multiply(ady))
-    const bcdet = bdx.multiply(cdy).selfSubtract(cdx.multiply(bdy))
-    const cadet = cdx.multiply(ady).selfSubtract(adx.multiply(cdy))
-    const alift = adx.multiply(adx).selfAdd(ady.multiply(ady))
-    const blift = bdx.multiply(bdx).selfAdd(bdy.multiply(bdy))
-    const clift = cdx.multiply(cdx).selfAdd(cdy.multiply(cdy))
-    const sum = alift.selfMultiply(bcdet).selfAdd(blift.selfMultiply(cadet)).selfAdd(clift.selfMultiply(abdet))
-    const isInCircle = sum.doubleValue() > 0
-    return isInCircle
-  }
   static checkRobustInCircle(a, b, c, p) {
     const nonRobustInCircle = TrianglePredicate.isInCircleNonRobust(a, b, c, p)
     const isInCircleDD = TrianglePredicate.isInCircleDDSlow(a, b, c, p)
@@ -102,5 +82,25 @@ export default class TrianglePredicate {
     const t1 = DD.valueOf(b.x).selfSubtract(a.x).selfMultiply(DD.valueOf(c.y).selfSubtract(a.y))
     const t2 = DD.valueOf(b.y).selfSubtract(a.y).selfMultiply(DD.valueOf(c.x).selfSubtract(a.x))
     return t1.selfSubtract(t2)
+  }
+  static triArea(a, b, c) {
+    return (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x)
+  }
+  static isInCircleDDNormalized(a, b, c, p) {
+    const adx = DD.valueOf(a.x).selfSubtract(p.x)
+    const ady = DD.valueOf(a.y).selfSubtract(p.y)
+    const bdx = DD.valueOf(b.x).selfSubtract(p.x)
+    const bdy = DD.valueOf(b.y).selfSubtract(p.y)
+    const cdx = DD.valueOf(c.x).selfSubtract(p.x)
+    const cdy = DD.valueOf(c.y).selfSubtract(p.y)
+    const abdet = adx.multiply(bdy).selfSubtract(bdx.multiply(ady))
+    const bcdet = bdx.multiply(cdy).selfSubtract(cdx.multiply(bdy))
+    const cadet = cdx.multiply(ady).selfSubtract(adx.multiply(cdy))
+    const alift = adx.multiply(adx).selfAdd(ady.multiply(ady))
+    const blift = bdx.multiply(bdx).selfAdd(bdy.multiply(bdy))
+    const clift = cdx.multiply(cdx).selfAdd(cdy.multiply(cdy))
+    const sum = alift.selfMultiply(bcdet).selfAdd(blift.selfMultiply(cadet)).selfAdd(clift.selfMultiply(abdet))
+    const isInCircle = sum.doubleValue() > 0
+    return isInCircle
   }
 }

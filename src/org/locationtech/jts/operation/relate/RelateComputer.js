@@ -1,12 +1,12 @@
-import PointLocator from '../../algorithm/PointLocator.js'
-import Location from '../../geom/Location.js'
 import IntersectionMatrix from '../../geom/IntersectionMatrix.js'
 import EdgeEndBuilder from './EdgeEndBuilder.js'
 import NodeMap from '../../geomgraph/NodeMap.js'
 import RelateNodeFactory from './RelateNodeFactory.js'
+import Assert from '../../util/Assert.js'
+import PointLocator from '../../algorithm/PointLocator.js'
+import Location from '../../geom/Location.js'
 import ArrayList from '../../../../../java/util/ArrayList.js'
 import RobustLineIntersector from '../../algorithm/RobustLineIntersector.js'
-import Assert from '../../util/Assert.js'
 export default class RelateComputer {
   constructor() {
     RelateComputer.constructor_.apply(this, arguments)

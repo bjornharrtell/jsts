@@ -12,11 +12,11 @@ export default class CoordinatePrecisionReducerFilter {
     seq.setOrdinate(i, 0, this._precModel.makePrecise(seq.getOrdinate(i, 0)))
     seq.setOrdinate(i, 1, this._precModel.makePrecise(seq.getOrdinate(i, 1)))
   }
-  isDone() {
-    return false
-  }
   isGeometryChanged() {
     return true
+  }
+  isDone() {
+    return false
   }
   get interfaces_() {
     return [CoordinateSequenceFilter]

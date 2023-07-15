@@ -20,20 +20,6 @@ export default class EdgeIntersectionList {
       ei.print(out)
     }
   }
-  iterator() {
-    return this._nodeMap.values().iterator()
-  }
-  addSplitEdges(edgeList) {
-    this.addEndpoints()
-    const it = this.iterator()
-    let eiPrev = it.next()
-    while (it.hasNext()) {
-      const ei = it.next()
-      const newEdge = this.createSplitEdge(eiPrev, ei)
-      edgeList.add(newEdge)
-      eiPrev = ei
-    }
-  }
   addEndpoints() {
     const maxSegIndex = this.edge.pts.length - 1
     this.add(this.edge.pts[0], 0, 0.0)
@@ -70,5 +56,19 @@ export default class EdgeIntersectionList {
       if (ei.coord.equals(pt)) return true
     }
     return false
+  }
+  iterator() {
+    return this._nodeMap.values().iterator()
+  }
+  addSplitEdges(edgeList) {
+    this.addEndpoints()
+    const it = this.iterator()
+    let eiPrev = it.next()
+    while (it.hasNext()) {
+      const ei = it.next()
+      const newEdge = this.createSplitEdge(eiPrev, ei)
+      edgeList.add(newEdge)
+      eiPrev = ei
+    }
   }
 }

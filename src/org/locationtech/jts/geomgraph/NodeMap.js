@@ -13,29 +13,6 @@ export default class NodeMap {
     const nodeFact = arguments[0]
     this.nodeFact = nodeFact
   }
-  find(coord) {
-    return this.nodeMap.get(coord)
-  }
-  addNode() {
-    if (arguments[0] instanceof Coordinate) {
-      const coord = arguments[0]
-      let node = this.nodeMap.get(coord)
-      if (node === null) {
-        node = this.nodeFact.createNode(coord)
-        this.nodeMap.put(coord, node)
-      }
-      return node
-    } else if (arguments[0] instanceof Node) {
-      const n = arguments[0]
-      const node = this.nodeMap.get(n.getCoordinate())
-      if (node === null) {
-        this.nodeMap.put(n.getCoordinate(), n)
-        return n
-      }
-      node.mergeLabel(n)
-      return node
-    }
-  }
   print(out) {
     for (let it = this.iterator(); it.hasNext(); ) {
       const n = it.next()
@@ -60,5 +37,28 @@ export default class NodeMap {
     const p = e.getCoordinate()
     const n = this.addNode(p)
     n.add(e)
+  }
+  find(coord) {
+    return this.nodeMap.get(coord)
+  }
+  addNode() {
+    if (arguments[0] instanceof Coordinate) {
+      const coord = arguments[0]
+      let node = this.nodeMap.get(coord)
+      if (node === null) {
+        node = this.nodeFact.createNode(coord)
+        this.nodeMap.put(coord, node)
+      }
+      return node
+    } else if (arguments[0] instanceof Node) {
+      const n = arguments[0]
+      const node = this.nodeMap.get(n.getCoordinate())
+      if (node === null) {
+        this.nodeMap.put(n.getCoordinate(), n)
+        return n
+      }
+      node.mergeLabel(n)
+      return node
+    }
   }
 }

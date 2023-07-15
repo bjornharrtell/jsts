@@ -16,12 +16,6 @@ export default class Key {
     const level = DoubleBits.exponent(dx) + 1
     return level
   }
-  getInterval() {
-    return this._interval
-  }
-  getLevel() {
-    return this._level
-  }
   computeKey(itemInterval) {
     this._level = Key.computeLevel(itemInterval)
     this._interval = new Interval()
@@ -38,5 +32,11 @@ export default class Key {
   }
   getPoint() {
     return this._pt
+  }
+  getInterval() {
+    return this._interval
+  }
+  getLevel() {
+    return this._level
   }
 }

@@ -6,6 +6,16 @@ export default class Root extends NodeBase {
   constructor() {
     super()
   }
+  insertContained(tree, itemInterval, item) {
+    Assert.isTrue(tree.getInterval().contains(itemInterval))
+    const isZeroArea = IntervalSize.isZeroWidth(itemInterval.getMin(), itemInterval.getMax())
+    let node = null
+    if (isZeroArea) node = tree.find(itemInterval); else node = tree.getNode(itemInterval)
+    node.add(item)
+  }
+  isSearchMatch(interval) {
+    return true
+  }
   insert(itemInterval, item) {
     const index = NodeBase.getSubnodeIndex(itemInterval, Root.origin)
     if (index === -1) {
@@ -18,16 +28,6 @@ export default class Root extends NodeBase {
       this._subnode[index] = largerNode
     }
     this.insertContained(this._subnode[index], itemInterval, item)
-  }
-  isSearchMatch(interval) {
-    return true
-  }
-  insertContained(tree, itemInterval, item) {
-    Assert.isTrue(tree.getInterval().contains(itemInterval))
-    const isZeroArea = IntervalSize.isZeroWidth(itemInterval.getMin(), itemInterval.getMax())
-    let node = null
-    if (isZeroArea) node = tree.find(itemInterval); else node = tree.getNode(itemInterval)
-    node.add(item)
   }
 }
 Root.origin = 0.0

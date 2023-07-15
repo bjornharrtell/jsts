@@ -38,14 +38,14 @@ export default class SplitSegment {
       if (endPt.equals2D(this._seg.p0)) this._splitPt = this._seg.pointAlong(frac); else this._splitPt = SplitSegment.pointAlongReverse(this._seg, frac)
     }
   }
-  setMinimumLength(minLen) {
-    this._minimumLen = minLen
+  getSplitPoint() {
+    return this._splitPt
   }
   getConstrainedLength(len) {
     if (len < this._minimumLen) return this._minimumLen
     return len
   }
-  getSplitPoint() {
-    return this._splitPt
+  setMinimumLength(minLen) {
+    this._minimumLen = minLen
   }
 }

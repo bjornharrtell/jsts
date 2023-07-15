@@ -2,15 +2,6 @@ import hasInterface from '../../../../hasInterface.js'
 import Coordinate from '../geom/Coordinate.js'
 import CoordinateSequence from '../geom/CoordinateSequence.js'
 export default class Area {
-  static ofRing() {
-    if (arguments[0] instanceof Array) {
-      const ring = arguments[0]
-      return Math.abs(Area.ofRingSigned(ring))
-    } else if (hasInterface(arguments[0], CoordinateSequence)) {
-      const ring = arguments[0]
-      return Math.abs(Area.ofRingSigned(ring))
-    }
-  }
   static ofRingSigned() {
     if (arguments[0] instanceof Array) {
       const ring = arguments[0]
@@ -45,6 +36,15 @@ export default class Area {
         sum += p1.x * (p0.y - p2.y)
       }
       return sum / 2.0
+    }
+  }
+  static ofRing() {
+    if (arguments[0] instanceof Array) {
+      const ring = arguments[0]
+      return Math.abs(Area.ofRingSigned(ring))
+    } else if (hasInterface(arguments[0], CoordinateSequence)) {
+      const ring = arguments[0]
+      return Math.abs(Area.ofRingSigned(ring))
     }
   }
 }

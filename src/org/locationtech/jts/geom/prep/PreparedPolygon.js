@@ -5,9 +5,9 @@ import PreparedPolygonContainsProperly from './PreparedPolygonContainsProperly.j
 import PreparedPolygonContains from './PreparedPolygonContains.js'
 import PreparedPolygonCovers from './PreparedPolygonCovers.js'
 import BasicPreparedGeometry from './BasicPreparedGeometry.js'
+import RectangleIntersects from '../../operation/predicate/RectangleIntersects.js'
 import IndexedPointInAreaLocator from '../../algorithm/locate/IndexedPointInAreaLocator.js'
 import RectangleContains from '../../operation/predicate/RectangleContains.js'
-import RectangleIntersects from '../../operation/predicate/RectangleIntersects.js'
 export default class PreparedPolygon extends BasicPreparedGeometry {
   constructor() {
     super()
@@ -29,6 +29,17 @@ export default class PreparedPolygon extends BasicPreparedGeometry {
     if (this._pia === null) this._pia = new IndexedPointInAreaLocator(this.getGeometry())
     return this._pia
   }
+  contains(g) {
+    if (!this.envelopeCovers(g)) return false
+    if (this._isRectangle) 
+      return RectangleContains.contains(this.getGeometry(), g)
+    
+    return PreparedPolygonContains.contains(this, g)
+  }
+  getIntersectionFinder() {
+    if (this._segIntFinder === null) this._segIntFinder = new FastSegmentSetIntersectionFinder(SegmentStringUtil.extractSegmentStrings(this.getGeometry()))
+    return this._segIntFinder
+  }
   covers(g) {
     if (!this.envelopeCovers(g)) return false
     if (this._isRectangle) 
@@ -42,16 +53,5 @@ export default class PreparedPolygon extends BasicPreparedGeometry {
       return RectangleIntersects.intersects(this.getGeometry(), g)
     
     return PreparedPolygonIntersects.intersects(this, g)
-  }
-  contains(g) {
-    if (!this.envelopeCovers(g)) return false
-    if (this._isRectangle) 
-      return RectangleContains.contains(this.getGeometry(), g)
-    
-    return PreparedPolygonContains.contains(this, g)
-  }
-  getIntersectionFinder() {
-    if (this._segIntFinder === null) this._segIntFinder = new FastSegmentSetIntersectionFinder(SegmentStringUtil.extractSegmentStrings(this.getGeometry()))
-    return this._segIntFinder
   }
 }

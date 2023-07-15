@@ -23,14 +23,17 @@ export default class SweepLineEvent {
       this._obj = obj
     }
   }
+  getObject() {
+    return this._obj
+  }
+  getDeleteEventIndex() {
+    return this._deleteEventIndex
+  }
   isDelete() {
     return this._eventType === SweepLineEvent.DELETE
   }
   setDeleteEventIndex(deleteEventIndex) {
     this._deleteEventIndex = deleteEventIndex
-  }
-  getObject() {
-    return this._obj
   }
   compareTo(o) {
     const pe = o
@@ -49,9 +52,6 @@ export default class SweepLineEvent {
   isSameLabel(ev) {
     if (this._label === null) return false
     return this._label === ev._label
-  }
-  getDeleteEventIndex() {
-    return this._deleteEventIndex
   }
   get interfaces_() {
     return [Comparable]

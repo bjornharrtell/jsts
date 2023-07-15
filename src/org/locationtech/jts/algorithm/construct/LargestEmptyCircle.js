@@ -1,11 +1,11 @@
 import Location from '../../geom/Location.js'
 import PriorityQueue from '../../../../../java/util/PriorityQueue.js'
+import Centroid from '../Centroid.js'
+import IndexedPointInAreaLocator from '../locate/IndexedPointInAreaLocator.js'
 import Coordinate from '../../geom/Coordinate.js'
 import IllegalArgumentException from '../../../../../java/lang/IllegalArgumentException.js'
-import Centroid from '../Centroid.js'
 import Comparable from '../../../../../java/lang/Comparable.js'
 import IndexedFacetDistance from '../../operation/distance/IndexedFacetDistance.js'
-import IndexedPointInAreaLocator from '../locate/IndexedPointInAreaLocator.js'
 export default class LargestEmptyCircle {
   constructor() {
     LargestEmptyCircle.constructor_.apply(this, arguments)
@@ -47,6 +47,39 @@ export default class LargestEmptyCircle {
     const radiusLine = this._factory.createLineString([this._centerPt.copy(), this._radiusPt.copy()])
     return radiusLine
   }
+  createCentroidCell(geom) {
+    const p = this._factory.createPoint(Centroid.getCentroid(geom))
+    return new Cell(p.getX(), p.getY(), 0, this.distanceToConstraints(p))
+  }
+  getCenter() {
+    this.compute()
+    return this._centerPoint
+  }
+  createCell(x, y, h) {
+    return new Cell(x, y, h, this.distanceToConstraints(x, y))
+  }
+  createInitialGrid(env, cellQueue) {
+    const minX = env.getMinX()
+    const maxX = env.getMaxX()
+    const minY = env.getMinY()
+    const maxY = env.getMaxY()
+    const width = env.getWidth()
+    const height = env.getHeight()
+    const cellSize = Math.min(width, height)
+    const hSize = cellSize / 2.0
+    for (let x = minX; x < maxX; x += cellSize) 
+      for (let y = minY; y < maxY; y += cellSize) 
+        cellQueue.add(this.createCell(x + hSize, y + hSize, hSize))
+      
+    
+  }
+  setBoundary(obstacles) {
+    this._boundary = obstacles.convexHull()
+    if (this._boundary.getDimension() >= 2) {
+      this._ptLocater = new IndexedPointInAreaLocator(this._boundary)
+      this._boundaryDistance = new IndexedFacetDistance(this._boundary)
+    }
+  }
   compute() {
     if (this._centerCell !== null) return null
     if (this._ptLocater === null) {
@@ -84,14 +117,6 @@ export default class LargestEmptyCircle {
     this.compute()
     return this._radiusPoint
   }
-  createCentroidCell(geom) {
-    const p = this._factory.createPoint(Centroid.getCentroid(geom))
-    return new Cell(p.getX(), p.getY(), 0, this.distanceToConstraints(p))
-  }
-  getCenter() {
-    this.compute()
-    return this._centerPoint
-  }
   distanceToConstraints() {
     if (arguments.length === 1) {
       const p = arguments[0]
@@ -118,31 +143,6 @@ export default class LargestEmptyCircle {
     const potentialIncrease = cell.getMaxDistance() - this._farthestCell.getDistance()
     return potentialIncrease > this._tolerance
   }
-  createCell(x, y, h) {
-    return new Cell(x, y, h, this.distanceToConstraints(x, y))
-  }
-  createInitialGrid(env, cellQueue) {
-    const minX = env.getMinX()
-    const maxX = env.getMaxX()
-    const minY = env.getMinY()
-    const maxY = env.getMaxY()
-    const width = env.getWidth()
-    const height = env.getHeight()
-    const cellSize = Math.min(width, height)
-    const hSize = cellSize / 2.0
-    for (let x = minX; x < maxX; x += cellSize) 
-      for (let y = minY; y < maxY; y += cellSize) 
-        cellQueue.add(this.createCell(x + hSize, y + hSize, hSize))
-      
-    
-  }
-  setBoundary(obstacles) {
-    this._boundary = obstacles.convexHull()
-    if (this._boundary.getDimension() >= 2) {
-      this._ptLocater = new IndexedPointInAreaLocator(this._boundary)
-      this._boundaryDistance = new IndexedFacetDistance(this._boundary)
-    }
-  }
 }
 class Cell {
   constructor() {
@@ -167,23 +167,23 @@ class Cell {
   compareTo(o) {
     return Math.trunc(o._maxDist - this._maxDist)
   }
+  getDistance() {
+    return this._distance
+  }
+  isFullyOutside() {
+    return this.getMaxDistance() < 0
+  }
   getX() {
     return this._x
   }
   getMaxDistance() {
     return this._maxDist
   }
-  getDistance() {
-    return this._distance
-  }
   isOutside() {
     return this._distance < 0
   }
   getY() {
     return this._y
-  }
-  isFullyOutside() {
-    return this.getMaxDistance() < 0
   }
   get interfaces_() {
     return [Comparable]

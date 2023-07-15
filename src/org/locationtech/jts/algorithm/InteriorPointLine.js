@@ -26,6 +26,16 @@ export default class InteriorPointLine {
     const intPt = new InteriorPointLine(geom)
     return intPt.getInteriorPoint()
   }
+  add(point) {
+    const dist = point.distance(this._centroid)
+    if (dist < this._minDistance) {
+      this._interiorPoint = new Coordinate(point)
+      this._minDistance = dist
+    }
+  }
+  getInteriorPoint() {
+    return this._interiorPoint
+  }
   addEndpoints() {
     if (arguments[0] instanceof Geometry) {
       const geom = arguments[0]
@@ -43,9 +53,6 @@ export default class InteriorPointLine {
       this.add(pts[pts.length - 1])
     }
   }
-  getInteriorPoint() {
-    return this._interiorPoint
-  }
   addInterior() {
     if (arguments[0] instanceof Geometry) {
       const geom = arguments[0]
@@ -62,13 +69,6 @@ export default class InteriorPointLine {
       for (let i = 1; i < pts.length - 1; i++) 
         this.add(pts[i])
       
-    }
-  }
-  add(point) {
-    const dist = point.distance(this._centroid)
-    if (dist < this._minDistance) {
-      this._interiorPoint = new Coordinate(point)
-      this._minDistance = dist
     }
   }
 }

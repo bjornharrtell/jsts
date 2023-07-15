@@ -5,18 +5,6 @@ import System from '../../../../java/lang/System.js'
 import Comparator from '../../../../java/util/Comparator.js'
 import Envelope from './Envelope.js'
 export default class CoordinateArrays {
-  static isRing(pts) {
-    if (pts.length < 4) return false
-    if (!pts[0].equals2D(pts[pts.length - 1])) return false
-    return true
-  }
-  static ptNotInList(testPts, pts) {
-    for (let i = 0; i < testPts.length; i++) {
-      const testPt = testPts[i]
-      if (CoordinateArrays.indexOf(testPt, pts) < 0) return testPt
-    }
-    return null
-  }
   static scroll(coordinates, firstCoordinate) {
     const i = CoordinateArrays.indexOf(firstCoordinate, coordinates)
     if (i < 0) return null
@@ -24,52 +12,6 @@ export default class CoordinateArrays {
     System.arraycopy(coordinates, i, newCoordinates, 0, coordinates.length - i)
     System.arraycopy(coordinates, 0, newCoordinates, coordinates.length - i, i)
     System.arraycopy(newCoordinates, 0, coordinates, 0, coordinates.length)
-  }
-  static equals() {
-    if (arguments.length === 2) {
-      const coord1 = arguments[0], coord2 = arguments[1]
-      if (coord1 === coord2) return true
-      if (coord1 === null || coord2 === null) return false
-      if (coord1.length !== coord2.length) return false
-      for (let i = 0; i < coord1.length; i++) 
-        if (!coord1[i].equals(coord2[i])) return false
-      
-      return true
-    } else if (arguments.length === 3) {
-      const coord1 = arguments[0], coord2 = arguments[1], coordinateComparator = arguments[2]
-      if (coord1 === coord2) return true
-      if (coord1 === null || coord2 === null) return false
-      if (coord1.length !== coord2.length) return false
-      for (let i = 0; i < coord1.length; i++) 
-        if (coordinateComparator.compare(coord1[i], coord2[i]) !== 0) return false
-      
-      return true
-    }
-  }
-  static intersection(coordinates, env) {
-    const coordList = new CoordinateList()
-    for (let i = 0; i < coordinates.length; i++) 
-      if (env.intersects(coordinates[i])) coordList.add(coordinates[i], true)
-    
-    return coordList.toCoordinateArray()
-  }
-  static measures(pts) {
-    if (pts === null || pts.length === 0) 
-      return 0
-    
-    let measures = 0
-    for (const coordinate of pts) 
-      measures = Math.max(measures, Coordinates.measures(coordinate))
-    
-    return measures
-  }
-  static hasRepeatedPoints(coord) {
-    for (let i = 1; i < coord.length; i++) 
-      if (coord[i - 1].equals(coord[i])) 
-        return true
-      
-    
-    return false
   }
   static removeRepeatedPoints(coord) {
     if (!CoordinateArrays.hasRepeatedPoints(coord)) return coord
@@ -128,6 +70,79 @@ export default class CoordinateArrays {
     
     return env
   }
+  static extract(pts, start, end) {
+    start = MathUtil.clamp(start, 0, pts.length)
+    end = MathUtil.clamp(end, -1, pts.length)
+    let npts = end - start + 1
+    if (end < 0) npts = 0
+    if (start >= pts.length) npts = 0
+    if (end < start) npts = 0
+    const extractPts = new Array(npts).fill(null)
+    if (npts === 0) return extractPts
+    let iPts = 0
+    for (let i = start; i <= end; i++) 
+      extractPts[iPts++] = pts[i]
+    
+    return extractPts
+  }
+  static isRing(pts) {
+    if (pts.length < 4) return false
+    if (!pts[0].equals2D(pts[pts.length - 1])) return false
+    return true
+  }
+  static ptNotInList(testPts, pts) {
+    for (let i = 0; i < testPts.length; i++) {
+      const testPt = testPts[i]
+      if (CoordinateArrays.indexOf(testPt, pts) < 0) return testPt
+    }
+    return null
+  }
+  static equals() {
+    if (arguments.length === 2) {
+      const coord1 = arguments[0], coord2 = arguments[1]
+      if (coord1 === coord2) return true
+      if (coord1 === null || coord2 === null) return false
+      if (coord1.length !== coord2.length) return false
+      for (let i = 0; i < coord1.length; i++) 
+        if (!coord1[i].equals(coord2[i])) return false
+      
+      return true
+    } else if (arguments.length === 3) {
+      const coord1 = arguments[0], coord2 = arguments[1], coordinateComparator = arguments[2]
+      if (coord1 === coord2) return true
+      if (coord1 === null || coord2 === null) return false
+      if (coord1.length !== coord2.length) return false
+      for (let i = 0; i < coord1.length; i++) 
+        if (coordinateComparator.compare(coord1[i], coord2[i]) !== 0) return false
+      
+      return true
+    }
+  }
+  static intersection(coordinates, env) {
+    const coordList = new CoordinateList()
+    for (let i = 0; i < coordinates.length; i++) 
+      if (env.intersects(coordinates[i])) coordList.add(coordinates[i], true)
+    
+    return coordList.toCoordinateArray()
+  }
+  static measures(pts) {
+    if (pts === null || pts.length === 0) 
+      return 0
+    
+    let measures = 0
+    for (const coordinate of pts) 
+      measures = Math.max(measures, Coordinates.measures(coordinate))
+    
+    return measures
+  }
+  static hasRepeatedPoints(coord) {
+    for (let i = 1; i < coord.length; i++) 
+      if (coord[i - 1].equals(coord[i])) 
+        return true
+      
+    
+    return false
+  }
   static toCoordinateArray(coordList) {
     return coordList.toArray(CoordinateArrays.coordArrayType)
   }
@@ -179,21 +194,6 @@ export default class CoordinateArrays {
       
     
     return minCoord
-  }
-  static extract(pts, start, end) {
-    start = MathUtil.clamp(start, 0, pts.length)
-    end = MathUtil.clamp(end, -1, pts.length)
-    let npts = end - start + 1
-    if (end < 0) npts = 0
-    if (start >= pts.length) npts = 0
-    if (end < start) npts = 0
-    const extractPts = new Array(npts).fill(null)
-    if (npts === 0) return extractPts
-    let iPts = 0
-    for (let i = start; i <= end; i++) 
-      extractPts[iPts++] = pts[i]
-    
-    return extractPts
   }
 }
 class ForwardComparator {

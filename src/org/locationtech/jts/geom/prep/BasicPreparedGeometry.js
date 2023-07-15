@@ -12,29 +12,6 @@ export default class BasicPreparedGeometry {
     this._baseGeom = geom
     this._representativePts = ComponentCoordinateExtracter.getCoordinates(geom)
   }
-  getRepresentativePoints() {
-    return this._representativePts
-  }
-  containsProperly(g) {
-    if (!this._baseGeom.getEnvelopeInternal().contains(g.getEnvelopeInternal())) return false
-    return this._baseGeom.relate(g, 'T**FF*FF*')
-  }
-  getGeometry() {
-    return this._baseGeom
-  }
-  envelopesIntersect(g) {
-    if (!this._baseGeom.getEnvelopeInternal().intersects(g.getEnvelopeInternal())) return false
-    return true
-  }
-  covers(g) {
-    return this._baseGeom.covers(g)
-  }
-  intersects(g) {
-    return this._baseGeom.intersects(g)
-  }
-  touches(g) {
-    return this._baseGeom.touches(g)
-  }
   within(g) {
     return this._baseGeom.within(g)
   }
@@ -58,15 +35,38 @@ export default class BasicPreparedGeometry {
   disjoint(g) {
     return !this.intersects(g)
   }
+  envelopeCovers(g) {
+    if (!this._baseGeom.getEnvelopeInternal().covers(g.getEnvelopeInternal())) return false
+    return true
+  }
+  getRepresentativePoints() {
+    return this._representativePts
+  }
+  containsProperly(g) {
+    if (!this._baseGeom.getEnvelopeInternal().contains(g.getEnvelopeInternal())) return false
+    return this._baseGeom.relate(g, 'T**FF*FF*')
+  }
+  getGeometry() {
+    return this._baseGeom
+  }
+  envelopesIntersect(g) {
+    if (!this._baseGeom.getEnvelopeInternal().intersects(g.getEnvelopeInternal())) return false
+    return true
+  }
+  covers(g) {
+    return this._baseGeom.covers(g)
+  }
+  intersects(g) {
+    return this._baseGeom.intersects(g)
+  }
+  touches(g) {
+    return this._baseGeom.touches(g)
+  }
   crosses(g) {
     return this._baseGeom.crosses(g)
   }
   contains(g) {
     return this._baseGeom.contains(g)
-  }
-  envelopeCovers(g) {
-    if (!this._baseGeom.getEnvelopeInternal().covers(g.getEnvelopeInternal())) return false
-    return true
   }
   get interfaces_() {
     return [PreparedGeometry]

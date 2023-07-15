@@ -1,13 +1,13 @@
 import Geometry from '../geom/Geometry.js'
-import hasInterface from '../../../../hasInterface.js'
-import GeometryFactory from '../geom/GeometryFactory.js'
 import Collection from '../../../../java/util/Collection.js'
-import IncrementalDelaunayTriangulator from './IncrementalDelaunayTriangulator.js'
-import QuadEdgeSubdivision from './quadedge/QuadEdgeSubdivision.js'
 import DelaunayTriangulationBuilder from './DelaunayTriangulationBuilder.js'
 import CoordinateArrays from '../geom/CoordinateArrays.js'
 import ArrayList from '../../../../java/util/ArrayList.js'
 import OverlayOp from '../operation/overlay/OverlayOp.js'
+import hasInterface from '../../../../hasInterface.js'
+import GeometryFactory from '../geom/GeometryFactory.js'
+import IncrementalDelaunayTriangulator from './IncrementalDelaunayTriangulator.js'
+import QuadEdgeSubdivision from './quadedge/QuadEdgeSubdivision.js'
 export default class VoronoiDiagramBuilder {
   constructor() {
     VoronoiDiagramBuilder.constructor_.apply(this, arguments)
@@ -51,14 +51,6 @@ export default class VoronoiDiagramBuilder {
     const triangulator = new IncrementalDelaunayTriangulator(this._subdiv)
     triangulator.insertSites(vertices)
   }
-  getDiagram(geomFact) {
-    this.create()
-    const polys = this._subdiv.getVoronoiDiagram(geomFact)
-    return VoronoiDiagramBuilder.clipGeometryCollection(polys, this._diagramEnv)
-  }
-  setTolerance(tolerance) {
-    this._tolerance = tolerance
-  }
   setSites() {
     if (arguments[0] instanceof Geometry) {
       const geom = arguments[0]
@@ -74,5 +66,13 @@ export default class VoronoiDiagramBuilder {
   getSubdivision() {
     this.create()
     return this._subdiv
+  }
+  getDiagram(geomFact) {
+    this.create()
+    const polys = this._subdiv.getVoronoiDiagram(geomFact)
+    return VoronoiDiagramBuilder.clipGeometryCollection(polys, this._diagramEnv)
+  }
+  setTolerance(tolerance) {
+    this._tolerance = tolerance
   }
 }

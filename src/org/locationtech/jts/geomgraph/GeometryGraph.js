@@ -1,30 +1,30 @@
-import PointLocator from '../algorithm/PointLocator.js'
-import Location from '../geom/Location.js'
 import LineString from '../geom/LineString.js'
 import HashMap from '../../../../java/util/HashMap.js'
 import Geometry from '../geom/Geometry.js'
 import hasInterface from '../../../../hasInterface.js'
 import Position from './Position.js'
+import SimpleMCSweepLineIntersector from './index/SimpleMCSweepLineIntersector.js'
+import Orientation from '../algorithm/Orientation.js'
+import Label from './Label.js'
+import CoordinateArrays from '../geom/CoordinateArrays.js'
+import Polygonal from '../geom/Polygonal.js'
+import MultiLineString from '../geom/MultiLineString.js'
+import PlanarGraph from './PlanarGraph.js'
+import PointLocator from '../algorithm/PointLocator.js'
+import Location from '../geom/Location.js'
 import Coordinate from '../geom/Coordinate.js'
 import Point from '../geom/Point.js'
 import Polygon from '../geom/Polygon.js'
 import MultiPoint from '../geom/MultiPoint.js'
-import SimpleMCSweepLineIntersector from './index/SimpleMCSweepLineIntersector.js'
 import LinearRing from '../geom/LinearRing.js'
 import BoundaryNodeRule from '../algorithm/BoundaryNodeRule.js'
-import Orientation from '../algorithm/Orientation.js'
 import SegmentIntersector from './index/SegmentIntersector.js'
 import MultiPolygon from '../geom/MultiPolygon.js'
-import Label from './Label.js'
 import GeometryCollection from '../geom/GeometryCollection.js'
 import UnsupportedOperationException from '../../../../java/lang/UnsupportedOperationException.js'
-import CoordinateArrays from '../geom/CoordinateArrays.js'
-import Polygonal from '../geom/Polygonal.js'
 import IndexedPointInAreaLocator from '../algorithm/locate/IndexedPointInAreaLocator.js'
 import Assert from '../util/Assert.js'
 import Edge from './Edge.js'
-import MultiLineString from '../geom/MultiLineString.js'
-import PlanarGraph from './PlanarGraph.js'
 export default class GeometryGraph extends PlanarGraph {
   constructor() {
     super()
@@ -83,38 +83,6 @@ export default class GeometryGraph extends PlanarGraph {
       return si
     }
   }
-  computeSplitEdges(edgelist) {
-    for (let i = this._edges.iterator(); i.hasNext(); ) {
-      const e = i.next()
-      e.eiList.addSplitEdges(edgelist)
-    }
-  }
-  computeEdgeIntersections(g, li, includeProper) {
-    const si = new SegmentIntersector(li, includeProper, true)
-    si.setBoundaryNodes(this.getBoundaryNodes(), g.getBoundaryNodes())
-    const esi = this.createEdgeSetIntersector()
-    esi.computeIntersections(this._edges, g._edges, si)
-    return si
-  }
-  getGeometry() {
-    return this._parentGeom
-  }
-  getBoundaryNodeRule() {
-    return this._boundaryNodeRule
-  }
-  hasTooFewPoints() {
-    return this._hasTooFewPoints
-  }
-  addPoint() {
-    if (arguments[0] instanceof Point) {
-      const p = arguments[0]
-      const coord = p.getCoordinate()
-      this.insertPoint(this._argIndex, coord, Location.INTERIOR)
-    } else if (arguments[0] instanceof Coordinate) {
-      const pt = arguments[0]
-      this.insertPoint(this._argIndex, pt, Location.INTERIOR)
-    }
-  }
   addPolygon(p) {
     this.addPolygonRing(p.getExteriorRing(), Location.EXTERIOR, Location.INTERIOR)
     for (let i = 0; i < p.getNumInteriorRing(); i++) {
@@ -154,43 +122,6 @@ export default class GeometryGraph extends PlanarGraph {
       pts[i++] = node.getCoordinate().copy()
     }
     return pts
-  }
-  getBoundaryNodes() {
-    if (this._boundaryNodes === null) this._boundaryNodes = this._nodes.getBoundaryNodes(this._argIndex)
-    return this._boundaryNodes
-  }
-  addSelfIntersectionNode(argIndex, coord, loc) {
-    if (this.isBoundaryNode(argIndex, coord)) return null
-    if (loc === Location.BOUNDARY && this._useBoundaryDeterminationRule) this.insertBoundaryPoint(argIndex, coord); else this.insertPoint(argIndex, coord, loc)
-  }
-  addPolygonRing(lr, cwLeft, cwRight) {
-    if (lr.isEmpty()) return null
-    const coord = CoordinateArrays.removeRepeatedPoints(lr.getCoordinates())
-    if (coord.length < 4) {
-      this._hasTooFewPoints = true
-      this._invalidPoint = coord[0]
-      return null
-    }
-    let left = cwLeft
-    let right = cwRight
-    if (Orientation.isCCW(coord)) {
-      left = cwRight
-      right = cwLeft
-    }
-    const e = new Edge(coord, new Label(this._argIndex, Location.BOUNDARY, left, right))
-    this._lineEdgeMap.put(lr, e)
-    this.insertEdge(e)
-    this.insertPoint(this._argIndex, coord[0], Location.BOUNDARY)
-  }
-  insertPoint(argIndex, coord, onLocation) {
-    const n = this._nodes.addNode(coord)
-    const lbl = n.getLabel()
-    if (lbl === null) 
-      n._label = new Label(argIndex, onLocation)
-    else lbl.setLocation(argIndex, onLocation)
-  }
-  createEdgeSetIntersector() {
-    return new SimpleMCSweepLineIntersector()
   }
   addSelfIntersectionNodes(argIndex) {
     for (let i = this._edges.iterator(); i.hasNext(); ) {
@@ -234,5 +165,74 @@ export default class GeometryGraph extends PlanarGraph {
     } else {
       return super.findEdge.apply(this, arguments)
     }
+  }
+  computeSplitEdges(edgelist) {
+    for (let i = this._edges.iterator(); i.hasNext(); ) {
+      const e = i.next()
+      e.eiList.addSplitEdges(edgelist)
+    }
+  }
+  computeEdgeIntersections(g, li, includeProper) {
+    const si = new SegmentIntersector(li, includeProper, true)
+    si.setBoundaryNodes(this.getBoundaryNodes(), g.getBoundaryNodes())
+    const esi = this.createEdgeSetIntersector()
+    esi.computeIntersections(this._edges, g._edges, si)
+    return si
+  }
+  getGeometry() {
+    return this._parentGeom
+  }
+  getBoundaryNodeRule() {
+    return this._boundaryNodeRule
+  }
+  hasTooFewPoints() {
+    return this._hasTooFewPoints
+  }
+  addPoint() {
+    if (arguments[0] instanceof Point) {
+      const p = arguments[0]
+      const coord = p.getCoordinate()
+      this.insertPoint(this._argIndex, coord, Location.INTERIOR)
+    } else if (arguments[0] instanceof Coordinate) {
+      const pt = arguments[0]
+      this.insertPoint(this._argIndex, pt, Location.INTERIOR)
+    }
+  }
+  getBoundaryNodes() {
+    if (this._boundaryNodes === null) this._boundaryNodes = this._nodes.getBoundaryNodes(this._argIndex)
+    return this._boundaryNodes
+  }
+  addSelfIntersectionNode(argIndex, coord, loc) {
+    if (this.isBoundaryNode(argIndex, coord)) return null
+    if (loc === Location.BOUNDARY && this._useBoundaryDeterminationRule) this.insertBoundaryPoint(argIndex, coord); else this.insertPoint(argIndex, coord, loc)
+  }
+  addPolygonRing(lr, cwLeft, cwRight) {
+    if (lr.isEmpty()) return null
+    const coord = CoordinateArrays.removeRepeatedPoints(lr.getCoordinates())
+    if (coord.length < 4) {
+      this._hasTooFewPoints = true
+      this._invalidPoint = coord[0]
+      return null
+    }
+    let left = cwLeft
+    let right = cwRight
+    if (Orientation.isCCW(coord)) {
+      left = cwRight
+      right = cwLeft
+    }
+    const e = new Edge(coord, new Label(this._argIndex, Location.BOUNDARY, left, right))
+    this._lineEdgeMap.put(lr, e)
+    this.insertEdge(e)
+    this.insertPoint(this._argIndex, coord[0], Location.BOUNDARY)
+  }
+  insertPoint(argIndex, coord, onLocation) {
+    const n = this._nodes.addNode(coord)
+    const lbl = n.getLabel()
+    if (lbl === null) 
+      n._label = new Label(argIndex, onLocation)
+    else lbl.setLocation(argIndex, onLocation)
+  }
+  createEdgeSetIntersector() {
+    return new SimpleMCSweepLineIntersector()
   }
 }

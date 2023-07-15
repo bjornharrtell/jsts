@@ -1,11 +1,11 @@
 import hasInterface from '../../../../hasInterface.js'
-import Collection from '../../../../java/util/Collection.js'
-import Noder from './Noder.js'
 import Coordinate from '../geom/Coordinate.js'
 import NodedSegmentString from './NodedSegmentString.js'
 import System from '../../../../java/lang/System.js'
 import CoordinateArrays from '../geom/CoordinateArrays.js'
 import ArrayList from '../../../../java/util/ArrayList.js'
+import Collection from '../../../../java/util/Collection.js'
+import Noder from './Noder.js'
 export default class ScaledNoder {
   constructor() {
     ScaledNoder.constructor_.apply(this, arguments)

@@ -58,15 +58,6 @@ export default class HilbertCode {
     const index = (i1 << 1 | i0) >> 32 - 2 * lvl
     return Math.trunc(index)
   }
-  static checkLevel(level) {
-    if (level > HilbertCode.MAX_LEVEL) 
-      throw new IllegalArgumentException('Level must be in range 0 to ' + HilbertCode.MAX_LEVEL)
-    
-  }
-  static size(level) {
-    HilbertCode.checkLevel(level)
-    return Math.trunc(Math.pow(2, 2 * level))
-  }
   static maxOrdinate(level) {
     HilbertCode.checkLevel(level)
     return Math.trunc(Math.pow(2, level)) - 1
@@ -104,6 +95,15 @@ export default class HilbertCode {
     const size = HilbertCode.size(level)
     if (size < numPoints) level += 1
     return level
+  }
+  static checkLevel(level) {
+    if (level > HilbertCode.MAX_LEVEL) 
+      throw new IllegalArgumentException('Level must be in range 0 to ' + HilbertCode.MAX_LEVEL)
+    
+  }
+  static size(level) {
+    HilbertCode.checkLevel(level)
+    return Math.trunc(Math.pow(2, 2 * level))
   }
 }
 HilbertCode.MAX_LEVEL = 16

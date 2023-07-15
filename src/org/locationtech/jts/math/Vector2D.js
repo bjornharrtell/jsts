@@ -72,22 +72,6 @@ export default class Vector2D {
     const v = o
     return this._x === v._x && this._y === v._y
   }
-  normalize() {
-    const length = this.length()
-    if (length > 0.0) return this.divide(length)
-    return Vector2D.create(0.0, 0.0)
-  }
-  angle() {
-    if (arguments.length === 0) {
-      return Math.atan2(this._y, this._x)
-    } else if (arguments.length === 1) {
-      const v = arguments[0]
-      return Angle.diff(v.angle(), this.angle())
-    }
-  }
-  weightedSum(v, frac) {
-    return Vector2D.create(frac * this._x + (1.0 - frac) * v._x, frac * this._y + (1.0 - frac) * v._y)
-  }
   divide(d) {
     return Vector2D.create(this._x / d, this._y / d)
   }
@@ -108,6 +92,42 @@ export default class Vector2D {
     }
     Assert.shouldNeverReachHere()
     return null
+  }
+  average(v) {
+    return this.weightedSum(v, 0.5)
+  }
+  getY() {
+    return this._y
+  }
+  add(v) {
+    return Vector2D.create(this._x + v._x, this._y + v._y)
+  }
+  distance(v) {
+    const delx = v._x - this._x
+    const dely = v._y - this._y
+    return Math.sqrt(delx * delx + dely * dely)
+  }
+  hashCode() {
+    let result = 17
+    result = 37 * result + Coordinate.hashCode(this._x)
+    result = 37 * result + Coordinate.hashCode(this._y)
+    return result
+  }
+  normalize() {
+    const length = this.length()
+    if (length > 0.0) return this.divide(length)
+    return Vector2D.create(0.0, 0.0)
+  }
+  angle() {
+    if (arguments.length === 0) {
+      return Math.atan2(this._y, this._x)
+    } else if (arguments.length === 1) {
+      const v = arguments[0]
+      return Angle.diff(v.angle(), this.angle())
+    }
+  }
+  weightedSum(v, frac) {
+    return Vector2D.create(frac * this._x + (1.0 - frac) * v._x, frac * this._y + (1.0 - frac) * v._y)
   }
   rotate(angle) {
     const cos = Math.cos(angle)
@@ -148,25 +168,5 @@ export default class Vector2D {
   }
   length() {
     return Math.sqrt(this._x * this._x + this._y * this._y)
-  }
-  average(v) {
-    return this.weightedSum(v, 0.5)
-  }
-  getY() {
-    return this._y
-  }
-  add(v) {
-    return Vector2D.create(this._x + v._x, this._y + v._y)
-  }
-  distance(v) {
-    const delx = v._x - this._x
-    const dely = v._y - this._y
-    return Math.sqrt(delx * delx + dely * dely)
-  }
-  hashCode() {
-    let result = 17
-    result = 37 * result + Coordinate.hashCode(this._x)
-    result = 37 * result + Coordinate.hashCode(this._y)
-    return result
   }
 }

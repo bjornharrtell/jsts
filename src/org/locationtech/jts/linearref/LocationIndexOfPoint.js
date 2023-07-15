@@ -20,9 +20,6 @@ export default class LocationIndexOfPoint {
     const locater = new LocationIndexOfPoint(linearGeom)
     return locater.indexOfAfter(inputPt, minIndex)
   }
-  indexOf(inputPt) {
-    return this.indexOfFromStart(inputPt, null)
-  }
   indexOfFromStart(inputPt, minIndex) {
     let minDistance = Double.MAX_VALUE
     let minComponentIndex = 0
@@ -52,6 +49,9 @@ export default class LocationIndexOfPoint {
     
     const loc = new LinearLocation(minComponentIndex, minSegmentIndex, minFrac)
     return loc
+  }
+  indexOf(inputPt) {
+    return this.indexOfFromStart(inputPt, null)
   }
   indexOfAfter(inputPt, minIndex) {
     if (minIndex === null) return this.indexOf(inputPt)

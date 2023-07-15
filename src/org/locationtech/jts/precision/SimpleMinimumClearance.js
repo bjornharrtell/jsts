@@ -15,17 +15,23 @@ export default class SimpleMinimumClearance {
     const geom = arguments[0]
     this._inputGeom = geom
   }
-  static getLine(g) {
-    const rp = new SimpleMinimumClearance(g)
-    return rp.getLine()
-  }
   static getDistance(g) {
     const rp = new SimpleMinimumClearance(g)
     return rp.getDistance()
   }
-  getLine() {
+  static getLine(g) {
+    const rp = new SimpleMinimumClearance(g)
+    return rp.getLine()
+  }
+  getDistance() {
     this.compute()
-    return this._inputGeom.getFactory().createLineString(this._minClearancePts)
+    return this._minClearance
+  }
+  compute() {
+    if (this._minClearancePts !== null) return null
+    this._minClearancePts = new Array(2).fill(null)
+    this._minClearance = Double.MAX_VALUE
+    this._inputGeom.apply(new VertexCoordinateFilter(this))
   }
   updateClearance() {
     if (arguments.length === 3) {
@@ -45,15 +51,9 @@ export default class SimpleMinimumClearance {
       }
     }
   }
-  compute() {
-    if (this._minClearancePts !== null) return null
-    this._minClearancePts = new Array(2).fill(null)
-    this._minClearance = Double.MAX_VALUE
-    this._inputGeom.apply(new VertexCoordinateFilter(this))
-  }
-  getDistance() {
+  getLine() {
     this.compute()
-    return this._minClearance
+    return this._inputGeom.getFactory().createLineString(this._minClearancePts)
   }
 }
 class VertexCoordinateFilter {
@@ -83,15 +83,6 @@ class ComputeMCCoordinateSequenceFilter {
     this.smc = smc
     this._queryPt = queryPt
   }
-  isGeometryChanged() {
-    return false
-  }
-  checkVertexDistance(vertex) {
-    const vertexDist = vertex.distance(this._queryPt)
-    if (vertexDist > 0) 
-      this.smc.updateClearance(vertexDist, this._queryPt, vertex)
-    
-  }
   filter(seq, i) {
     this.checkVertexDistance(seq.getCoordinate(i))
     if (i > 0) 
@@ -105,6 +96,15 @@ class ComputeMCCoordinateSequenceFilter {
   }
   isDone() {
     return false
+  }
+  isGeometryChanged() {
+    return false
+  }
+  checkVertexDistance(vertex) {
+    const vertexDist = vertex.distance(this._queryPt)
+    if (vertexDist > 0) 
+      this.smc.updateClearance(vertexDist, this._queryPt, vertex)
+    
   }
   get interfaces_() {
     return [CoordinateSequenceFilter]

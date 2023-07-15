@@ -18,12 +18,6 @@ export default class AbstractNode {
   getLevel() {
     return this._level
   }
-  size() {
-    return this._childBoundables.size()
-  }
-  getChildBoundables() {
-    return this._childBoundables
-  }
   addChildBoundable(childBoundable) {
     Assert.isTrue(this._bounds === null)
     this._childBoundables.add(childBoundable)
@@ -36,6 +30,12 @@ export default class AbstractNode {
       this._bounds = this.computeBounds()
     
     return this._bounds
+  }
+  size() {
+    return this._childBoundables.size()
+  }
+  getChildBoundables() {
+    return this._childBoundables
   }
   get interfaces_() {
     return [Boundable, Serializable]

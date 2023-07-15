@@ -24,6 +24,10 @@ export default class Vector3D {
       this._z = z
     }
   }
+  static normalize(v) {
+    const len = Vector3D.length(v)
+    return new Coordinate(v.x / len, v.y / len, v.getZ() / len)
+  }
   static length(v) {
     return Math.sqrt(v.x * v.x + v.y * v.y + v.getZ() * v.getZ())
   }
@@ -41,10 +45,6 @@ export default class Vector3D {
       const CDz = D.getZ() - C.getZ()
       return ABx * CDx + ABy * CDy + ABz * CDz
     }
-  }
-  static normalize(v) {
-    const len = Vector3D.length(v)
-    return new Coordinate(v.x / len, v.y / len, v.getZ() / len)
   }
   static create() {
     if (arguments.length === 1) {
@@ -82,12 +82,6 @@ export default class Vector3D {
   getX() {
     return this._x
   }
-  toString() {
-    return '[' + this._x + ', ' + this._y + ', ' + this._z + ']'
-  }
-  length() {
-    return Math.sqrt(this._x * this._x + this._y * this._y + this._z * this._z)
-  }
   getY() {
     return this._y
   }
@@ -100,5 +94,11 @@ export default class Vector3D {
     result = 37 * result + Coordinate.hashCode(this._y)
     result = 37 * result + Coordinate.hashCode(this._z)
     return result
+  }
+  toString() {
+    return '[' + this._x + ', ' + this._y + ', ' + this._z + ']'
+  }
+  length() {
+    return Math.sqrt(this._x * this._x + this._y * this._y + this._z * this._z)
   }
 }

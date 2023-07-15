@@ -1,8 +1,8 @@
-import PointLocator from '../../algorithm/PointLocator.js'
-import Location from '../../geom/Location.js'
 import TreeSet from '../../../../../java/util/TreeSet.js'
 import GeometryCombiner from '../../geom/util/GeometryCombiner.js'
 import CoordinateArrays from '../../geom/CoordinateArrays.js'
+import PointLocator from '../../algorithm/PointLocator.js'
+import Location from '../../geom/Location.js'
 export default class PointGeometryUnion {
   constructor() {
     PointGeometryUnion.constructor_.apply(this, arguments)

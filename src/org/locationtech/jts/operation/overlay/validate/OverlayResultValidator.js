@@ -1,10 +1,10 @@
-import GeometrySnapper from '../snap/GeometrySnapper.js'
-import Location from '../../../geom/Location.js'
 import FuzzyPointLocator from './FuzzyPointLocator.js'
 import OffsetPointGenerator from './OffsetPointGenerator.js'
 import System from '../../../../../../java/lang/System.js'
 import ArrayList from '../../../../../../java/util/ArrayList.js'
 import OverlayOp from '../OverlayOp.js'
+import GeometrySnapper from '../snap/GeometrySnapper.js'
+import Location from '../../../geom/Location.js'
 export default class OverlayResultValidator {
   constructor() {
     OverlayResultValidator.constructor_.apply(this, arguments)
@@ -21,12 +21,6 @@ export default class OverlayResultValidator {
     this._geom = [a, b, result]
     this._locFinder = [new FuzzyPointLocator(this._geom[0], this._boundaryDistanceTolerance), new FuzzyPointLocator(this._geom[1], this._boundaryDistanceTolerance), new FuzzyPointLocator(this._geom[2], this._boundaryDistanceTolerance)]
   }
-  static hasLocation(location, loc) {
-    for (let i = 0; i < 3; i++) 
-      if (location[i] === loc) return true
-    
-    return false
-  }
   static computeBoundaryDistanceTolerance(g0, g1) {
     return Math.min(GeometrySnapper.computeSizeBasedSnapTolerance(g0), GeometrySnapper.computeSizeBasedSnapTolerance(g1))
   }
@@ -34,14 +28,11 @@ export default class OverlayResultValidator {
     const validator = new OverlayResultValidator(a, b, result)
     return validator.isValid(overlayOp)
   }
-  reportResult(overlayOp, location, expectedInterior) {
-    System.out.println('Overlay result invalid - A:' + Location.toLocationSymbol(location[0]) + ' B:' + Location.toLocationSymbol(location[1]) + ' expected:' + (expectedInterior ? 'i' : 'e') + ' actual:' + Location.toLocationSymbol(location[2]))
-  }
-  isValid(overlayOp) {
-    this.addTestPts(this._geom[0])
-    this.addTestPts(this._geom[1])
-    const isValid = this.checkValid(overlayOp)
-    return isValid
+  static hasLocation(location, loc) {
+    for (let i = 0; i < 3; i++) 
+      if (location[i] === loc) return true
+    
+    return false
   }
   checkValid() {
     if (arguments.length === 1) {
@@ -63,6 +54,18 @@ export default class OverlayResultValidator {
       return this.isValidResult(overlayOp, this._location)
     }
   }
+  getInvalidLocation() {
+    return this._invalidLocation
+  }
+  reportResult(overlayOp, location, expectedInterior) {
+    System.out.println('Overlay result invalid - A:' + Location.toLocationSymbol(location[0]) + ' B:' + Location.toLocationSymbol(location[1]) + ' expected:' + (expectedInterior ? 'i' : 'e') + ' actual:' + Location.toLocationSymbol(location[2]))
+  }
+  isValid(overlayOp) {
+    this.addTestPts(this._geom[0])
+    this.addTestPts(this._geom[1])
+    const isValid = this.checkValid(overlayOp)
+    return isValid
+  }
   addTestPts(g) {
     const ptGen = new OffsetPointGenerator(g)
     this._testCoords.addAll(ptGen.getPoints(5 * this._boundaryDistanceTolerance))
@@ -73,9 +76,6 @@ export default class OverlayResultValidator {
     const isValid = !(expectedInterior ^ resultInInterior)
     if (!isValid) this.reportResult(overlayOp, location, expectedInterior)
     return isValid
-  }
-  getInvalidLocation() {
-    return this._invalidLocation
   }
 }
 OverlayResultValidator.TOLERANCE = 0.000001

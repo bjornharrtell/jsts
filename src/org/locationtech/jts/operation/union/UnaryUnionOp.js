@@ -1,9 +1,9 @@
-import Geometry from '../../geom/Geometry.js'
-import PointGeometryUnion from './PointGeometryUnion.js'
 import hasInterface from '../../../../../hasInterface.js'
 import Collection from '../../../../../java/util/Collection.js'
 import SnapIfNeededOverlayOp from '../overlay/snap/SnapIfNeededOverlayOp.js'
 import InputExtracter from './InputExtracter.js'
+import Geometry from '../../geom/Geometry.js'
+import PointGeometryUnion from './PointGeometryUnion.js'
 import OverlayOp from '../overlay/OverlayOp.js'
 import CascadedPolygonUnion from './CascadedPolygonUnion.js'
 export default class UnaryUnionOp {
@@ -44,16 +44,6 @@ export default class UnaryUnionOp {
       return op.union()
     }
   }
-  unionNoOpt(g0) {
-    const empty = this._geomFact.createPoint()
-    return SnapIfNeededOverlayOp.overlayOp(g0, empty, OverlayOp.UNION)
-  }
-  unionWithNull(g0, g1) {
-    if (g0 === null && g1 === null) return null
-    if (g1 === null) return g0
-    if (g0 === null) return g1
-    return OverlayOp.union(g0, g1)
-  }
   extract() {
     if (hasInterface(arguments[0], Collection)) {
       const geoms = arguments[0]
@@ -62,6 +52,16 @@ export default class UnaryUnionOp {
       const geom = arguments[0]
       this._extracter = InputExtracter.extract(geom)
     }
+  }
+  unionWithNull(g0, g1) {
+    if (g0 === null && g1 === null) return null
+    if (g1 === null) return g0
+    if (g0 === null) return g1
+    return OverlayOp.union(g0, g1)
+  }
+  unionNoOpt(g0) {
+    const empty = this._geomFact.createPoint()
+    return SnapIfNeededOverlayOp.overlayOp(g0, empty, OverlayOp.UNION)
   }
   union() {
     if (this._geomFact === null) this._geomFact = this._extracter.getFactory()

@@ -11,21 +11,6 @@ export default class GeometryCombiner {
     this._geomFactory = GeometryCombiner.extractFactory(geoms)
     this._inputGeoms = geoms
   }
-  static combine() {
-    if (arguments.length === 1) {
-      const geoms = arguments[0]
-      const combiner = new GeometryCombiner(geoms)
-      return combiner.combine()
-    } else if (arguments.length === 2) {
-      const g0 = arguments[0], g1 = arguments[1]
-      const combiner = new GeometryCombiner(GeometryCombiner.createList(g0, g1))
-      return combiner.combine()
-    } else if (arguments.length === 3) {
-      const g0 = arguments[0], g1 = arguments[1], g2 = arguments[2]
-      const combiner = new GeometryCombiner(GeometryCombiner.createList(g0, g1, g2))
-      return combiner.combine()
-    }
-  }
   static extractFactory(geoms) {
     if (geoms.isEmpty()) return null
     return geoms.iterator().next().getFactory()
@@ -44,6 +29,21 @@ export default class GeometryCombiner {
       list.add(obj1)
       list.add(obj2)
       return list
+    }
+  }
+  static combine() {
+    if (arguments.length === 1) {
+      const geoms = arguments[0]
+      const combiner = new GeometryCombiner(geoms)
+      return combiner.combine()
+    } else if (arguments.length === 2) {
+      const g0 = arguments[0], g1 = arguments[1]
+      const combiner = new GeometryCombiner(GeometryCombiner.createList(g0, g1))
+      return combiner.combine()
+    } else if (arguments.length === 3) {
+      const g0 = arguments[0], g1 = arguments[1], g2 = arguments[2]
+      const combiner = new GeometryCombiner(GeometryCombiner.createList(g0, g1, g2))
+      return combiner.combine()
     }
   }
   extractElements(geom, elems) {

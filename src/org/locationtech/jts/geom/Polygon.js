@@ -1,13 +1,13 @@
 import Area from '../algorithm/Area.js'
-import Geometry from './Geometry.js'
-import Arrays from '../../../../java/util/Arrays.js'
-import CoordinateFilter from './CoordinateFilter.js'
 import hasInterface from '../../../../hasInterface.js'
 import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException.js'
 import Orientation from '../algorithm/Orientation.js'
 import CoordinateSequences from './CoordinateSequences.js'
 import GeometryComponentFilter from './GeometryComponentFilter.js'
 import Polygonal from './Polygonal.js'
+import Geometry from './Geometry.js'
+import Arrays from '../../../../java/util/Arrays.js'
+import CoordinateFilter from './CoordinateFilter.js'
 import GeometryFilter from './GeometryFilter.js'
 import CoordinateSequenceFilter from './CoordinateSequenceFilter.js'
 export default class Polygon extends Geometry {
@@ -66,6 +66,63 @@ export default class Polygon extends Geometry {
     
     return area
   }
+  equalsExact() {
+    if (arguments.length === 2 && (typeof arguments[1] === 'number' && arguments[0] instanceof Geometry)) {
+      const other = arguments[0], tolerance = arguments[1]
+      if (!this.isEquivalentClass(other)) 
+        return false
+      
+      const otherPolygon = other
+      const thisShell = this._shell
+      const otherPolygonShell = otherPolygon._shell
+      if (!thisShell.equalsExact(otherPolygonShell, tolerance)) 
+        return false
+      
+      if (this._holes.length !== otherPolygon._holes.length) 
+        return false
+      
+      for (let i = 0; i < this._holes.length; i++) 
+        if (!this._holes[i].equalsExact(otherPolygon._holes[i], tolerance)) 
+          return false
+        
+      
+      return true
+    } else {
+      return super.equalsExact.apply(this, arguments)
+    }
+  }
+  reverseInternal() {
+    const shell = this.getExteriorRing().reverse()
+    const holes = new Array(this.getNumInteriorRing()).fill(null)
+    for (let i = 0; i < holes.length; i++) 
+      holes[i] = this.getInteriorRingN(i).reverse()
+    
+    return this.getFactory().createPolygon(shell, holes)
+  }
+  getTypeCode() {
+    return Geometry.TYPECODE_POLYGON
+  }
+  getDimension() {
+    return 2
+  }
+  getBoundary() {
+    if (this.isEmpty()) 
+      return this.getFactory().createMultiLineString()
+    
+    const rings = new Array(this._holes.length + 1).fill(null)
+    rings[0] = this._shell
+    for (let i = 0; i < this._holes.length; i++) 
+      rings[i + 1] = this._holes[i]
+    
+    if (rings.length <= 1) return this.getFactory().createLinearRing(rings[0].getCoordinateSequence())
+    return this.getFactory().createMultiLineString(rings)
+  }
+  getGeometryType() {
+    return Geometry.TYPENAME_POLYGON
+  }
+  getExteriorRing() {
+    return this._shell
+  }
   copyInternal() {
     const shellCopy = this._shell.copy()
     const holeCopies = new Array(this._holes.length).fill(null)
@@ -99,31 +156,6 @@ export default class Polygon extends Geometry {
     }
     return true
   }
-  equalsExact() {
-    if (arguments.length === 2 && (typeof arguments[1] === 'number' && arguments[0] instanceof Geometry)) {
-      const other = arguments[0], tolerance = arguments[1]
-      if (!this.isEquivalentClass(other)) 
-        return false
-      
-      const otherPolygon = other
-      const thisShell = this._shell
-      const otherPolygonShell = otherPolygon._shell
-      if (!thisShell.equalsExact(otherPolygonShell, tolerance)) 
-        return false
-      
-      if (this._holes.length !== otherPolygon._holes.length) 
-        return false
-      
-      for (let i = 0; i < this._holes.length; i++) 
-        if (!this._holes[i].equalsExact(otherPolygon._holes[i], tolerance)) 
-          return false
-        
-      
-      return true
-    } else {
-      return super.equalsExact.apply(this, arguments)
-    }
-  }
   normalize() {
     if (arguments.length === 0) {
       this._shell = this.normalized(this._shell, true)
@@ -150,20 +182,6 @@ export default class Polygon extends Geometry {
   }
   getBoundaryDimension() {
     return 1
-  }
-  reverseInternal() {
-    const shell = this.getExteriorRing().reverse()
-    const holes = new Array(this.getNumInteriorRing()).fill(null)
-    for (let i = 0; i < holes.length; i++) 
-      holes[i] = this.getInteriorRingN(i).reverse()
-    
-    return this.getFactory().createPolygon(shell, holes)
-  }
-  getTypeCode() {
-    return Geometry.TYPECODE_POLYGON
-  }
-  getDimension() {
-    return 2
   }
   getLength() {
     let len = 0.0
@@ -244,24 +262,6 @@ export default class Polygon extends Geometry {
         this._holes[i].apply(filter)
       
     }
-  }
-  getBoundary() {
-    if (this.isEmpty()) 
-      return this.getFactory().createMultiLineString()
-    
-    const rings = new Array(this._holes.length + 1).fill(null)
-    rings[0] = this._shell
-    for (let i = 0; i < this._holes.length; i++) 
-      rings[i + 1] = this._holes[i]
-    
-    if (rings.length <= 1) return this.getFactory().createLinearRing(rings[0].getCoordinateSequence())
-    return this.getFactory().createMultiLineString(rings)
-  }
-  getGeometryType() {
-    return Geometry.TYPENAME_POLYGON
-  }
-  getExteriorRing() {
-    return this._shell
   }
   isEmpty() {
     return this._shell.isEmpty()

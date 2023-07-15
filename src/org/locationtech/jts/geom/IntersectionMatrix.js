@@ -32,6 +32,12 @@ export default class IntersectionMatrix {
       }
     }
   }
+  static isTrue(actualDimensionValue) {
+    if (actualDimensionValue >= 0 || actualDimensionValue === Dimension.TRUE) 
+      return true
+    
+    return false
+  }
   static matches() {
     if (Number.isInteger(arguments[0]) && typeof arguments[1] === 'string') {
       const actualDimensionValue = arguments[0], requiredDimensionSymbol = arguments[1]
@@ -60,22 +66,8 @@ export default class IntersectionMatrix {
       return m.matches(requiredDimensionSymbols)
     }
   }
-  static isTrue(actualDimensionValue) {
-    if (actualDimensionValue >= 0 || actualDimensionValue === Dimension.TRUE) 
-      return true
-    
-    return false
-  }
   isIntersects() {
     return !this.isDisjoint()
-  }
-  isCovers() {
-    const hasPointInCommon = IntersectionMatrix.isTrue(this._matrix[Location.INTERIOR][Location.INTERIOR]) || IntersectionMatrix.isTrue(this._matrix[Location.INTERIOR][Location.BOUNDARY]) || IntersectionMatrix.isTrue(this._matrix[Location.BOUNDARY][Location.INTERIOR]) || IntersectionMatrix.isTrue(this._matrix[Location.BOUNDARY][Location.BOUNDARY])
-    return hasPointInCommon && this._matrix[Location.EXTERIOR][Location.INTERIOR] === Dimension.FALSE && this._matrix[Location.EXTERIOR][Location.BOUNDARY] === Dimension.FALSE
-  }
-  isCoveredBy() {
-    const hasPointInCommon = IntersectionMatrix.isTrue(this._matrix[Location.INTERIOR][Location.INTERIOR]) || IntersectionMatrix.isTrue(this._matrix[Location.INTERIOR][Location.BOUNDARY]) || IntersectionMatrix.isTrue(this._matrix[Location.BOUNDARY][Location.INTERIOR]) || IntersectionMatrix.isTrue(this._matrix[Location.BOUNDARY][Location.BOUNDARY])
-    return hasPointInCommon && this._matrix[Location.INTERIOR][Location.EXTERIOR] === Dimension.FALSE && this._matrix[Location.BOUNDARY][Location.EXTERIOR] === Dimension.FALSE
   }
   set() {
     if (arguments.length === 1) {
@@ -92,26 +84,6 @@ export default class IntersectionMatrix {
   }
   isContains() {
     return IntersectionMatrix.isTrue(this._matrix[Location.INTERIOR][Location.INTERIOR]) && this._matrix[Location.EXTERIOR][Location.INTERIOR] === Dimension.FALSE && this._matrix[Location.EXTERIOR][Location.BOUNDARY] === Dimension.FALSE
-  }
-  setAtLeast() {
-    if (arguments.length === 1) {
-      const minimumDimensionSymbols = arguments[0]
-      for (let i = 0; i < minimumDimensionSymbols.length; i++) {
-        const row = Math.trunc(i / 3)
-        const col = i % 3
-        this.setAtLeast(row, col, Dimension.toDimensionValue(minimumDimensionSymbols.charAt(i)))
-      }
-    } else if (arguments.length === 3) {
-      const row = arguments[0], column = arguments[1], minimumDimensionValue = arguments[2]
-      if (this._matrix[row][column] < minimumDimensionValue) 
-        this._matrix[row][column] = minimumDimensionValue
-      
-    }
-  }
-  setAtLeastIfValid(row, column, minimumDimensionValue) {
-    if (row >= 0 && column >= 0) 
-      this.setAtLeast(row, column, minimumDimensionValue)
-    
   }
   isWithin() {
     return IntersectionMatrix.isTrue(this._matrix[Location.INTERIOR][Location.INTERIOR]) && this._matrix[Location.INTERIOR][Location.EXTERIOR] === Dimension.FALSE && this._matrix[Location.BOUNDARY][Location.EXTERIOR] === Dimension.FALSE
@@ -139,37 +111,6 @@ export default class IntersectionMatrix {
       return false
     
     return IntersectionMatrix.isTrue(this._matrix[Location.INTERIOR][Location.INTERIOR]) && this._matrix[Location.INTERIOR][Location.EXTERIOR] === Dimension.FALSE && this._matrix[Location.BOUNDARY][Location.EXTERIOR] === Dimension.FALSE && this._matrix[Location.EXTERIOR][Location.INTERIOR] === Dimension.FALSE && this._matrix[Location.EXTERIOR][Location.BOUNDARY] === Dimension.FALSE
-  }
-  toString() {
-    const builder = new StringBuilder('123456789')
-    for (let ai = 0; ai < 3; ai++) 
-      for (let bi = 0; bi < 3; bi++) 
-        builder.setCharAt(3 * ai + bi, Dimension.toDimensionSymbol(this._matrix[ai][bi]))
-      
-    
-    return builder.toString()
-  }
-  setAll(dimensionValue) {
-    for (let ai = 0; ai < 3; ai++) 
-      for (let bi = 0; bi < 3; bi++) 
-        this._matrix[ai][bi] = dimensionValue
-      
-    
-  }
-  get(row, column) {
-    return this._matrix[row][column]
-  }
-  transpose() {
-    let temp = this._matrix[1][0]
-    this._matrix[1][0] = this._matrix[0][1]
-    this._matrix[0][1] = temp
-    temp = this._matrix[2][0]
-    this._matrix[2][0] = this._matrix[0][2]
-    this._matrix[0][2] = temp
-    temp = this._matrix[2][1]
-    this._matrix[2][1] = this._matrix[1][2]
-    this._matrix[1][2] = temp
-    return this
   }
   matches(requiredDimensionSymbols) {
     if (requiredDimensionSymbols.length !== 9) 
@@ -205,6 +146,65 @@ export default class IntersectionMatrix {
       return this._matrix[Location.INTERIOR][Location.INTERIOR] === 0
     
     return false
+  }
+  isCovers() {
+    const hasPointInCommon = IntersectionMatrix.isTrue(this._matrix[Location.INTERIOR][Location.INTERIOR]) || IntersectionMatrix.isTrue(this._matrix[Location.INTERIOR][Location.BOUNDARY]) || IntersectionMatrix.isTrue(this._matrix[Location.BOUNDARY][Location.INTERIOR]) || IntersectionMatrix.isTrue(this._matrix[Location.BOUNDARY][Location.BOUNDARY])
+    return hasPointInCommon && this._matrix[Location.EXTERIOR][Location.INTERIOR] === Dimension.FALSE && this._matrix[Location.EXTERIOR][Location.BOUNDARY] === Dimension.FALSE
+  }
+  isCoveredBy() {
+    const hasPointInCommon = IntersectionMatrix.isTrue(this._matrix[Location.INTERIOR][Location.INTERIOR]) || IntersectionMatrix.isTrue(this._matrix[Location.INTERIOR][Location.BOUNDARY]) || IntersectionMatrix.isTrue(this._matrix[Location.BOUNDARY][Location.INTERIOR]) || IntersectionMatrix.isTrue(this._matrix[Location.BOUNDARY][Location.BOUNDARY])
+    return hasPointInCommon && this._matrix[Location.INTERIOR][Location.EXTERIOR] === Dimension.FALSE && this._matrix[Location.BOUNDARY][Location.EXTERIOR] === Dimension.FALSE
+  }
+  setAtLeast() {
+    if (arguments.length === 1) {
+      const minimumDimensionSymbols = arguments[0]
+      for (let i = 0; i < minimumDimensionSymbols.length; i++) {
+        const row = Math.trunc(i / 3)
+        const col = i % 3
+        this.setAtLeast(row, col, Dimension.toDimensionValue(minimumDimensionSymbols.charAt(i)))
+      }
+    } else if (arguments.length === 3) {
+      const row = arguments[0], column = arguments[1], minimumDimensionValue = arguments[2]
+      if (this._matrix[row][column] < minimumDimensionValue) 
+        this._matrix[row][column] = minimumDimensionValue
+      
+    }
+  }
+  setAtLeastIfValid(row, column, minimumDimensionValue) {
+    if (row >= 0 && column >= 0) 
+      this.setAtLeast(row, column, minimumDimensionValue)
+    
+  }
+  toString() {
+    const builder = new StringBuilder('123456789')
+    for (let ai = 0; ai < 3; ai++) 
+      for (let bi = 0; bi < 3; bi++) 
+        builder.setCharAt(3 * ai + bi, Dimension.toDimensionSymbol(this._matrix[ai][bi]))
+      
+    
+    return builder.toString()
+  }
+  setAll(dimensionValue) {
+    for (let ai = 0; ai < 3; ai++) 
+      for (let bi = 0; bi < 3; bi++) 
+        this._matrix[ai][bi] = dimensionValue
+      
+    
+  }
+  get(row, column) {
+    return this._matrix[row][column]
+  }
+  transpose() {
+    let temp = this._matrix[1][0]
+    this._matrix[1][0] = this._matrix[0][1]
+    this._matrix[0][1] = temp
+    temp = this._matrix[2][0]
+    this._matrix[2][0] = this._matrix[0][2]
+    this._matrix[0][2] = temp
+    temp = this._matrix[2][1]
+    this._matrix[2][1] = this._matrix[1][2]
+    this._matrix[1][2] = temp
+    return this
   }
   get interfaces_() {
     return [Cloneable]

@@ -19,6 +19,17 @@ export default class QuadEdgeTriangle {
       edge[i].setData(this)
     
   }
+  static contains() {
+    if (arguments[0] instanceof Array && arguments[1] instanceof Coordinate) {
+      const tri = arguments[0], pt = arguments[1]
+      const ring = [tri[0].getCoordinate(), tri[1].getCoordinate(), tri[2].getCoordinate(), tri[0].getCoordinate()]
+      return PointLocation.isInRing(pt, ring)
+    } else if (arguments[0] instanceof Array && arguments[1] instanceof Coordinate) {
+      const tri = arguments[0], pt = arguments[1]
+      const ring = [tri[0].orig().getCoordinate(), tri[1].orig().getCoordinate(), tri[2].orig().getCoordinate(), tri[0].orig().getCoordinate()]
+      return PointLocation.isInRing(pt, ring)
+    }
+  }
   static toPolygon() {
     if (arguments[0] instanceof Array) {
       const v = arguments[0]
@@ -36,24 +47,13 @@ export default class QuadEdgeTriangle {
       return tri
     }
   }
-  static nextIndex(index) {
-    return index = (index + 1) % 3
-  }
-  static contains() {
-    if (arguments[0] instanceof Array && arguments[1] instanceof Coordinate) {
-      const tri = arguments[0], pt = arguments[1]
-      const ring = [tri[0].getCoordinate(), tri[1].getCoordinate(), tri[2].getCoordinate(), tri[0].getCoordinate()]
-      return PointLocation.isInRing(pt, ring)
-    } else if (arguments[0] instanceof Array && arguments[1] instanceof Coordinate) {
-      const tri = arguments[0], pt = arguments[1]
-      const ring = [tri[0].orig().getCoordinate(), tri[1].orig().getCoordinate(), tri[2].orig().getCoordinate(), tri[0].orig().getCoordinate()]
-      return PointLocation.isInRing(pt, ring)
-    }
-  }
   static createOn(subdiv) {
     const visitor = new QuadEdgeTriangleBuilderVisitor()
     subdiv.visitTriangles(visitor, false)
     return visitor.getTriangles()
+  }
+  static nextIndex(index) {
+    return index = (index + 1) % 3
   }
   getCoordinates() {
     const pts = new Array(4).fill(null)
@@ -65,6 +65,49 @@ export default class QuadEdgeTriangle {
   }
   getVertex(i) {
     return this._edge[i].orig()
+  }
+  getCoordinate(i) {
+    return this._edge[i].orig().getCoordinate()
+  }
+  getTrianglesAdjacentToVertex(vertexIndex) {
+    const adjTris = new ArrayList()
+    const start = this.getEdge(vertexIndex)
+    let qe = start
+    do {
+      const adjTri = qe.getData()
+      if (adjTri !== null) 
+        adjTris.add(adjTri)
+      
+      qe = qe.oNext()
+    } while (qe !== start)
+    return adjTris
+  }
+  getNeighbours() {
+    const neigh = new Array(3).fill(null)
+    for (let i = 0; i < 3; i++) 
+      neigh[i] = this.getEdge(i).sym().getData()
+    
+    return neigh
+  }
+  getAdjacentTriangleAcrossEdge(edgeIndex) {
+    return this.getEdge(edgeIndex).sym().getData()
+  }
+  setData(data) {
+    this._data = data
+  }
+  getEdge(i) {
+    return this._edge[i]
+  }
+  toString() {
+    return this.getGeometry(new GeometryFactory()).toString()
+  }
+  isLive() {
+    return this._edge !== null
+  }
+  getEdgeSegment(i, seg) {
+    seg.p0 = this._edge[i].orig().getCoordinate()
+    const nexti = (i + 1) % 3
+    seg.p1 = this._edge[nexti].orig().getCoordinate()
   }
   isBorder() {
     if (arguments.length === 0) {
@@ -97,35 +140,6 @@ export default class QuadEdgeTriangle {
     const tri = fact.createPolygon(ring)
     return tri
   }
-  getCoordinate(i) {
-    return this._edge[i].orig().getCoordinate()
-  }
-  getTrianglesAdjacentToVertex(vertexIndex) {
-    const adjTris = new ArrayList()
-    const start = this.getEdge(vertexIndex)
-    let qe = start
-    do {
-      const adjTri = qe.getData()
-      if (adjTri !== null) 
-        adjTris.add(adjTri)
-      
-      qe = qe.oNext()
-    } while (qe !== start)
-    return adjTris
-  }
-  getNeighbours() {
-    const neigh = new Array(3).fill(null)
-    for (let i = 0; i < 3; i++) 
-      neigh[i] = this.getEdge(i).sym().getData()
-    
-    return neigh
-  }
-  getAdjacentTriangleAcrossEdge(edgeIndex) {
-    return this.getEdge(edgeIndex).sym().getData()
-  }
-  setData(data) {
-    this._data = data
-  }
   getData() {
     return this._data
   }
@@ -142,26 +156,12 @@ export default class QuadEdgeTriangle {
   getEdges() {
     return this._edge
   }
-  getEdge(i) {
-    return this._edge[i]
-  }
-  toString() {
-    return this.getGeometry(new GeometryFactory()).toString()
-  }
-  isLive() {
-    return this._edge !== null
-  }
   kill() {
     this._edge = null
   }
   contains(pt) {
     const ring = this.getCoordinates()
     return PointLocation.isInRing(pt, ring)
-  }
-  getEdgeSegment(i, seg) {
-    seg.p0 = this._edge[i].orig().getCoordinate()
-    const nexti = (i + 1) % 3
-    seg.p1 = this._edge[nexti].orig().getCoordinate()
   }
 }
 class QuadEdgeTriangleBuilderVisitor {

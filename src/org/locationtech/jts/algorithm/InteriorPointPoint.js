@@ -1,9 +1,9 @@
 import Geometry from '../geom/Geometry.js'
-import Coordinate from '../geom/Coordinate.js'
-import Point from '../geom/Point.js'
 import Double from '../../../../java/lang/Double.js'
 import Centroid from './Centroid.js'
 import GeometryCollection from '../geom/GeometryCollection.js'
+import Coordinate from '../geom/Coordinate.js'
+import Point from '../geom/Point.js'
 export default class InteriorPointPoint {
   constructor() {
     InteriorPointPoint.constructor_.apply(this, arguments)
@@ -19,9 +19,6 @@ export default class InteriorPointPoint {
   static getInteriorPoint(geom) {
     const intPt = new InteriorPointPoint(geom)
     return intPt.getInteriorPoint()
-  }
-  getInteriorPoint() {
-    return this._interiorPoint
   }
   add() {
     if (arguments[0] instanceof Geometry) {
@@ -42,5 +39,8 @@ export default class InteriorPointPoint {
         this._minDistance = dist
       }
     }
+  }
+  getInteriorPoint() {
+    return this._interiorPoint
   }
 }

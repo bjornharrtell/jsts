@@ -2,9 +2,9 @@ import Coordinate from '../geom/Coordinate.js'
 import Polygon from '../geom/Polygon.js'
 import Double from '../../../../java/lang/Double.js'
 import GeometryCollection from '../geom/GeometryCollection.js'
+import Assert from '../util/Assert.js'
 import ArrayList from '../../../../java/util/ArrayList.js'
 import Comparator from '../../../../java/util/Comparator.js'
-import Assert from '../util/Assert.js'
 export default class InteriorPointArea {
   constructor() {
     InteriorPointArea.constructor_.apply(this, arguments)
@@ -15,15 +15,12 @@ export default class InteriorPointArea {
     const g = arguments[0]
     this.process(g)
   }
-  static getInteriorPoint(geom) {
-    const intPt = new InteriorPointArea(geom)
-    return intPt.getInteriorPoint()
-  }
   static avg(a, b) {
     return (a + b) / 2.0
   }
-  getInteriorPoint() {
-    return this._interiorPoint
+  static getInteriorPoint(geom) {
+    const intPt = new InteriorPointArea(geom)
+    return intPt.getInteriorPoint()
   }
   process(geom) {
     if (geom.isEmpty()) return null
@@ -35,6 +32,9 @@ export default class InteriorPointArea {
         this.process(gc.getGeometryN(i))
       
     }
+  }
+  getInteriorPoint() {
+    return this._interiorPoint
   }
   processPolygon(polygon) {
     const intPtPoly = new InteriorPointPolygon(polygon)
@@ -105,6 +105,18 @@ class InteriorPointPolygon {
       }
     }
   }
+  getWidth() {
+    return this._interiorSectionWidth
+  }
+  getInteriorPoint() {
+    return this._interiorPoint
+  }
+  addEdgeCrossing(p0, p1, scanY, crossings) {
+    if (!InteriorPointPolygon.intersectsHorizontalLine(p0, p1, scanY)) return null
+    if (!InteriorPointPolygon.isEdgeCrossingCounted(p0, p1, scanY)) return null
+    const xInt = InteriorPointPolygon.intersection(p0, p1, scanY)
+    crossings.add(xInt)
+  }
   process() {
     if (this._polygon.isEmpty()) return null
     this._interiorPoint = new Coordinate(this._polygon.getCoordinate())
@@ -123,18 +135,6 @@ class InteriorPointPolygon {
       const pt = seq.getCoordinate(i)
       this.addEdgeCrossing(ptPrev, pt, this._interiorPointY, crossings)
     }
-  }
-  getWidth() {
-    return this._interiorSectionWidth
-  }
-  getInteriorPoint() {
-    return this._interiorPoint
-  }
-  addEdgeCrossing(p0, p1, scanY, crossings) {
-    if (!InteriorPointPolygon.intersectsHorizontalLine(p0, p1, scanY)) return null
-    if (!InteriorPointPolygon.isEdgeCrossingCounted(p0, p1, scanY)) return null
-    const xInt = InteriorPointPolygon.intersection(p0, p1, scanY)
-    crossings.add(xInt)
   }
 }
 class DoubleComparator {
@@ -165,13 +165,11 @@ class ScanLineYOrdinateFinder {
     const finder = new ScanLineYOrdinateFinder(poly)
     return finder.getScanLineY()
   }
-  updateInterval(y) {
-    if (y <= this._centreY) {
-      if (y > this._loY) this._loY = y
-    } else if (y > this._centreY) {
-      if (y < this._hiY) 
-        this._hiY = y
-      
+  process(line) {
+    const seq = line.getCoordinateSequence()
+    for (let i = 0; i < seq.size(); i++) {
+      const y = seq.getY(i)
+      this.updateInterval(y)
     }
   }
   getScanLineY() {
@@ -182,11 +180,13 @@ class ScanLineYOrdinateFinder {
     const scanLineY = InteriorPointArea.avg(this._hiY, this._loY)
     return scanLineY
   }
-  process(line) {
-    const seq = line.getCoordinateSequence()
-    for (let i = 0; i < seq.size(); i++) {
-      const y = seq.getY(i)
-      this.updateInterval(y)
+  updateInterval(y) {
+    if (y <= this._centreY) {
+      if (y > this._loY) this._loY = y
+    } else if (y > this._centreY) {
+      if (y < this._hiY) 
+        this._hiY = y
+      
     }
   }
 }

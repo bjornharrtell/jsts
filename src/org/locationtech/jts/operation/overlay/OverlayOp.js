@@ -1,7 +1,3 @@
-import PointLocator from '../../algorithm/PointLocator.js'
-import Location from '../../geom/Location.js'
-import EdgeNodingValidator from '../../geomgraph/EdgeNodingValidator.js'
-import GeometryCollectionMapper from '../../geom/util/GeometryCollectionMapper.js'
 import PolygonBuilder from './PolygonBuilder.js'
 import Position from '../../geomgraph/Position.js'
 import IllegalArgumentException from '../../../../../java/lang/IllegalArgumentException.js'
@@ -9,12 +5,16 @@ import LineBuilder from './LineBuilder.js'
 import PointBuilder from './PointBuilder.js'
 import SnapIfNeededOverlayOp from './snap/SnapIfNeededOverlayOp.js'
 import Label from '../../geomgraph/Label.js'
-import OverlayNodeFactory from './OverlayNodeFactory.js'
-import GeometryGraphOperation from '../GeometryGraphOperation.js'
-import EdgeList from '../../geomgraph/EdgeList.js'
 import ArrayList from '../../../../../java/util/ArrayList.js'
 import Assert from '../../util/Assert.js'
 import PlanarGraph from '../../geomgraph/PlanarGraph.js'
+import PointLocator from '../../algorithm/PointLocator.js'
+import Location from '../../geom/Location.js'
+import EdgeNodingValidator from '../../geomgraph/EdgeNodingValidator.js'
+import GeometryCollectionMapper from '../../geom/util/GeometryCollectionMapper.js'
+import OverlayNodeFactory from './OverlayNodeFactory.js'
+import GeometryGraphOperation from '../GeometryGraphOperation.js'
+import EdgeList from '../../geomgraph/EdgeList.js'
 export default class OverlayOp extends GeometryGraphOperation {
   constructor() {
     super()
@@ -158,6 +158,75 @@ export default class OverlayOp extends GeometryGraphOperation {
       }
     }
   }
+  mergeSymLabels() {
+    for (let nodeit = this._graph.getNodes().iterator(); nodeit.hasNext(); ) {
+      const node = nodeit.next()
+      node.getEdges().mergeSymLabels()
+    }
+  }
+  computeOverlay(opCode) {
+    this.copyPoints(0)
+    this.copyPoints(1)
+    this._arg[0].computeSelfNodes(this._li, false)
+    this._arg[1].computeSelfNodes(this._li, false)
+    this._arg[0].computeEdgeIntersections(this._arg[1], this._li, true)
+    const baseSplitEdges = new ArrayList()
+    this._arg[0].computeSplitEdges(baseSplitEdges)
+    this._arg[1].computeSplitEdges(baseSplitEdges)
+    const splitEdges = baseSplitEdges
+    this.insertUniqueEdges(baseSplitEdges)
+    this.computeLabelsFromDepths()
+    this.replaceCollapsedEdges()
+    EdgeNodingValidator.checkValid(this._edgeList.getEdges())
+    this._graph.addEdges(this._edgeList.getEdges())
+    this.computeLabelling()
+    this.labelIncompleteNodes()
+    this.findResultAreaEdges(opCode)
+    this.cancelDuplicateResultEdges()
+    const polyBuilder = new PolygonBuilder(this._geomFact)
+    polyBuilder.add(this._graph)
+    this._resultPolyList = polyBuilder.getPolygons()
+    const lineBuilder = new LineBuilder(this, this._geomFact, this._ptLocator)
+    this._resultLineList = lineBuilder.build(opCode)
+    const pointBuilder = new PointBuilder(this, this._geomFact, this._ptLocator)
+    this._resultPointList = pointBuilder.build(opCode)
+    this._resultGeom = this.computeGeometry(this._resultPointList, this._resultLineList, this._resultPolyList, opCode)
+  }
+  findResultAreaEdges(opCode) {
+    for (let it = this._graph.getEdgeEnds().iterator(); it.hasNext(); ) {
+      const de = it.next()
+      const label = de.getLabel()
+      if (label.isArea() && !de.isInteriorAreaEdge() && OverlayOp.isResultOfOp(label.getLocation(0, Position.RIGHT), label.getLocation(1, Position.RIGHT), opCode)) 
+        de.setInResult(true)
+      
+    }
+  }
+  computeLabelsFromDepths() {
+    for (let it = this._edgeList.iterator(); it.hasNext(); ) {
+      const e = it.next()
+      const lbl = e.getLabel()
+      const depth = e.getDepth()
+      if (!depth.isNull()) {
+        depth.normalize()
+        for (let i = 0; i < 2; i++) 
+          if (!lbl.isNull(i) && lbl.isArea() && !depth.isNull(i)) 
+            if (depth.getDelta(i) === 0) {
+              lbl.toLine(i)
+            } else {
+              Assert.isTrue(!depth.isNull(i, Position.LEFT), 'depth of LEFT side has not been initialized')
+              lbl.setLocation(i, Position.LEFT, depth.getLocation(i, Position.LEFT))
+              Assert.isTrue(!depth.isNull(i, Position.RIGHT), 'depth of RIGHT side has not been initialized')
+              lbl.setLocation(i, Position.RIGHT, depth.getLocation(i, Position.RIGHT))
+            }
+          
+        
+      }
+    }
+  }
+  isCoveredByA(coord) {
+    if (this.isCovered(coord, this._resultPolyList)) return true
+    return false
+  }
   isCoveredByLA(coord) {
     if (this.isCovered(coord, this._resultLineList)) return true
     if (this.isCovered(coord, this._resultPolyList)) return true
@@ -170,12 +239,6 @@ export default class OverlayOp extends GeometryGraphOperation {
     geomList.addAll(resultPolyList)
     if (geomList.isEmpty()) return OverlayOp.createEmptyResult(opcode, this._arg[0].getGeometry(), this._arg[1].getGeometry(), this._geomFact)
     return this._geomFact.buildGeometry(geomList)
-  }
-  mergeSymLabels() {
-    for (let nodeit = this._graph.getNodes().iterator(); nodeit.hasNext(); ) {
-      const node = nodeit.next()
-      node.getEdges().mergeSymLabels()
-    }
   }
   isCovered(coord, geomList) {
     for (let it = geomList.iterator(); it.hasNext(); ) {
@@ -213,34 +276,6 @@ export default class OverlayOp extends GeometryGraphOperation {
       this.insertUniqueEdge(e)
     }
   }
-  computeOverlay(opCode) {
-    this.copyPoints(0)
-    this.copyPoints(1)
-    this._arg[0].computeSelfNodes(this._li, false)
-    this._arg[1].computeSelfNodes(this._li, false)
-    this._arg[0].computeEdgeIntersections(this._arg[1], this._li, true)
-    const baseSplitEdges = new ArrayList()
-    this._arg[0].computeSplitEdges(baseSplitEdges)
-    this._arg[1].computeSplitEdges(baseSplitEdges)
-    const splitEdges = baseSplitEdges
-    this.insertUniqueEdges(baseSplitEdges)
-    this.computeLabelsFromDepths()
-    this.replaceCollapsedEdges()
-    EdgeNodingValidator.checkValid(this._edgeList.getEdges())
-    this._graph.addEdges(this._edgeList.getEdges())
-    this.computeLabelling()
-    this.labelIncompleteNodes()
-    this.findResultAreaEdges(opCode)
-    this.cancelDuplicateResultEdges()
-    const polyBuilder = new PolygonBuilder(this._geomFact)
-    polyBuilder.add(this._graph)
-    this._resultPolyList = polyBuilder.getPolygons()
-    const lineBuilder = new LineBuilder(this, this._geomFact, this._ptLocator)
-    this._resultLineList = lineBuilder.build(opCode)
-    const pointBuilder = new PointBuilder(this, this._geomFact, this._ptLocator)
-    this._resultPointList = pointBuilder.build(opCode)
-    this._resultGeom = this.computeGeometry(this._resultPointList, this._resultLineList, this._resultPolyList, opCode)
-  }
   labelIncompleteNode(n, targetIndex) {
     const loc = this._ptLocator.locate(n.getCoordinate(), this._arg[targetIndex].getGeometry())
     n.getLabel().setLocation(targetIndex, loc)
@@ -250,37 +285,6 @@ export default class OverlayOp extends GeometryGraphOperation {
       const graphNode = i.next()
       const newNode = this._graph.addNode(graphNode.getCoordinate())
       newNode.setLabel(argIndex, graphNode.getLabel().getLocation(argIndex))
-    }
-  }
-  findResultAreaEdges(opCode) {
-    for (let it = this._graph.getEdgeEnds().iterator(); it.hasNext(); ) {
-      const de = it.next()
-      const label = de.getLabel()
-      if (label.isArea() && !de.isInteriorAreaEdge() && OverlayOp.isResultOfOp(label.getLocation(0, Position.RIGHT), label.getLocation(1, Position.RIGHT), opCode)) 
-        de.setInResult(true)
-      
-    }
-  }
-  computeLabelsFromDepths() {
-    for (let it = this._edgeList.iterator(); it.hasNext(); ) {
-      const e = it.next()
-      const lbl = e.getLabel()
-      const depth = e.getDepth()
-      if (!depth.isNull()) {
-        depth.normalize()
-        for (let i = 0; i < 2; i++) 
-          if (!lbl.isNull(i) && lbl.isArea() && !depth.isNull(i)) 
-            if (depth.getDelta(i) === 0) {
-              lbl.toLine(i)
-            } else {
-              Assert.isTrue(!depth.isNull(i, Position.LEFT), 'depth of LEFT side has not been initialized')
-              lbl.setLocation(i, Position.LEFT, depth.getLocation(i, Position.LEFT))
-              Assert.isTrue(!depth.isNull(i, Position.RIGHT), 'depth of RIGHT side has not been initialized')
-              lbl.setLocation(i, Position.RIGHT, depth.getLocation(i, Position.RIGHT))
-            }
-          
-        
-      }
     }
   }
   computeLabelling() {
@@ -300,10 +304,6 @@ export default class OverlayOp extends GeometryGraphOperation {
       
       n.getEdges().updateLabelling(label)
     }
-  }
-  isCoveredByA(coord) {
-    if (this.isCovered(coord, this._resultPolyList)) return true
-    return false
   }
 }
 OverlayOp.INTERSECTION = 1

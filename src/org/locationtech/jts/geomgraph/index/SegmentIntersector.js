@@ -38,12 +38,6 @@ export default class SegmentIntersector {
     
     return false
   }
-  getProperIntersectionPoint() {
-    return this._properIntersectionPoint
-  }
-  setIsDoneIfProperInt(isDoneWhenProperInt) {
-    this._isDoneWhenProperInt = isDoneWhenProperInt
-  }
   hasProperInteriorIntersection() {
     return this._hasProperInterior
   }
@@ -105,5 +99,11 @@ export default class SegmentIntersector {
         }
       }
     }
+  }
+  getProperIntersectionPoint() {
+    return this._properIntersectionPoint
+  }
+  setIsDoneIfProperInt(isDoneWhenProperInt) {
+    this._isDoneWhenProperInt = isDoneWhenProperInt
   }
 }

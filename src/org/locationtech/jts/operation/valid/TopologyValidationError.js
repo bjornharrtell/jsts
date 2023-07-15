@@ -14,19 +14,19 @@ export default class TopologyValidationError {
       if (pt !== null) this._pt = pt.copy()
     }
   }
-  getErrorType() {
-    return this._errorType
+  getCoordinate() {
+    return this._pt
   }
   getMessage() {
     return TopologyValidationError.errMsg[this._errorType]
-  }
-  getCoordinate() {
-    return this._pt
   }
   toString() {
     let locStr = ''
     if (this._pt !== null) locStr = ' at or near point ' + this._pt
     return this.getMessage() + locStr
+  }
+  getErrorType() {
+    return this._errorType
   }
 }
 TopologyValidationError.ERROR = 0

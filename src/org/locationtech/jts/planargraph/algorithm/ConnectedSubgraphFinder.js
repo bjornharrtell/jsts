@@ -11,6 +11,20 @@ export default class ConnectedSubgraphFinder {
     const graph = arguments[0]
     this._graph = graph
   }
+  findSubgraph(node) {
+    const subgraph = new Subgraph(this._graph)
+    this.addReachable(node, subgraph)
+    return subgraph
+  }
+  addEdges(node, nodeStack, subgraph) {
+    node.setVisited(true)
+    for (let i = node.getOutEdges().iterator(); i.hasNext(); ) {
+      const de = i.next()
+      subgraph.add(de.getEdge())
+      const toNode = de.getToNode()
+      if (!toNode.isVisited()) nodeStack.push(toNode)
+    }
+  }
   addReachable(startNode, subgraph) {
     const nodeStack = new Stack()
     nodeStack.add(startNode)
@@ -18,11 +32,6 @@ export default class ConnectedSubgraphFinder {
       const node = nodeStack.pop()
       this.addEdges(node, nodeStack, subgraph)
     }
-  }
-  findSubgraph(node) {
-    const subgraph = new Subgraph(this._graph)
-    this.addReachable(node, subgraph)
-    return subgraph
   }
   getConnectedSubgraphs() {
     const subgraphs = new ArrayList()
@@ -35,14 +44,5 @@ export default class ConnectedSubgraphFinder {
       
     }
     return subgraphs
-  }
-  addEdges(node, nodeStack, subgraph) {
-    node.setVisited(true)
-    for (let i = node.getOutEdges().iterator(); i.hasNext(); ) {
-      const de = i.next()
-      subgraph.add(de.getEdge())
-      const toNode = de.getToNode()
-      if (!toNode.isVisited()) nodeStack.push(toNode)
-    }
   }
 }

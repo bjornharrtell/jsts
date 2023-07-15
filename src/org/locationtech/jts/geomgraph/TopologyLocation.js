@@ -72,6 +72,19 @@ export default class TopologyLocation {
     this.location[Position.LEFT] = this.location[Position.RIGHT]
     this.location[Position.RIGHT] = temp
   }
+  get(posIndex) {
+    if (posIndex < this.location.length) return this.location[posIndex]
+    return Location.NONE
+  }
+  isEqualOnSide(le, locIndex) {
+    return this.location[locIndex] === le.location[locIndex]
+  }
+  allPositionsEqual(loc) {
+    for (let i = 0; i < this.location.length; i++) 
+      if (this.location[i] !== loc) return false
+    
+    return true
+  }
   toString() {
     const buf = new StringBuffer()
     if (this.location.length > 1) buf.append(Location.toLocationSymbol(this.location[Position.LEFT]))
@@ -83,10 +96,6 @@ export default class TopologyLocation {
     this.location[Position.ON] = on
     this.location[Position.LEFT] = left
     this.location[Position.RIGHT] = right
-  }
-  get(posIndex) {
-    if (posIndex < this.location.length) return this.location[posIndex]
-    return Location.NONE
   }
   isArea() {
     return this.location.length > 1
@@ -109,14 +118,5 @@ export default class TopologyLocation {
   init(size) {
     this.location = new Array(size).fill(null)
     this.setAllLocations(Location.NONE)
-  }
-  isEqualOnSide(le, locIndex) {
-    return this.location[locIndex] === le.location[locIndex]
-  }
-  allPositionsEqual(loc) {
-    for (let i = 0; i < this.location.length; i++) 
-      if (this.location[i] !== loc) return false
-    
-    return true
   }
 }

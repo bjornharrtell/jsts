@@ -1,14 +1,14 @@
-import TreeSet from '../../../../java/util/TreeSet.js'
-import LineString from '../geom/LineString.js'
 import hasInterface from '../../../../hasInterface.js'
 import MultiPoint from '../geom/MultiPoint.js'
 import GeometryGraph from '../geomgraph/GeometryGraph.js'
 import GeometryCollection from '../geom/GeometryCollection.js'
-import Polygonal from '../geom/Polygonal.js'
-import RobustLineIntersector from '../algorithm/RobustLineIntersector.js'
 import LinearComponentExtracter from '../geom/util/LinearComponentExtracter.js'
 import TreeMap from '../../../../java/util/TreeMap.js'
 import MultiLineString from '../geom/MultiLineString.js'
+import TreeSet from '../../../../java/util/TreeSet.js'
+import LineString from '../geom/LineString.js'
+import Polygonal from '../geom/Polygonal.js'
+import RobustLineIntersector from '../algorithm/RobustLineIntersector.js'
 export default class IsSimpleOp {
   constructor() {
     IsSimpleOp.constructor_.apply(this, arguments)
@@ -154,12 +154,12 @@ class EndpointInfo {
     this.isClosed = false
     this.degree = 0
   }
+  getCoordinate() {
+    return this.pt
+  }
   addEndpoint(isClosed) {
     this.degree++
     this.isClosed |= isClosed
-  }
-  getCoordinate() {
-    return this.pt
   }
 }
 IsSimpleOp.EndpointInfo = EndpointInfo

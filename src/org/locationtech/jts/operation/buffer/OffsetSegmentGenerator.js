@@ -1,10 +1,10 @@
 import BufferParameters from './BufferParameters.js'
 import Position from '../../geomgraph/Position.js'
 import Coordinate from '../../geom/Coordinate.js'
+import LineSegment from '../../geom/LineSegment.js'
+import OffsetSegmentString from './OffsetSegmentString.js'
 import Orientation from '../../algorithm/Orientation.js'
 import Intersection from '../../algorithm/Intersection.js'
-import OffsetSegmentString from './OffsetSegmentString.js'
-import LineSegment from '../../geom/LineSegment.js'
 import Angle from '../../algorithm/Angle.js'
 import RobustLineIntersector from '../../algorithm/RobustLineIntersector.js'
 export default class OffsetSegmentGenerator {
@@ -37,55 +37,6 @@ export default class OffsetSegmentGenerator {
     if (bufParams.getQuadrantSegments() >= 8 && bufParams.getJoinStyle() === BufferParameters.JOIN_ROUND) this._closingSegLengthFactor = OffsetSegmentGenerator.MAX_CLOSING_SEG_LEN_FACTOR
     this.init(distance)
   }
-  addNextSegment(p, addStartPoint) {
-    this._s0 = this._s1
-    this._s1 = this._s2
-    this._s2 = p
-    this._seg0.setCoordinates(this._s0, this._s1)
-    this.computeOffsetSegment(this._seg0, this._side, this._distance, this._offset0)
-    this._seg1.setCoordinates(this._s1, this._s2)
-    this.computeOffsetSegment(this._seg1, this._side, this._distance, this._offset1)
-    if (this._s1.equals(this._s2)) return null
-    const orientation = Orientation.index(this._s0, this._s1, this._s2)
-    const outsideTurn = orientation === Orientation.CLOCKWISE && this._side === Position.LEFT || orientation === Orientation.COUNTERCLOCKWISE && this._side === Position.RIGHT
-    if (orientation === 0) 
-      this.addCollinear(addStartPoint)
-    else if (outsideTurn) 
-      this.addOutsideTurn(orientation, addStartPoint)
-    else 
-      this.addInsideTurn(orientation, addStartPoint)
-    
-  }
-  addLineEndCap(p0, p1) {
-    const seg = new LineSegment(p0, p1)
-    const offsetL = new LineSegment()
-    this.computeOffsetSegment(seg, Position.LEFT, this._distance, offsetL)
-    const offsetR = new LineSegment()
-    this.computeOffsetSegment(seg, Position.RIGHT, this._distance, offsetR)
-    const dx = p1.x - p0.x
-    const dy = p1.y - p0.y
-    const angle = Math.atan2(dy, dx)
-    switch (this._bufParams.getEndCapStyle()) {
-    case BufferParameters.CAP_ROUND:
-      this._segList.addPt(offsetL.p1)
-      this.addDirectedFillet(p1, angle + Math.PI / 2, angle - Math.PI / 2, Orientation.CLOCKWISE, this._distance)
-      this._segList.addPt(offsetR.p1)
-      break
-    case BufferParameters.CAP_FLAT:
-      this._segList.addPt(offsetL.p1)
-      this._segList.addPt(offsetR.p1)
-      break
-    case BufferParameters.CAP_SQUARE:
-      const squareCapSideOffset = new Coordinate()
-      squareCapSideOffset.x = Math.abs(this._distance) * Math.cos(angle)
-      squareCapSideOffset.y = Math.abs(this._distance) * Math.sin(angle)
-      const squareCapLOffset = new Coordinate(offsetL.p1.x + squareCapSideOffset.x, offsetL.p1.y + squareCapSideOffset.y)
-      const squareCapROffset = new Coordinate(offsetR.p1.x + squareCapSideOffset.x, offsetR.p1.y + squareCapSideOffset.y)
-      this._segList.addPt(squareCapLOffset)
-      this._segList.addPt(squareCapROffset)
-      break
-    }
-  }
   getCoordinates() {
     const pts = this._segList.getCoordinates()
     return pts
@@ -100,50 +51,6 @@ export default class OffsetSegmentGenerator {
       }
     }
     this.addLimitedMitreJoin(offset0, offset1, distance, this._bufParams.getMitreLimit())
-  }
-  addOutsideTurn(orientation, addStartPoint) {
-    if (this._offset0.p1.distance(this._offset1.p0) < this._distance * OffsetSegmentGenerator.OFFSET_SEGMENT_SEPARATION_FACTOR) {
-      this._segList.addPt(this._offset0.p1)
-      return null
-    }
-    if (this._bufParams.getJoinStyle() === BufferParameters.JOIN_MITRE) {
-      this.addMitreJoin(this._s1, this._offset0, this._offset1, this._distance)
-    } else if (this._bufParams.getJoinStyle() === BufferParameters.JOIN_BEVEL) {
-      this.addBevelJoin(this._offset0, this._offset1)
-    } else {
-      if (addStartPoint) this._segList.addPt(this._offset0.p1)
-      this.addCornerFillet(this._s1, this._offset0.p1, this._offset1.p0, orientation, this._distance)
-      this._segList.addPt(this._offset1.p0)
-    }
-  }
-  createSquare(p) {
-    this._segList.addPt(new Coordinate(p.x + this._distance, p.y + this._distance))
-    this._segList.addPt(new Coordinate(p.x + this._distance, p.y - this._distance))
-    this._segList.addPt(new Coordinate(p.x - this._distance, p.y - this._distance))
-    this._segList.addPt(new Coordinate(p.x - this._distance, p.y + this._distance))
-    this._segList.closeRing()
-  }
-  addSegments(pt, isForward) {
-    this._segList.addPts(pt, isForward)
-  }
-  addFirstSegment() {
-    this._segList.addPt(this._offset1.p0)
-  }
-  addCornerFillet(p, p0, p1, direction, radius) {
-    const dx0 = p0.x - p.x
-    const dy0 = p0.y - p.y
-    let startAngle = Math.atan2(dy0, dx0)
-    const dx1 = p1.x - p.x
-    const dy1 = p1.y - p.y
-    const endAngle = Math.atan2(dy1, dx1)
-    if (direction === Orientation.CLOCKWISE) {
-      if (startAngle <= endAngle) startAngle += 2.0 * Math.PI
-    } else {
-      if (startAngle >= endAngle) startAngle -= 2.0 * Math.PI
-    }
-    this._segList.addPt(p0)
-    this.addDirectedFillet(p, startAngle, endAngle, direction, radius)
-    this._segList.addPt(p1)
   }
   addLastSegment() {
     this._segList.addPt(this._offset1.p1)
@@ -255,6 +162,99 @@ export default class OffsetSegmentGenerator {
         this.addCornerFillet(this._s1, this._offset0.p1, this._offset1.p0, Orientation.CLOCKWISE, this._distance)
       }
     
+  }
+  addNextSegment(p, addStartPoint) {
+    this._s0 = this._s1
+    this._s1 = this._s2
+    this._s2 = p
+    this._seg0.setCoordinates(this._s0, this._s1)
+    this.computeOffsetSegment(this._seg0, this._side, this._distance, this._offset0)
+    this._seg1.setCoordinates(this._s1, this._s2)
+    this.computeOffsetSegment(this._seg1, this._side, this._distance, this._offset1)
+    if (this._s1.equals(this._s2)) return null
+    const orientation = Orientation.index(this._s0, this._s1, this._s2)
+    const outsideTurn = orientation === Orientation.CLOCKWISE && this._side === Position.LEFT || orientation === Orientation.COUNTERCLOCKWISE && this._side === Position.RIGHT
+    if (orientation === 0) 
+      this.addCollinear(addStartPoint)
+    else if (outsideTurn) 
+      this.addOutsideTurn(orientation, addStartPoint)
+    else 
+      this.addInsideTurn(orientation, addStartPoint)
+    
+  }
+  addLineEndCap(p0, p1) {
+    const seg = new LineSegment(p0, p1)
+    const offsetL = new LineSegment()
+    this.computeOffsetSegment(seg, Position.LEFT, this._distance, offsetL)
+    const offsetR = new LineSegment()
+    this.computeOffsetSegment(seg, Position.RIGHT, this._distance, offsetR)
+    const dx = p1.x - p0.x
+    const dy = p1.y - p0.y
+    const angle = Math.atan2(dy, dx)
+    switch (this._bufParams.getEndCapStyle()) {
+    case BufferParameters.CAP_ROUND:
+      this._segList.addPt(offsetL.p1)
+      this.addDirectedFillet(p1, angle + Math.PI / 2, angle - Math.PI / 2, Orientation.CLOCKWISE, this._distance)
+      this._segList.addPt(offsetR.p1)
+      break
+    case BufferParameters.CAP_FLAT:
+      this._segList.addPt(offsetL.p1)
+      this._segList.addPt(offsetR.p1)
+      break
+    case BufferParameters.CAP_SQUARE:
+      const squareCapSideOffset = new Coordinate()
+      squareCapSideOffset.x = Math.abs(this._distance) * Math.cos(angle)
+      squareCapSideOffset.y = Math.abs(this._distance) * Math.sin(angle)
+      const squareCapLOffset = new Coordinate(offsetL.p1.x + squareCapSideOffset.x, offsetL.p1.y + squareCapSideOffset.y)
+      const squareCapROffset = new Coordinate(offsetR.p1.x + squareCapSideOffset.x, offsetR.p1.y + squareCapSideOffset.y)
+      this._segList.addPt(squareCapLOffset)
+      this._segList.addPt(squareCapROffset)
+      break
+    }
+  }
+  addOutsideTurn(orientation, addStartPoint) {
+    if (this._offset0.p1.distance(this._offset1.p0) < this._distance * OffsetSegmentGenerator.OFFSET_SEGMENT_SEPARATION_FACTOR) {
+      this._segList.addPt(this._offset0.p1)
+      return null
+    }
+    if (this._bufParams.getJoinStyle() === BufferParameters.JOIN_MITRE) {
+      this.addMitreJoin(this._s1, this._offset0, this._offset1, this._distance)
+    } else if (this._bufParams.getJoinStyle() === BufferParameters.JOIN_BEVEL) {
+      this.addBevelJoin(this._offset0, this._offset1)
+    } else {
+      if (addStartPoint) this._segList.addPt(this._offset0.p1)
+      this.addCornerFillet(this._s1, this._offset0.p1, this._offset1.p0, orientation, this._distance)
+      this._segList.addPt(this._offset1.p0)
+    }
+  }
+  createSquare(p) {
+    this._segList.addPt(new Coordinate(p.x + this._distance, p.y + this._distance))
+    this._segList.addPt(new Coordinate(p.x + this._distance, p.y - this._distance))
+    this._segList.addPt(new Coordinate(p.x - this._distance, p.y - this._distance))
+    this._segList.addPt(new Coordinate(p.x - this._distance, p.y + this._distance))
+    this._segList.closeRing()
+  }
+  addSegments(pt, isForward) {
+    this._segList.addPts(pt, isForward)
+  }
+  addFirstSegment() {
+    this._segList.addPt(this._offset1.p0)
+  }
+  addCornerFillet(p, p0, p1, direction, radius) {
+    const dx0 = p0.x - p.x
+    const dy0 = p0.y - p.y
+    let startAngle = Math.atan2(dy0, dx0)
+    const dx1 = p1.x - p.x
+    const dy1 = p1.y - p.y
+    const endAngle = Math.atan2(dy1, dx1)
+    if (direction === Orientation.CLOCKWISE) {
+      if (startAngle <= endAngle) startAngle += 2.0 * Math.PI
+    } else {
+      if (startAngle >= endAngle) startAngle -= 2.0 * Math.PI
+    }
+    this._segList.addPt(p0)
+    this.addDirectedFillet(p, startAngle, endAngle, direction, radius)
+    this._segList.addPt(p1)
   }
   closeRing() {
     this._segList.closeRing()

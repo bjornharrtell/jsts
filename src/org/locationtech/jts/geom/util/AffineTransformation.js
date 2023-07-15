@@ -1,12 +1,12 @@
 import NoninvertibleTransformationException from './NoninvertibleTransformationException.js'
 import hasInterface from '../../../../../hasInterface.js'
-import Coordinate from '../Coordinate.js'
-import IllegalArgumentException from '../../../../../java/lang/IllegalArgumentException.js'
 import Exception from '../../../../../java/lang/Exception.js'
 import CoordinateSequence from '../CoordinateSequence.js'
 import Cloneable from '../../../../../java/lang/Cloneable.js'
 import CoordinateSequenceFilter from '../CoordinateSequenceFilter.js'
 import Assert from '../../util/Assert.js'
+import Coordinate from '../Coordinate.js'
+import IllegalArgumentException from '../../../../../java/lang/IllegalArgumentException.js'
 export default class AffineTransformation {
   constructor() {
     AffineTransformation.constructor_.apply(this, arguments)
@@ -118,6 +118,114 @@ export default class AffineTransformation {
     this._m12 = 0.0
     return this
   }
+  setToRotation() {
+    if (arguments.length === 1) {
+      const theta = arguments[0]
+      this.setToRotation(Math.sin(theta), Math.cos(theta))
+      return this
+    } else if (arguments.length === 2) {
+      const sinTheta = arguments[0], cosTheta = arguments[1]
+      this._m00 = cosTheta
+      this._m01 = -sinTheta
+      this._m02 = 0.0
+      this._m10 = sinTheta
+      this._m11 = cosTheta
+      this._m12 = 0.0
+      return this
+    } else if (arguments.length === 3) {
+      const theta = arguments[0], x = arguments[1], y = arguments[2]
+      this.setToRotation(Math.sin(theta), Math.cos(theta), x, y)
+      return this
+    } else if (arguments.length === 4) {
+      const sinTheta = arguments[0], cosTheta = arguments[1], x = arguments[2], y = arguments[3]
+      this._m00 = cosTheta
+      this._m01 = -sinTheta
+      this._m02 = x - x * cosTheta + y * sinTheta
+      this._m10 = sinTheta
+      this._m11 = cosTheta
+      this._m12 = y - x * sinTheta - y * cosTheta
+      return this
+    }
+  }
+  getMatrixEntries() {
+    return [this._m00, this._m01, this._m02, this._m10, this._m11, this._m12]
+  }
+  filter(seq, i) {
+    this.transform(seq, i)
+  }
+  composeBefore(trans) {
+    const mp00 = this._m00 * trans._m00 + this._m01 * trans._m10
+    const mp01 = this._m00 * trans._m01 + this._m01 * trans._m11
+    const mp02 = this._m00 * trans._m02 + this._m01 * trans._m12 + this._m02
+    const mp10 = this._m10 * trans._m00 + this._m11 * trans._m10
+    const mp11 = this._m10 * trans._m01 + this._m11 * trans._m11
+    const mp12 = this._m10 * trans._m02 + this._m11 * trans._m12 + this._m12
+    this._m00 = mp00
+    this._m01 = mp01
+    this._m02 = mp02
+    this._m10 = mp10
+    this._m11 = mp11
+    this._m12 = mp12
+    return this
+  }
+  clone() {
+    try {
+      return null
+    } catch (ex) {
+      if (ex instanceof Exception) 
+        Assert.shouldNeverReachHere()
+      else throw ex
+    } finally {}
+    return null
+  }
+  translate(x, y) {
+    this.compose(AffineTransformation.translationInstance(x, y))
+    return this
+  }
+  setToReflection() {
+    if (arguments.length === 2) {
+      const x = arguments[0], y = arguments[1]
+      if (x === 0.0 && y === 0.0) 
+        throw new IllegalArgumentException('Reflection vector must be non-zero')
+      
+      if (x === y) {
+        this._m00 = 0.0
+        this._m01 = 1.0
+        this._m02 = 0.0
+        this._m10 = 1.0
+        this._m11 = 0.0
+        this._m12 = 0.0
+        return this
+      }
+      const d = Math.sqrt(x * x + y * y)
+      const sin = y / d
+      const cos = x / d
+      this.rotate(-sin, cos)
+      this.scale(1, -1)
+      this.rotate(sin, cos)
+      return this
+    } else if (arguments.length === 4) {
+      const x0 = arguments[0], y0 = arguments[1], x1 = arguments[2], y1 = arguments[3]
+      if (x0 === x1 && y0 === y1) 
+        throw new IllegalArgumentException('Reflection line points must be distinct')
+      
+      this.setToTranslation(-x0, -y0)
+      const dx = x1 - x0
+      const dy = y1 - y0
+      const d = Math.sqrt(dx * dx + dy * dy)
+      const sin = dy / d
+      const cos = dx / d
+      this.rotate(-sin, cos)
+      this.scale(1, -1)
+      this.rotate(sin, cos)
+      this.translate(x0, y0)
+      return this
+    }
+  }
+  shear(xShear, yShear) {
+    this.compose(AffineTransformation.shearInstance(xShear, yShear))
+    return this
+  }
   getInverse() {
     const det = this.getDeterminant()
     if (det === 0) throw new NoninvertibleTransformationException('Transformation is non-invertible')
@@ -199,41 +307,6 @@ export default class AffineTransformation {
       return this
     }
   }
-  setToRotation() {
-    if (arguments.length === 1) {
-      const theta = arguments[0]
-      this.setToRotation(Math.sin(theta), Math.cos(theta))
-      return this
-    } else if (arguments.length === 2) {
-      const sinTheta = arguments[0], cosTheta = arguments[1]
-      this._m00 = cosTheta
-      this._m01 = -sinTheta
-      this._m02 = 0.0
-      this._m10 = sinTheta
-      this._m11 = cosTheta
-      this._m12 = 0.0
-      return this
-    } else if (arguments.length === 3) {
-      const theta = arguments[0], x = arguments[1], y = arguments[2]
-      this.setToRotation(Math.sin(theta), Math.cos(theta), x, y)
-      return this
-    } else if (arguments.length === 4) {
-      const sinTheta = arguments[0], cosTheta = arguments[1], x = arguments[2], y = arguments[3]
-      this._m00 = cosTheta
-      this._m01 = -sinTheta
-      this._m02 = x - x * cosTheta + y * sinTheta
-      this._m10 = sinTheta
-      this._m11 = cosTheta
-      this._m12 = y - x * sinTheta - y * cosTheta
-      return this
-    }
-  }
-  getMatrixEntries() {
-    return [this._m00, this._m01, this._m02, this._m10, this._m11, this._m12]
-  }
-  filter(seq, i) {
-    this.transform(seq, i)
-  }
   rotate() {
     if (arguments.length === 1) {
       const theta = arguments[0]
@@ -256,21 +329,6 @@ export default class AffineTransformation {
   getDeterminant() {
     return this._m00 * this._m11 - this._m01 * this._m10
   }
-  composeBefore(trans) {
-    const mp00 = this._m00 * trans._m00 + this._m01 * trans._m10
-    const mp01 = this._m00 * trans._m01 + this._m01 * trans._m11
-    const mp02 = this._m00 * trans._m02 + this._m01 * trans._m12 + this._m02
-    const mp10 = this._m10 * trans._m00 + this._m11 * trans._m10
-    const mp11 = this._m10 * trans._m01 + this._m11 * trans._m11
-    const mp12 = this._m10 * trans._m02 + this._m11 * trans._m12 + this._m12
-    this._m00 = mp00
-    this._m01 = mp01
-    this._m02 = mp02
-    this._m10 = mp10
-    this._m11 = mp11
-    this._m12 = mp12
-    return this
-  }
   setToShear(xShear, yShear) {
     this._m00 = 1.0
     this._m01 = xShear
@@ -283,60 +341,6 @@ export default class AffineTransformation {
   isDone() {
     return false
   }
-  clone() {
-    try {
-      return null
-    } catch (ex) {
-      if (ex instanceof Exception) 
-        Assert.shouldNeverReachHere()
-      else throw ex
-    } finally {}
-    return null
-  }
-  translate(x, y) {
-    this.compose(AffineTransformation.translationInstance(x, y))
-    return this
-  }
-  setToReflection() {
-    if (arguments.length === 2) {
-      const x = arguments[0], y = arguments[1]
-      if (x === 0.0 && y === 0.0) 
-        throw new IllegalArgumentException('Reflection vector must be non-zero')
-      
-      if (x === y) {
-        this._m00 = 0.0
-        this._m01 = 1.0
-        this._m02 = 0.0
-        this._m10 = 1.0
-        this._m11 = 0.0
-        this._m12 = 0.0
-        return this
-      }
-      const d = Math.sqrt(x * x + y * y)
-      const sin = y / d
-      const cos = x / d
-      this.rotate(-sin, cos)
-      this.scale(1, -1)
-      this.rotate(sin, cos)
-      return this
-    } else if (arguments.length === 4) {
-      const x0 = arguments[0], y0 = arguments[1], x1 = arguments[2], y1 = arguments[3]
-      if (x0 === x1 && y0 === y1) 
-        throw new IllegalArgumentException('Reflection line points must be distinct')
-      
-      this.setToTranslation(-x0, -y0)
-      const dx = x1 - x0
-      const dy = y1 - y0
-      const d = Math.sqrt(dx * dx + dy * dy)
-      const sin = dy / d
-      const cos = dx / d
-      this.rotate(-sin, cos)
-      this.scale(1, -1)
-      this.rotate(sin, cos)
-      this.translate(x0, y0)
-      return this
-    }
-  }
   toString() {
     return 'AffineTransformation[[' + this._m00 + ', ' + this._m01 + ', ' + this._m02 + '], [' + this._m10 + ', ' + this._m11 + ', ' + this._m12 + ']]'
   }
@@ -347,10 +351,6 @@ export default class AffineTransformation {
     this._m10 = 0.0
     this._m11 = 1.0
     this._m12 = dy
-    return this
-  }
-  shear(xShear, yShear) {
-    this.compose(AffineTransformation.shearInstance(xShear, yShear))
     return this
   }
   transform() {

@@ -17,6 +17,27 @@ export default class KochSnowflakeBuilder extends GeometricShapeBuilder {
     const exp = Math.log(pow4) / Math.log(4)
     return Math.trunc(exp)
   }
+  addSide(level, p0, p1) {
+    if (level === 0) {
+      this.addSegment(p0, p1)
+    } else {
+      const base = Vector2D.create(p0, p1)
+      const midPt = base.multiply(0.5).translate(p0)
+      const heightVec = base.multiply(KochSnowflakeBuilder.THIRD_HEIGHT)
+      const offsetVec = heightVec.rotateByQuarterCircle(1)
+      const offsetPt = offsetVec.translate(midPt)
+      const n2 = level - 1
+      const thirdPt = base.multiply(KochSnowflakeBuilder.ONE_THIRD).translate(p0)
+      const twoThirdPt = base.multiply(KochSnowflakeBuilder.TWO_THIRDS).translate(p0)
+      this.addSide(n2, p0, thirdPt)
+      this.addSide(n2, thirdPt, offsetPt)
+      this.addSide(n2, offsetPt, twoThirdPt)
+      this.addSide(n2, twoThirdPt, p1)
+    }
+  }
+  addSegment(p0, p1) {
+    this._coordList.add(p1)
+  }
   getBoundary(level, origin, width) {
     let y = origin.y
     if (level > 0) 
@@ -36,27 +57,6 @@ export default class KochSnowflakeBuilder extends GeometricShapeBuilder {
     const baseLine = this.getSquareBaseLine()
     const pts = this.getBoundary(level, baseLine.getCoordinate(0), baseLine.getLength())
     return this._geomFactory.createPolygon(this._geomFactory.createLinearRing(pts), null)
-  }
-  addSegment(p0, p1) {
-    this._coordList.add(p1)
-  }
-  addSide(level, p0, p1) {
-    if (level === 0) {
-      this.addSegment(p0, p1)
-    } else {
-      const base = Vector2D.create(p0, p1)
-      const midPt = base.multiply(0.5).translate(p0)
-      const heightVec = base.multiply(KochSnowflakeBuilder.THIRD_HEIGHT)
-      const offsetVec = heightVec.rotateByQuarterCircle(1)
-      const offsetPt = offsetVec.translate(midPt)
-      const n2 = level - 1
-      const thirdPt = base.multiply(KochSnowflakeBuilder.ONE_THIRD).translate(p0)
-      const twoThirdPt = base.multiply(KochSnowflakeBuilder.TWO_THIRDS).translate(p0)
-      this.addSide(n2, p0, thirdPt)
-      this.addSide(n2, thirdPt, offsetPt)
-      this.addSide(n2, offsetPt, twoThirdPt)
-      this.addSide(n2, twoThirdPt, p1)
-    }
   }
 }
 KochSnowflakeBuilder.HEIGHT_FACTOR = Math.sin(Math.PI / 3.0)

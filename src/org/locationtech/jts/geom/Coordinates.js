@@ -15,18 +15,6 @@ export default class Coordinates {
     
     return 0
   }
-  static dimension(coordinate) {
-    if (coordinate instanceof CoordinateXY) 
-      return 2
-    else if (coordinate instanceof CoordinateXYM) 
-      return 3
-    else if (coordinate instanceof CoordinateXYZM) 
-      return 4
-    else if (coordinate instanceof Coordinate) 
-      return 3
-    
-    return 3
-  }
   static create() {
     if (arguments.length === 1) {
       const dimension = arguments[0]
@@ -44,5 +32,17 @@ export default class Coordinates {
       
       return new Coordinate()
     }
+  }
+  static dimension(coordinate) {
+    if (coordinate instanceof CoordinateXY) 
+      return 2
+    else if (coordinate instanceof CoordinateXYM) 
+      return 3
+    else if (coordinate instanceof CoordinateXYZM) 
+      return 4
+    else if (coordinate instanceof Coordinate) 
+      return 3
+    
+    return 3
   }
 }

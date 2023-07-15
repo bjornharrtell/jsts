@@ -26,6 +26,9 @@ export default class MathUtil {
       return x
     }
   }
+  static average(x1, x2) {
+    return (x1 + x2) / 2.0
+  }
   static wrap(index, max) {
     if (index < 0) 
       return max - -index % max
@@ -47,9 +50,6 @@ export default class MathUtil {
       if (v4 > max) max = v4
       return max
     }
-  }
-  static average(x1, x2) {
-    return (x1 + x2) / 2.0
   }
 }
 MathUtil.LOG_10 = Math.log(10)

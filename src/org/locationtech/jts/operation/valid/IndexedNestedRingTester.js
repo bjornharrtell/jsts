@@ -16,6 +16,13 @@ export default class IndexedNestedRingTester {
     const graph = arguments[0]
     this._graph = graph
   }
+  add(ring) {
+    this._rings.add(ring)
+    this._totalEnv.expandToInclude(ring.getEnvelopeInternal())
+  }
+  getNestedPoint() {
+    return this._nestedPt
+  }
   buildIndex() {
     this._index = new STRtree()
     for (let i = 0; i < this._rings.size(); i++) {
@@ -23,9 +30,6 @@ export default class IndexedNestedRingTester {
       const env = ring.getEnvelopeInternal()
       this._index.insert(env, ring)
     }
-  }
-  getNestedPoint() {
-    return this._nestedPt
   }
   isNonNested() {
     this.buildIndex()
@@ -48,9 +52,5 @@ export default class IndexedNestedRingTester {
       }
     }
     return true
-  }
-  add(ring) {
-    this._rings.add(ring)
-    this._totalEnv.expandToInclude(ring.getEnvelopeInternal())
   }
 }

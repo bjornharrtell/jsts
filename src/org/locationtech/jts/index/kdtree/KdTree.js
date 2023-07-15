@@ -2,9 +2,9 @@ import CoordinateList from '../../geom/CoordinateList.js'
 import hasInterface from '../../../../../hasInterface.js'
 import ArrayList from '../../../../../java/util/ArrayList.js'
 import KdNodeVisitor from './KdNodeVisitor.js'
+import KdNode from './KdNode.js'
 import Envelope from '../../geom/Envelope.js'
 import List from '../../../../../java/util/List.js'
-import KdNode from './KdNode.js'
 export default class KdTree {
   constructor() {
     KdTree.constructor_.apply(this, arguments)
@@ -164,6 +164,14 @@ class BestMatchVisitor {
     this._p = p
     this._tolerance = tolerance
   }
+  queryEnvelope() {
+    const queryEnv = new Envelope(this._p)
+    queryEnv.expandBy(this._tolerance)
+    return queryEnv
+  }
+  getNode() {
+    return this._matchNode
+  }
   visit(node) {
     const dist = this._p.distance(node.getCoordinate())
     const isInTolerance = dist <= this._tolerance
@@ -174,14 +182,6 @@ class BestMatchVisitor {
       this._matchNode = node
       this._matchDist = dist
     }
-  }
-  queryEnvelope() {
-    const queryEnv = new Envelope(this._p)
-    queryEnv.expandBy(this._tolerance)
-    return queryEnv
-  }
-  getNode() {
-    return this._matchNode
   }
   get interfaces_() {
     return [KdNodeVisitor]

@@ -47,26 +47,6 @@ export default class NodedSegmentString {
     if (index === this._pts.length - 1) return -1
     return this.safeOctant(this.getCoordinate(index), this.getCoordinate(index + 1))
   }
-  setData(data) {
-    this._data = data
-  }
-  safeOctant(p0, p1) {
-    if (p0.equals2D(p1)) return 0
-    return Octant.octant(p0, p1)
-  }
-  getData() {
-    return this._data
-  }
-  addIntersection() {
-    if (arguments.length === 2) {
-      const intPt = arguments[0], segmentIndex = arguments[1]
-      this.addIntersectionNode(intPt, segmentIndex)
-    } else if (arguments.length === 4) {
-      const li = arguments[0], segmentIndex = arguments[1], geomIndex = arguments[2], intIndex = arguments[3]
-      const intPt = new Coordinate(li.getIntersection(intIndex))
-      this.addIntersection(intPt, segmentIndex)
-    }
-  }
   toString() {
     return WKTWriter.toLineString(new CoordinateArraySequence(this._pts))
   }
@@ -89,6 +69,26 @@ export default class NodedSegmentString {
     for (let i = 0; i < li.getIntersectionNum(); i++) 
       this.addIntersection(li, segmentIndex, geomIndex, i)
     
+  }
+  setData(data) {
+    this._data = data
+  }
+  safeOctant(p0, p1) {
+    if (p0.equals2D(p1)) return 0
+    return Octant.octant(p0, p1)
+  }
+  getData() {
+    return this._data
+  }
+  addIntersection() {
+    if (arguments.length === 2) {
+      const intPt = arguments[0], segmentIndex = arguments[1]
+      this.addIntersectionNode(intPt, segmentIndex)
+    } else if (arguments.length === 4) {
+      const li = arguments[0], segmentIndex = arguments[1], geomIndex = arguments[2], intIndex = arguments[3]
+      const intPt = new Coordinate(li.getIntersection(intIndex))
+      this.addIntersection(intPt, segmentIndex)
+    }
   }
   get interfaces_() {
     return [NodableSegmentString]

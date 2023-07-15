@@ -17,10 +17,10 @@ export default class TaggedLineSegment extends LineSegment {
       this._index = index
     }
   }
-  getIndex() {
-    return this._index
-  }
   getParent() {
     return this._parent
+  }
+  getIndex() {
+    return this._index
   }
 }

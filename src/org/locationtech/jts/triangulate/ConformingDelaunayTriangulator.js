@@ -1,17 +1,17 @@
 import GeometryFactory from '../geom/GeometryFactory.js'
-import NonEncroachingSplitPointFinder from './NonEncroachingSplitPointFinder.js'
-import ConstraintVertex from './ConstraintVertex.js'
 import Coordinate from '../geom/Coordinate.js'
-import IncrementalDelaunayTriangulator from './IncrementalDelaunayTriangulator.js'
-import QuadEdgeSubdivision from './quadedge/QuadEdgeSubdivision.js'
-import Double from '../../../../java/lang/Double.js'
 import LastFoundQuadEdgeLocator from './quadedge/LastFoundQuadEdgeLocator.js'
 import Segment from './Segment.js'
 import ConvexHull from '../algorithm/ConvexHull.js'
+import Envelope from '../geom/Envelope.js'
+import NonEncroachingSplitPointFinder from './NonEncroachingSplitPointFinder.js'
+import ConstraintVertex from './ConstraintVertex.js'
+import IncrementalDelaunayTriangulator from './IncrementalDelaunayTriangulator.js'
+import QuadEdgeSubdivision from './quadedge/QuadEdgeSubdivision.js'
+import Double from '../../../../java/lang/Double.js'
 import KdTree from '../index/kdtree/KdTree.js'
 import ArrayList from '../../../../java/util/ArrayList.js'
 import ConstraintEnforcementException from './ConstraintEnforcementException.js'
-import Envelope from '../geom/Envelope.js'
 export default class ConformingDelaunayTriangulator {
   constructor() {
     ConformingDelaunayTriangulator.constructor_.apply(this, arguments)
@@ -48,6 +48,50 @@ export default class ConformingDelaunayTriangulator {
   getKDT() {
     return this._kdt
   }
+  setConstraints(segments, segVertices) {
+    this._segments = segments
+    this._segVertices = segVertices
+  }
+  computeConvexHull() {
+    const fact = new GeometryFactory()
+    const coords = this.getPointArray()
+    const hull = new ConvexHull(coords, fact)
+    this._convexHull = hull.getConvexHull()
+  }
+  addConstraintVertices() {
+    this.computeConvexHull()
+    this.insertSites(this._segVertices)
+  }
+  getTolerance() {
+    return this._tolerance
+  }
+  setVertexFactory(vertexFactory) {
+    this._vertexFactory = vertexFactory
+  }
+  formInitialDelaunay() {
+    this.computeBoundingBox()
+    this._subdiv = new QuadEdgeSubdivision(this._computeAreaEnv, this._tolerance)
+    this._subdiv.setLocator(new LastFoundQuadEdgeLocator(this._subdiv))
+    this._incDel = new IncrementalDelaunayTriangulator(this._subdiv)
+    this.insertSites(this._initialVertices)
+  }
+  insertSite() {
+    if (arguments[0] instanceof ConstraintVertex) {
+      const v = arguments[0]
+      const kdnode = this._kdt.insert(v.getCoordinate(), v)
+      if (!kdnode.isRepeated()) {
+        this._incDel.insertSite(v)
+      } else {
+        const snappedV = kdnode.getData()
+        snappedV.merge(v)
+        return snappedV
+      }
+      return v
+    } else if (arguments[0] instanceof Coordinate) {
+      const p = arguments[0]
+      this.insertSite(this.createVertex(p))
+    }
+  }
   enforceConstraints() {
     this.addConstraintVertices()
     let count = 0
@@ -82,20 +126,6 @@ export default class ConformingDelaunayTriangulator {
     }
     return pts
   }
-  setConstraints(segments, segVertices) {
-    this._segments = segments
-    this._segVertices = segVertices
-  }
-  computeConvexHull() {
-    const fact = new GeometryFactory()
-    const coords = this.getPointArray()
-    const hull = new ConvexHull(coords, fact)
-    this._convexHull = hull.getConvexHull()
-  }
-  addConstraintVertices() {
-    this.computeConvexHull()
-    this.insertSites(this._segVertices)
-  }
   findNonGabrielPoint(seg) {
     const p = seg.getStart()
     const q = seg.getEnd()
@@ -129,9 +159,6 @@ export default class ConformingDelaunayTriangulator {
   }
   getConvexHull() {
     return this._convexHull
-  }
-  getTolerance() {
-    return this._tolerance
   }
   enforceGabriel(segsToInsert) {
     const newSegments = new ArrayList()
@@ -183,33 +210,6 @@ export default class ConformingDelaunayTriangulator {
     const delta = Math.max(deltaX, deltaY)
     this._computeAreaEnv = new Envelope(allPointsEnv)
     this._computeAreaEnv.expandBy(delta)
-  }
-  setVertexFactory(vertexFactory) {
-    this._vertexFactory = vertexFactory
-  }
-  formInitialDelaunay() {
-    this.computeBoundingBox()
-    this._subdiv = new QuadEdgeSubdivision(this._computeAreaEnv, this._tolerance)
-    this._subdiv.setLocator(new LastFoundQuadEdgeLocator(this._subdiv))
-    this._incDel = new IncrementalDelaunayTriangulator(this._subdiv)
-    this.insertSites(this._initialVertices)
-  }
-  insertSite() {
-    if (arguments[0] instanceof ConstraintVertex) {
-      const v = arguments[0]
-      const kdnode = this._kdt.insert(v.getCoordinate(), v)
-      if (!kdnode.isRepeated()) {
-        this._incDel.insertSite(v)
-      } else {
-        const snappedV = kdnode.getData()
-        snappedV.merge(v)
-        return snappedV
-      }
-      return v
-    } else if (arguments[0] instanceof Coordinate) {
-      const p = arguments[0]
-      this.insertSite(this.createVertex(p))
-    }
   }
 }
 ConformingDelaunayTriangulator.MAX_SPLIT_ITER = 99

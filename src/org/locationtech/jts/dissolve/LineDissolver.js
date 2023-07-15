@@ -4,10 +4,10 @@ import Geometry from '../geom/Geometry.js'
 import hasInterface from '../../../../hasInterface.js'
 import Collection from '../../../../java/util/Collection.js'
 import Stack from '../../../../java/util/Stack.js'
-import MarkHalfEdge from '../edgegraph/MarkHalfEdge.js'
-import DissolveEdgeGraph from './DissolveEdgeGraph.js'
 import GeometryComponentFilter from '../geom/GeometryComponentFilter.js'
 import ArrayList from '../../../../java/util/ArrayList.js'
+import MarkHalfEdge from '../edgegraph/MarkHalfEdge.js'
+import DissolveEdgeGraph from './DissolveEdgeGraph.js'
 export default class LineDissolver {
   constructor() {
     LineDissolver.constructor_.apply(this, arguments)
@@ -51,40 +51,6 @@ export default class LineDissolver {
     if (eNode === null) eNode = e
     this.stackEdges(eNode)
     this.buildLines()
-  }
-  buildRing(eStartRing) {
-    const line = new CoordinateList()
-    let e = eStartRing
-    line.add(e.orig().copy(), false)
-    while (e.sym().degree() === 2) {
-      const eNext = e.next()
-      if (eNext === eStartRing) break
-      line.add(eNext.orig().copy(), false)
-      e = eNext
-    }
-    line.add(e.dest().copy(), false)
-    this.addLine(line)
-  }
-  buildLine(eStart) {
-    const line = new CoordinateList()
-    let e = eStart
-    this._ringStartEdge = null
-    MarkHalfEdge.markBoth(e)
-    line.add(e.orig().copy(), false)
-    while (e.sym().degree() === 2) {
-      this.updateRingStartEdge(e)
-      const eNext = e.next()
-      if (eNext === eStart) {
-        this.buildRing(this._ringStartEdge)
-        return null
-      }
-      line.add(eNext.orig().copy(), false)
-      e = eNext
-      MarkHalfEdge.markBoth(e)
-    }
-    line.add(e.dest().clone(), false)
-    this.stackEdges(e.sym())
-    this.addLine(line)
   }
   stackEdges(node) {
     let e = node
@@ -144,5 +110,39 @@ export default class LineDissolver {
         }
       }
     }
+  }
+  buildRing(eStartRing) {
+    const line = new CoordinateList()
+    let e = eStartRing
+    line.add(e.orig().copy(), false)
+    while (e.sym().degree() === 2) {
+      const eNext = e.next()
+      if (eNext === eStartRing) break
+      line.add(eNext.orig().copy(), false)
+      e = eNext
+    }
+    line.add(e.dest().copy(), false)
+    this.addLine(line)
+  }
+  buildLine(eStart) {
+    const line = new CoordinateList()
+    let e = eStart
+    this._ringStartEdge = null
+    MarkHalfEdge.markBoth(e)
+    line.add(e.orig().copy(), false)
+    while (e.sym().degree() === 2) {
+      this.updateRingStartEdge(e)
+      const eNext = e.next()
+      if (eNext === eStart) {
+        this.buildRing(this._ringStartEdge)
+        return null
+      }
+      line.add(eNext.orig().copy(), false)
+      e = eNext
+      MarkHalfEdge.markBoth(e)
+    }
+    line.add(e.dest().clone(), false)
+    this.stackEdges(e.sym())
+    this.addLine(line)
   }
 }

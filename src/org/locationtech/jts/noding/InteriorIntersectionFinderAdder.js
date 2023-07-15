@@ -11,6 +11,9 @@ export default class InteriorIntersectionFinderAdder {
     this._li = li
     this._interiorIntersections = new ArrayList()
   }
+  isDone() {
+    return false
+  }
   processIntersections(e0, segIndex0, e1, segIndex1) {
     if (e0 === e1 && segIndex0 === segIndex1) return null
     const p00 = e0.getCoordinates()[segIndex0]
@@ -27,9 +30,6 @@ export default class InteriorIntersectionFinderAdder {
         e1.addIntersections(this._li, segIndex1, 1)
       }
     
-  }
-  isDone() {
-    return false
   }
   getInteriorIntersections() {
     return this._interiorIntersections

@@ -12,6 +12,12 @@ export default class EdgeString {
     const factory = arguments[0]
     this._factory = factory
   }
+  add(directedEdge) {
+    this._directedEdges.add(directedEdge)
+  }
+  toLineString() {
+    return this._factory.createLineString(this.getCoordinates())
+  }
   getCoordinates() {
     if (this._coordinates === null) {
       let forwardDirectedEdges = 0
@@ -32,11 +38,5 @@ export default class EdgeString {
       
     }
     return this._coordinates
-  }
-  toLineString() {
-    return this._factory.createLineString(this.getCoordinates())
-  }
-  add(directedEdge) {
-    this._directedEdges.add(directedEdge)
   }
 }

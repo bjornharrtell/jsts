@@ -10,24 +10,6 @@ export default class QuadEdge {
     this._next = null
     this._data = null
   }
-  static makeEdge(o, d) {
-    const q0 = new QuadEdge()
-    const q1 = new QuadEdge()
-    const q2 = new QuadEdge()
-    const q3 = new QuadEdge()
-    q0._rot = q1
-    q1._rot = q2
-    q2._rot = q3
-    q3._rot = q0
-    q0.setNext(q0)
-    q1.setNext(q3)
-    q2.setNext(q2)
-    q3.setNext(q1)
-    const base = q0
-    base.setOrig(o)
-    base.setDest(d)
-    return base
-  }
   static swap(e) {
     const a = e.oPrev()
     const b = e.sym().oPrev()
@@ -50,6 +32,24 @@ export default class QuadEdge {
     alpha.setNext(t3)
     beta.setNext(t4)
   }
+  static makeEdge(o, d) {
+    const q0 = new QuadEdge()
+    const q1 = new QuadEdge()
+    const q2 = new QuadEdge()
+    const q3 = new QuadEdge()
+    q0._rot = q1
+    q1._rot = q2
+    q2._rot = q3
+    q3._rot = q0
+    q0.setNext(q0)
+    q1.setNext(q3)
+    q2.setNext(q2)
+    q3.setNext(q1)
+    const base = q0
+    base.setOrig(o)
+    base.setDest(d)
+    return base
+  }
   static connect(a, b) {
     const e = QuadEdge.makeEdge(a.dest(), b.orig())
     QuadEdge.splice(e, a.lNext())
@@ -60,12 +60,6 @@ export default class QuadEdge {
     if (this.equalsOriented(qe)) return true
     if (this.equalsOriented(qe.sym())) return true
     return false
-  }
-  toLineSegment() {
-    return new LineSegment(this._vertex.getCoordinate(), this.dest().getCoordinate())
-  }
-  dest() {
-    return this.sym().orig()
   }
   oNext() {
     return this._next
@@ -101,12 +95,6 @@ export default class QuadEdge {
   getLength() {
     return this.orig().getCoordinate().distance(this.dest().getCoordinate())
   }
-  invRot() {
-    return this._rot.sym()
-  }
-  setDest(d) {
-    this.sym().setOrig(d)
-  }
   setData(data) {
     this._data = data
   }
@@ -115,12 +103,6 @@ export default class QuadEdge {
   }
   delete() {
     this._rot = null
-  }
-  orig() {
-    return this._vertex
-  }
-  rNext() {
-    return this._rot._next.invRot()
   }
   toString() {
     const p0 = this._vertex.getCoordinate()
@@ -132,6 +114,24 @@ export default class QuadEdge {
   }
   getPrimary() {
     if (this.orig().getCoordinate().compareTo(this.dest().getCoordinate()) <= 0) return this; else return this.sym()
+  }
+  toLineSegment() {
+    return new LineSegment(this._vertex.getCoordinate(), this.dest().getCoordinate())
+  }
+  dest() {
+    return this.sym().orig()
+  }
+  invRot() {
+    return this._rot.sym()
+  }
+  setDest(d) {
+    this.sym().setOrig(d)
+  }
+  orig() {
+    return this._vertex
+  }
+  rNext() {
+    return this._rot._next.invRot()
   }
   dPrev() {
     return this.invRot().oNext().invRot()

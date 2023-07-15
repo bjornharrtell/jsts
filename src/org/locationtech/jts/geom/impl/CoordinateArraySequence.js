@@ -70,45 +70,6 @@ export default class CoordinateArraySequence {
       }
     }
   }
-  getM(index) {
-    if (this.hasM()) 
-      return this._coordinates[index].getM()
-    else 
-      return Double.NaN
-    
-  }
-  setOrdinate(index, ordinateIndex, value) {
-    switch (ordinateIndex) {
-    case CoordinateSequence.X:
-      this._coordinates[index].x = value
-      break
-    case CoordinateSequence.Y:
-      this._coordinates[index].y = value
-      break
-    default:
-      this._coordinates[index].setOrdinate(ordinateIndex, value)
-    }
-  }
-  getZ(index) {
-    if (this.hasZ()) 
-      return this._coordinates[index].getZ()
-    else 
-      return Double.NaN
-    
-  }
-  size() {
-    return this._coordinates.length
-  }
-  getOrdinate(index, ordinateIndex) {
-    switch (ordinateIndex) {
-    case CoordinateSequence.X:
-      return this._coordinates[index].x
-    case CoordinateSequence.Y:
-      return this._coordinates[index].y
-    default:
-      return this._coordinates[index].getOrdinate(ordinateIndex)
-    }
-  }
   getCoordinate() {
     if (arguments.length === 1) {
       const i = arguments[0]
@@ -170,6 +131,45 @@ export default class CoordinateArraySequence {
   }
   toCoordinateArray() {
     return this._coordinates
+  }
+  getM(index) {
+    if (this.hasM()) 
+      return this._coordinates[index].getM()
+    else 
+      return Double.NaN
+    
+  }
+  setOrdinate(index, ordinateIndex, value) {
+    switch (ordinateIndex) {
+    case CoordinateSequence.X:
+      this._coordinates[index].x = value
+      break
+    case CoordinateSequence.Y:
+      this._coordinates[index].y = value
+      break
+    default:
+      this._coordinates[index].setOrdinate(ordinateIndex, value)
+    }
+  }
+  getZ(index) {
+    if (this.hasZ()) 
+      return this._coordinates[index].getZ()
+    else 
+      return Double.NaN
+    
+  }
+  size() {
+    return this._coordinates.length
+  }
+  getOrdinate(index, ordinateIndex) {
+    switch (ordinateIndex) {
+    case CoordinateSequence.X:
+      return this._coordinates[index].x
+    case CoordinateSequence.Y:
+      return this._coordinates[index].y
+    default:
+      return this._coordinates[index].getOrdinate(ordinateIndex)
+    }
   }
   get interfaces_() {
     return [CoordinateSequence, Serializable]

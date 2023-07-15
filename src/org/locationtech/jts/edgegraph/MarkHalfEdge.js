@@ -26,11 +26,11 @@ export default class MarkHalfEdge extends HalfEdge {
   static mark(e) {
     e.mark()
   }
-  mark() {
-    this._isMarked = true
-  }
   setMark(isMarked) {
     this._isMarked = isMarked
+  }
+  mark() {
+    this._isMarked = true
   }
   isMarked() {
     return this._isMarked
