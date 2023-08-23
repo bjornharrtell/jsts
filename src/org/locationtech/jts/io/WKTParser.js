@@ -527,13 +527,15 @@ class Parser {
   parseGeometry_() {
     const factory = this.factory
 
-    const o2c = ordinates => new Coordinate(...ordinates)
+    const o2c = ordinates => ordinates ? new Coordinate(...ordinates) : new Coordinate()
     const ca2p = coordinates => {
       const rings = coordinates.map(a => factory.createLinearRing(a.map(o2c)))
       if (rings.length > 1)
         return factory.createPolygon(rings[0], rings.slice(1))
-      else
+      else if (rings.length === 1)
         return factory.createPolygon(rings[0])
+      else
+        return factory.createPolygon()
     }
 
     const token = this.token_
