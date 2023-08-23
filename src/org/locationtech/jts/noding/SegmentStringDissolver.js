@@ -37,10 +37,10 @@ export default class SegmentStringDissolver {
       if (existing === null) {
         this.add(oca, segString)
       } else 
-      if (this._merger !== null) {
-        const isSameOrientation = CoordinateArrays.equals(existing.getCoordinates(), segString.getCoordinates())
-        this._merger.merge(existing, segString, isSameOrientation)
-      }
+        if (this._merger !== null) {
+          const isSameOrientation = CoordinateArrays.equals(existing.getCoordinates(), segString.getCoordinates())
+          this._merger.merge(existing, segString, isSameOrientation)
+        }
       
     }
   }

@@ -411,7 +411,7 @@ class TriangleCoordinatesVisitor {
   checkTriangleSize(pts) {
     let loc = ''
     if (pts.length >= 2) loc = WKTWriter.toLineString(pts[0], pts[1]); else 
-    if (pts.length >= 1) loc = WKTWriter.toPoint(pts[0])
+      if (pts.length >= 1) loc = WKTWriter.toPoint(pts[0])
     
   }
   visit(triEdges) {

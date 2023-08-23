@@ -112,12 +112,12 @@ export default class OffsetCurveBuilder {
     if (inputPts.length <= 1) {
       this.computePointCurve(inputPts[0], segGen)
     } else 
-    if (this._bufParams.isSingleSided()) {
-      const isRightSide = distance < 0.0
-      this.computeSingleSidedBufferCurve(inputPts, isRightSide, segGen)
-    } else {
-      this.computeLineBufferCurve(inputPts, segGen)
-    }
+      if (this._bufParams.isSingleSided()) {
+        const isRightSide = distance < 0.0
+        this.computeSingleSidedBufferCurve(inputPts, isRightSide, segGen)
+      } else {
+        this.computeLineBufferCurve(inputPts, segGen)
+      }
     
     const lineCoord = segGen.getCoordinates()
     return lineCoord

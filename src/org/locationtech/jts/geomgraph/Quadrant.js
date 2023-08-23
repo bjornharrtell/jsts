@@ -32,7 +32,7 @@ export default class Quadrant {
       if (dx >= 0.0) 
         if (dy >= 0.0) return Quadrant.NE; else return Quadrant.SE
       else 
-      if (dy >= 0.0) return Quadrant.NW; else return Quadrant.SW
+        if (dy >= 0.0) return Quadrant.NW; else return Quadrant.SW
       
     } else if (arguments[0] instanceof Coordinate && arguments[1] instanceof Coordinate) {
       const p0 = arguments[0], p1 = arguments[1]
@@ -40,7 +40,7 @@ export default class Quadrant {
       if (p1.x >= p0.x) 
         if (p1.y >= p0.y) return Quadrant.NE; else return Quadrant.SE
       else 
-      if (p1.y >= p0.y) return Quadrant.NW; else return Quadrant.SW
+        if (p1.y >= p0.y) return Quadrant.NW; else return Quadrant.SW
       
     }
   }

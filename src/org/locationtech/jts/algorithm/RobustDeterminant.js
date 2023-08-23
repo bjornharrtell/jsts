@@ -22,10 +22,10 @@ export default class RobustDeterminant {
           return sign
         
       else 
-      if (x2 > 0) 
-        return sign
-      else 
-        return -sign
+        if (x2 > 0) 
+          return sign
+        else 
+          return -sign
         
       
     
@@ -37,10 +37,10 @@ export default class RobustDeterminant {
           return -sign
         
       else 
-      if (x1 > 0) 
-        return -sign
-      else 
-        return sign
+        if (x1 > 0) 
+          return -sign
+        else 
+          return sign
         
       
     
@@ -58,48 +58,48 @@ export default class RobustDeterminant {
           y2 = swap
         }
       } else 
-      if (y1 <= -y2) {
-        sign = -sign
-        x2 = -x2
-        y2 = -y2
-      } else {
-        swap = x1
-        x1 = -x2
-        x2 = swap
-        swap = y1
-        y1 = -y2
-        y2 = swap
-      }
+        if (y1 <= -y2) {
+          sign = -sign
+          x2 = -x2
+          y2 = -y2
+        } else {
+          swap = x1
+          x1 = -x2
+          x2 = swap
+          swap = y1
+          y1 = -y2
+          y2 = swap
+        }
     } else 
-    if (0.0 < y2) {
-      if (-y1 <= y2) {
-        sign = -sign
-        x1 = -x1
-        y1 = -y1
-      } else {
-        swap = -x1
-        x1 = x2
-        x2 = swap
-        swap = -y1
-        y1 = y2
-        y2 = swap
-      }
-    } else 
-    if (y1 >= y2) {
-      x1 = -x1
-      y1 = -y1
-      x2 = -x2
-      y2 = -y2
+      if (0.0 < y2) {
+        if (-y1 <= y2) {
+          sign = -sign
+          x1 = -x1
+          y1 = -y1
+        } else {
+          swap = -x1
+          x1 = x2
+          x2 = swap
+          swap = -y1
+          y1 = y2
+          y2 = swap
+        }
+      } else 
+        if (y1 >= y2) {
+          x1 = -x1
+          y1 = -y1
+          x2 = -x2
+          y2 = -y2
           
-    } else {
-      sign = -sign
-      swap = -x1
-      x1 = -x2
-      x2 = swap
-      swap = -y1
-      y1 = -y2
-      y2 = swap
-    }
+        } else {
+          sign = -sign
+          swap = -x1
+          x1 = -x2
+          x2 = swap
+          swap = -y1
+          y1 = -y2
+          y2 = swap
+        }
       
     
     if (0.0 < x1) {
@@ -112,17 +112,17 @@ export default class RobustDeterminant {
       else 
         return sign
     } else 
-    if (0.0 < x2) {
-      return -sign
-    } else 
-    if (x1 >= x2) {
-      sign = -sign
-      x1 = -x1
-      x2 = -x2
+      if (0.0 < x2) {
+        return -sign
+      } else 
+        if (x1 >= x2) {
+          sign = -sign
+          x1 = -x1
+          x2 = -x2
           
-    } else {
-      return -sign
-    }
+        } else {
+          return -sign
+        }
       
     
     while (true) {

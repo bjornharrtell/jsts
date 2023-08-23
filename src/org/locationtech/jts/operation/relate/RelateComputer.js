@@ -127,7 +127,7 @@ export default class RelateComputer {
         const ei = eiIt.next()
         const n = this._nodes.addNode(ei.coord)
         if (eLoc === Location.BOUNDARY) n.setLabelBoundary(argIndex); else 
-        if (n.getLabel().isNull(argIndex)) n.setLabel(argIndex, Location.INTERIOR)
+          if (n.getLabel().isNull(argIndex)) n.setLabel(argIndex, Location.INTERIOR)
         
       }
     }
