@@ -1,9 +1,9 @@
 import hasInterface from '../../../../hasInterface.js'
 import Length from '../algorithm/Length.js'
 import IllegalArgumentException from '../../../../java/lang/IllegalArgumentException.js'
-import IsSimpleOp from '../operation/IsSimpleOp.js'
 import GeometryComponentFilter from './GeometryComponentFilter.js'
 import UnsupportedOperationException from '../../../../java/lang/UnsupportedOperationException.js'
+import CoordinateArrays from './CoordinateArrays.js'
 import Dimension from './Dimension.js'
 import Envelope from './Envelope.js'
 import Geometry from './Geometry.js'
@@ -32,7 +32,7 @@ export default class LineString extends Geometry {
     return this._points.expandEnvelope(new Envelope())
   }
   isRing() {
-    return this.isClosed() && IsSimpleOp.isSimple(this)
+    return this.isClosed() && CoordinateArrays.isRing(this.getCoordinates())
   }
   getCoordinates() {
     return this._points.toCoordinateArray()
