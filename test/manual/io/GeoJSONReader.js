@@ -48,6 +48,5 @@ describe('GeoJSONReader', function() {
       'coordinates': [1, 1, 1]
     }
     const g = reader.read(point)
-    console.log(g)
   })
 })

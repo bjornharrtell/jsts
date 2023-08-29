@@ -4,7 +4,7 @@ import WKTReader from '../../../src/org/locationtech/jts/io/WKTReader.js'
 import WKTWriter from '../../../src/org/locationtech/jts/io/WKTWriter.js'
 import BufferOp from '../../../src/org/locationtech/jts/operation/buffer/BufferOp.js'
 
-import '../../../src/org/locationtech/jts/monkey.js'
+//import '../../../src/org/locationtech/jts/monkey.js'
 
 describe('Test (#414)', function() {
   const reader = new WKTReader()
@@ -17,7 +17,7 @@ describe('Test (#414)', function() {
     const result = BufferOp.bufferOp(gc, 0)
     const actual = writer.write(result)
     expect(actual).to.eql(expected)
-    const result2 = gc.buffer(0)
+    const result2 = BufferOp.bufferOp(gc, 0)
     const actual2 = writer.write(result2)
     expect(actual2).to.eql(expected)
   })

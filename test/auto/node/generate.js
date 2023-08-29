@@ -7,10 +7,18 @@ import GeometryFactory from '../../../src/org/locationtech/jts/geom/GeometryFact
 import PrecisionModel from '../../../src/org/locationtech/jts/geom/PrecisionModel.js'
 import WKTReader from '../../../src/org/locationtech/jts/io/WKTReader.js'
 import WKTWriter from '../../../src/org/locationtech/jts/io/WKTWriter.js'
-import '../../../src/org/locationtech/jts/monkey.js'
+import BufferOp from '../../../src/org/locationtech/jts/operation/buffer/BufferOp.js'
+import Centroid from '../../../src/org/locationtech/jts/algorithm/Centroid.js'
+import ConvexHull from '../../../src/org/locationtech/jts/algorithm/ConvexHull.js'
+import BoundaryOp from '../../../src/org/locationtech/jts/operation/BoundaryOp.js'
+import OverlayOp from '../../../src/org/locationtech/jts/operation/overlay/OverlayOp.js'
+import UnionOp from '../../../src/org/locationtech/jts/operation/union/UnionOp.js'
+import RelateOp from '../../../src/org/locationtech/jts/operation/relate/RelateOp.js'
+import IsValidOp from '../../../src/org/locationtech/jts/operation/valid/IsValidOp.js'
+import IsSimpleOp from '../../../src/org/locationtech/jts/operation/IsSimpleOp.js'
+//import '../../../src/org/locationtech/jts/monkey.js'
 
 import BufferResultMatcher from '../BufferResultMatcher.js'
-
 
 const dom = new JSDOM('')
 const $ = jquery(dom.window)
@@ -44,6 +52,8 @@ export default function(doc, title) {
   const writer = new WKTWriter(geometryFactory)
 
   function fail(r, e, i) {
+    if (!r)
+      throw new Error('r is falsy: ' + r)
     const rt = r ? writer.write(r) : 'undefined'
     throw new Error(`\nResult: ${rt}\nExpected: ${e}\nInput: ${i}`)
   }
@@ -62,20 +72,42 @@ export default function(doc, title) {
       const bt = b ? writer.write(b) : 'undefined'
       const inputs = ' Input geometry A: ' + at + ' B: ' + bt
 
+      const getCentroid = g => {
+        if (g.isEmpty()) return g.getFactory().createPoint()
+        const coord = Centroid.getCentroid(g)
+        g.getPrecisionModel().makePrecise(coord)
+        return g.getFactory().createPoint(coord)
+      }
+
       var result
 
       // switch execution logic depending on opname
       if (opname === 'buffer') 
-        result = a[opname](parseFloat(arg2))
-      else if (opname === 'getCentroid') 
-        result = a[opname]()
-      else 
-      if (arg3) 
-        result = a[opname](b, arg3)
-      else 
-        result = a[opname](b)
-        
-      
+        result = BufferOp.bufferOp(a, parseFloat(arg2))
+      else if (opname === 'getCentroid')
+        result = getCentroid(a)
+      else if (opname === 'getBoundary') 
+        result = BoundaryOp.getBoundary(a)
+      else if (opname === 'intersection' || opname === 'difference' || opname === 'symDifference')
+        result = OverlayOp[opname](a, b)
+      else if (opname === 'union')
+        result = UnionOp.union(a, b)
+      else if (opname === 'intersects' || opname === 'contains')
+        result = RelateOp[opname](a, b)
+      else if (opname === 'relate')
+        result = RelateOp[opname](a, b).matches(arg3)
+      else if (opname === 'convexHull')
+        result = new ConvexHull(a).getConvexHull()
+      else if (opname === 'isValid')
+        result = IsValidOp.isValid(a)
+      else if (opname === 'isSimple')
+        result = IsSimpleOp.isSimple(a)
+      else if (opname === 'equalsExact')
+        result = a.equalsExact(b)
+      else if (opname === 'equalsNorm')
+        result = a.equalsNorm(b)
+      else
+        throw new Error('Unknown opname: ' + opname)
 
       // switch comparison logic depending on opname
       // TODO: should be a cleaner approach...
