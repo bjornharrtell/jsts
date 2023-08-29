@@ -1,6 +1,7 @@
 import BufferParameters from './BufferParameters.js'
 import CoordinateList from '../../geom/CoordinateList.js'
 import GeometryFactory from '../../geom/GeometryFactory.js'
+import UnaryUnionOp from '../union/UnaryUnionOp.js'
 import Double from '../../../../../java/lang/Double.js'
 import LineSegment from '../../geom/LineSegment.js'
 import Coordinate from '../../geom/Coordinate.js'
@@ -170,7 +171,7 @@ export default class VariableBuffer {
       }
     }
     const partsGeom = this._geomFactory.createGeometryCollection(GeometryFactory.toGeometryArray(parts))
-    const buffer = partsGeom.union()
+    const buffer = UnaryUnionOp.union(partsGeom)
     if (buffer.isEmpty()) 
       return this._geomFactory.createPolygon()
     

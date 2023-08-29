@@ -1,5 +1,6 @@
 import TreeSet from '../../../../../../java/util/TreeSet.js'
 import Double from '../../../../../../java/lang/Double.js'
+import BufferOp from '../../buffer/BufferOp.js'
 import LineStringSnapper from './LineStringSnapper.js'
 import PrecisionModel from '../../../geom/PrecisionModel.js'
 import Polygonal from '../../../geom/Polygonal.js'
@@ -63,7 +64,7 @@ export default class GeometrySnapper {
     const snappedGeom = snapTrans.transform(this._srcGeom)
     let result = snappedGeom
     if (cleanResult && hasInterface(result, Polygonal)) 
-      result = snappedGeom.buffer(0)
+      result = BufferOp.bufferOp(snappedGeom, 0)
     
     return result
   }

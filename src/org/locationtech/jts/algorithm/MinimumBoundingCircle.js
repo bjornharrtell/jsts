@@ -1,5 +1,6 @@
 import Coordinate from '../geom/Coordinate.js'
 import Double from '../../../../java/lang/Double.js'
+import BufferOp from '../operation/buffer/BufferOp.js'
 import CoordinateArrays from '../geom/CoordinateArrays.js'
 import Angle from './Angle.js'
 import Assert from '../util/Assert.js'
@@ -141,7 +142,7 @@ export default class MinimumBoundingCircle {
     if (this._centre === null) return this._input.getFactory().createPolygon()
     const centrePoint = this._input.getFactory().createPoint(this._centre)
     if (this._radius === 0.0) return centrePoint
-    return centrePoint.buffer(this._radius)
+    return BufferOp.bufferOp(centrePoint, this._radius)
   }
   getCentre() {
     this.compute()

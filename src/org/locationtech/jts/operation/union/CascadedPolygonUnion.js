@@ -82,14 +82,6 @@ export default class CascadedPolygonUnion {
       }
     }
   }
-  repeatedUnion(geoms) {
-    let union = null
-    for (let i = geoms.iterator(); i.hasNext(); ) {
-      const g = i.next()
-      if (union === null) union = g.copy(); else union = union.union(g)
-    }
-    return union
-  }
   unionSafe(g0, g1) {
     if (g0 === null && g1 === null) return null
     if (g0 === null) return g1.copy()
@@ -105,21 +97,6 @@ export default class CascadedPolygonUnion {
     const geoms = this.reduceToGeometries(geomTree)
     const union = this.binaryUnion(geoms)
     return union
-  }
-  bufferUnion() {
-    if (arguments.length === 1) {
-      const geoms = arguments[0]
-      const factory = geoms.get(0).getFactory()
-      const gColl = factory.buildGeometry(geoms)
-      const unionAll = gColl.buffer(0.0)
-      return unionAll
-    } else if (arguments.length === 2) {
-      const g0 = arguments[0], g1 = arguments[1]
-      const factory = g0.getFactory()
-      const gColl = factory.createGeometryCollection([g0, g1])
-      const unionAll = gColl.buffer(0.0)
-      return unionAll
-    }
   }
 }
 CascadedPolygonUnion.STRTREE_NODE_CAPACITY = 4
