@@ -1,4 +1,6 @@
 import DiscreteHausdorffDistance from '../../src/org/locationtech/jts/algorithm/distance/DiscreteHausdorffDistance.js'
+import OverlayOp from '../../src/org/locationtech/jts/operation/overlay/OverlayOp.js'
+import BoundaryOp from '../../src/org/locationtech/jts/operation/BoundaryOp.js'
 
 /**
  * A {@link ResultMatcher} which compares the results of buffer operations for
@@ -52,7 +54,7 @@ export default class BufferResultMatcher {
   isSymDiffAreaInTolerance(actualBuffer,
     expectedBuffer) {
     const area = expectedBuffer.getArea()
-    const diff = actualBuffer.symDifference(expectedBuffer)
+    const diff = OverlayOp.symDifference(actualBuffer, expectedBuffer)
     const areaDiff = diff.getArea()
 
     // can't get closer than difference area = 0 ! This also handles case when
@@ -67,8 +69,8 @@ export default class BufferResultMatcher {
 
   isBoundaryHausdorffDistanceInTolerance(
     actualBuffer, expectedBuffer, distance) {
-    const actualBdy = actualBuffer.getBoundary()
-    const expectedBdy = expectedBuffer.getBoundary()
+    const actualBdy = BoundaryOp.getBoundary(actualBuffer)
+    const expectedBdy = BoundaryOp.getBoundary(expectedBuffer)
 
     const haus = new DiscreteHausdorffDistance(actualBdy, expectedBdy)
     haus.setDensifyFraction(0.25)

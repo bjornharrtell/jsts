@@ -1,10 +1,13 @@
+import UnionOp from '../operation/union/UnionOp.js'
+import BufferOp from '../operation/buffer/BufferOp.js'
 import CommonBitsOp from './CommonBitsOp.js'
 import RuntimeException from '../../../../java/lang/RuntimeException.js'
+import OverlayOp from '../operation/overlay/OverlayOp.js'
 export default class EnhancedPrecisionOp {
   static union(geom0, geom1) {
     let originalEx = null
     try {
-      const result = geom0.union(geom1)
+      const result = UnionOp.union(geom0, geom1)
       return result
     } catch (ex) {
       if (ex instanceof RuntimeException) 
@@ -25,7 +28,7 @@ export default class EnhancedPrecisionOp {
   static intersection(geom0, geom1) {
     let originalEx = null
     try {
-      const result = geom0.intersection(geom1)
+      const result = OverlayOp.intersection(geom0, geom1)
       return result
     } catch (ex) {
       if (ex instanceof RuntimeException) 
@@ -46,7 +49,7 @@ export default class EnhancedPrecisionOp {
   static buffer(geom, distance) {
     let originalEx = null
     try {
-      const result = geom.buffer(distance)
+      const result = BufferOp.bufferOp(geom, distance)
       return result
     } catch (ex) {
       if (ex instanceof RuntimeException) 
@@ -67,7 +70,7 @@ export default class EnhancedPrecisionOp {
   static symDifference(geom0, geom1) {
     let originalEx = null
     try {
-      const result = geom0.symDifference(geom1)
+      const result = OverlayOp.symDifference(geom0, geom1)
       return result
     } catch (ex) {
       if (ex instanceof RuntimeException) 
@@ -88,7 +91,7 @@ export default class EnhancedPrecisionOp {
   static difference(geom0, geom1) {
     let originalEx = null
     try {
-      const result = geom0.difference(geom1)
+      const result = OverlayOp.difference(geom0, geom1)
       return result
     } catch (ex) {
       if (ex instanceof RuntimeException) 

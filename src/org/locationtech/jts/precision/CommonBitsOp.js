@@ -1,4 +1,7 @@
+import UnionOp from '../operation/union/UnionOp.js'
+import BufferOp from '../operation/buffer/BufferOp.js'
 import CommonBitsRemover from './CommonBitsRemover.js'
+import OverlayOp from '../operation/overlay/OverlayOp.js'
 export default class CommonBitsOp {
   constructor() {
     CommonBitsOp.constructor_.apply(this, arguments)
@@ -19,11 +22,11 @@ export default class CommonBitsOp {
   }
   union(geom0, geom1) {
     const geom = this.removeCommonBits(geom0, geom1)
-    return this.computeResultPrecision(geom[0].union(geom[1]))
+    return this.computeResultPrecision(UnionOp.union(geom[0], geom[1]))
   }
   intersection(geom0, geom1) {
     const geom = this.removeCommonBits(geom0, geom1)
-    return this.computeResultPrecision(geom[0].intersection(geom[1]))
+    return this.computeResultPrecision(OverlayOp.intersection(geom[0], geom[1]))
   }
   removeCommonBits() {
     if (arguments.length === 1) {
@@ -45,14 +48,14 @@ export default class CommonBitsOp {
   }
   buffer(geom0, distance) {
     const geom = this.removeCommonBits(geom0)
-    return this.computeResultPrecision(geom.buffer(distance))
+    return this.computeResultPrecision(BufferOp.bufferOp(geom, distance))
   }
   symDifference(geom0, geom1) {
     const geom = this.removeCommonBits(geom0, geom1)
-    return this.computeResultPrecision(geom[0].symDifference(geom[1]))
+    return this.computeResultPrecision(OverlayOp.symDifference(geom[0], geom[1]))
   }
   difference(geom0, geom1) {
     const geom = this.removeCommonBits(geom0, geom1)
-    return this.computeResultPrecision(geom[0].difference(geom[1]))
+    return this.computeResultPrecision(OverlayOp.difference(geom[0], geom[1]))
   }
 }
