@@ -1,6 +1,5 @@
 import fs from 'fs'
 import replace from '@rollup/plugin-replace'
-import babel from '@rollup/plugin-babel'
 import terser from '@rollup/plugin-terser'
 
 const packageJson = JSON.parse(fs.readFileSync('./package.json'))
@@ -19,16 +18,6 @@ export default {
     replace({
       npm_package_version: packageJson.version,
       preventAssignment: true
-    }),
-    babel({
-      exclude: 'node_modules/**',
-      presets: [['@babel/env', {
-        targets: {
-          browsers: ['>2%', 'not dead']
-        }
-      }]],
-      babelrc: false,
-      babelHelpers: 'bundled'
     }),
     terser()
   ]
