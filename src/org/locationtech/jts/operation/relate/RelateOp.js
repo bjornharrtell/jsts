@@ -68,7 +68,7 @@ export default class RelateOp extends GeometryGraphOperation {
       const r = false
       for (let i = 0; i < g1.getNumGeometries(); i++) 
         for (let j = 0; j < g2.getNumGeometries(); j++) 
-          if (g1.getGeometryN(i).intersects(g2.getGeometryN(j))) 
+          if (RelateOp.intersects(g1.getGeometryN(i), g2.getGeometryN(j))) 
             return true
           
         
