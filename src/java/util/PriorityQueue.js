@@ -1,4 +1,4 @@
-import ArrayList from '../../../../java/util/ArrayList.js'
+import ArrayList from './ArrayList.js'
 export default class PriorityQueue {
   constructor() {
     PriorityQueue.constructor_.apply(this, arguments)
