@@ -10,13 +10,16 @@ export default class PriorityQueue {
     this._items = new ArrayList()
     this._items.add(null)
   }
-  poll() {
+  remove_(i) {
     if (this.isEmpty()) return null
-    const minItem = this._items.get(1)
+    const minItem = this._items.get(i)
     this._items.set(1, this._items.get(this._size))
     this._size -= 1
-    this.reorder(1)
+    this.reorder(i)
     return minItem
+  }
+  poll() {
+    return this.remove_(1)
   }
   size() {
     return this._size
@@ -42,11 +45,15 @@ export default class PriorityQueue {
   }
   remove(o) {
     if (o === undefined) {
-      o = this._items.get(this._items.size() - 1)
-      this._items.remove(o)
+      o = this._items.get(1)
+      this.remove_(1)
       return o
     } else {
-      return this._items.remove(o)
+      const i = this._items.array.indexOf(o)
+      if (i === -1)
+        return false
+      this.remove_(i)
+      return true
     }
   }
   isEmpty() {
