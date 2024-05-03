@@ -1,0 +1,17 @@
+import expect from 'expect.js'
+
+import WKTReader from '../../../src/org/locationtech/jts/io/WKTReader.js'
+import WKTWriter from '../../../src/org/locationtech/jts/io/WKTWriter.js'
+import MaximumInscribedCircle from '../../../src/org/locationtech/jts/algorithm/construct/MaximumInscribedCircle.js'
+
+describe('Test (#516)', function() {
+  it('MaximumInscribedCircle basic test', function() {
+    const reader = new WKTReader()
+    const writer = new WKTWriter()
+    const input = 'POLYGON((10 10, 100 10, 100 100, 10 100, 10 10))'
+    const p = reader.read(input)
+    const result = MaximumInscribedCircle.getCenter(p, 1)
+    const wkt = writer.write(result)
+    expect(wkt).to.equal('POINT (55 55)')
+  })
+})
