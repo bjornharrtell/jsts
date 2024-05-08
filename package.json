@@ -57,5 +57,8 @@
     "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
     "build-jsdoc": "jsdoc -c doc/jsdoc.json",
     "build": "rollup -c rollup.config.js -o dist/jsts.min.js"
+  },
+  "dependencies": {
+    "fastpriorityqueue": "^0.7.5"
   }
 }
