@@ -1,9 +1,9 @@
-import FastPriorityQueue from 'fastpriorityqueue/FastPriorityQueue.js'
+import FastPriorityQueue from 'fastpriorityqueue'
 
 export default class PriorityQueue {
 
   constructor() {
-    this._fpQueue = new FastPriorityQueue((a,b) => a.compareTo(b) < 0);
+    this._fpQueue = new FastPriorityQueue((a,b) => a.compareTo(b) < 0)
   }
 
   poll() {
@@ -13,7 +13,7 @@ export default class PriorityQueue {
     return this._fpQueue.size
   }
   clear() {
-    this._fpQueue = new FastPriorityQueue();
+    this._fpQueue = new FastPriorityQueue()
   }
   peek() {
     return this._fpQueue.peek()
