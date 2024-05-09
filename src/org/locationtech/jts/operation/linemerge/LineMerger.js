@@ -85,7 +85,7 @@ export default class LineMerger {
           this.addLineString(component)
         
       }
-      
+      ;
     } else if (hasInterface(arguments[0], Collection)) {
       const geometries = arguments[0]
       this._mergedLineStrings = null

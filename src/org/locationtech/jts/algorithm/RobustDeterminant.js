@@ -47,7 +47,7 @@ export default class RobustDeterminant {
     if (0.0 < y1) {
       if (0.0 < y2) {
         if (y1 <= y2) {
-          
+          ;
         } else {
           sign = -sign
           swap = x1
