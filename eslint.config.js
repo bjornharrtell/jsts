@@ -29,7 +29,7 @@ export default [
       'brace-style': ['error', '1tbs'],
       'block-spacing': ['error', 'always'],
       'object-curly-newline': ['error', { consistent: true }],
-      'prefer-const': 0,
+      'prefer-const': 1,
       'no-mixed-operators': 0,
       'no-empty': 0,
       'no-undef': 0,

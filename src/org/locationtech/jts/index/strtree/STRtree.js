@@ -1,5 +1,5 @@
 import ItemBoundable from './ItemBoundable.js'
-import PriorityQueue from '../../util/PriorityQueue.js'
+import PriorityQueue from '../../../../../java/util/PriorityQueue.js'
 import hasInterface from '../../../../../hasInterface.js'
 import Double from '../../../../../java/lang/Double.js'
 import Serializable from '../../../../../java/io/Serializable.js'
