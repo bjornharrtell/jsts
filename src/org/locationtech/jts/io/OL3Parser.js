@@ -1,4 +1,4 @@
-/* eslint-disable no-undef */
+ 
 
 /**
  * @module org/locationtech/jts/io/OL3Parser

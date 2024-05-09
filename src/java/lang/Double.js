@@ -82,7 +82,7 @@ else
         return new Long(high, low)
       }
 
-      if (value !== value) { // eslint-disable-line
+      if (value !== value) {  
         // Handle NaNs (boiled down to only one distinct NaN).
         low = 0 | 0
         high = 0x7ff80000 // exponent: 11..11, significand: 10..00
