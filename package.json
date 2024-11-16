@@ -61,7 +61,6 @@
     "test-manual": "mocha --timeout 10s --recursive test/manual",
     "test": "nyc mocha --timeout 10s --recursive test/auto/node test/manual",
     "test-perf": "0x -- node $(which _mocha) --timeout 10s --recursive test/auto/node test/manual",
-    "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
     "build-jsdoc": "jsdoc -c doc/jsdoc.json",
     "gen-types": "tsc",
     "build": "rollup -c rollup.config.js -o dist/jsts.min.js"
