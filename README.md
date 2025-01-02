@@ -9,23 +9,15 @@ The primary goal of the project is to provide web mapping applications with a co
 
 JSTS was made using automatic translation of the original JTS Java source via AST to AST transformation preserving the [JTS API](http://locationtech.github.io/jts/javadoc/), except for the I/O related classes which has been selectively and manually ported with support for WKT, GeoJSON and OpenLayers 3+.
 
-A [Google group](http://groups.google.com/group/jsts-devs) is available for discussions.
-
 A [port](http://bjornharrtell.github.io/jsts/1.6.1/validationsuite/index.html) of JTS Validation Suite provides additional tests.
 
 Basic functionality together with OpenLayers is demonstrated [here](http://bjornharrtell.github.io/jsts).
 
 ## Browser or Node.js use
 
-An ES5 (the most common JavaScript variant) compatible build for browsers is available [here](https://unpkg.com/jsts@1.6.1/dist/jsts.min.js).
-
-An ES6+ compatible build for browsers is available [here](https://unpkg.com/jsts/dist/jsts.min.js).
-
-Including the above build as a script will import a global object `jsts` exposing similar public API as `org.locationtech.jts` in the [JTS API](http://locationtech.github.io/jts/javadoc/).
-
 For Node.js 14+, install using `npm install jsts` after which you can import individual modules with fx. `import GeoJSONReader from 'jsts/org/locationtech/jts/io/GeoJSONReader.js'`. Note that since some time JSTS is only delivered as ES modules and you should be aware of https://nodejs.org/api/esm.html and specifically https://nodejs.org/api/esm.html#interoperability-with-commonjs.
 
-I/O related classes in JTS had to be manually ported. From the original formats WKT and GeoJSON are supported. A direct reader/writer for OpenLayers 3+ geometries exist. See the [API documentation](http://bjornharrtell.github.io/jsts/1.6.1/doc/) for these specific classes.
+See the [API documentation](http://bjornharrtell.github.io/jsts/1.6.1/doc/) for these specific classes.
 
 ## ES6 modules use
 
@@ -35,5 +27,5 @@ As of version 1.4.0 it's possible to depend on the source modules directly using
 
 * In a few cases Java overloading cannot be correctly translated to JavaScript. One such case is `createMultiPoint` in `GeometryFactory` which only works with `Point[]` arguments.
 * In some cases you might get a `TopologyException` thrown as an `Error`. This is expected if a calculation fails due to precision issues. To resolve this issue try reducing precision in the input and at the same time make sure the input is valid as defined by the [OGC Simple Features specification](http://www.opengeospatial.org/standards/sfs). To reduce precision [GeometryPrecisionReducer](http://locationtech.github.io/jts/javadoc/org/locationtech/jts/precision/GeometryPrecisionReducer.html) can be used.
-* Shortcut methods on Geometry from upstream API are not available (`.buffer`, `.intersects` and more) unless using the bundled ES5 version that has these [monkey patched](https://github.com/bjornharrtell/jsts/blob/master/src/org/locationtech/jts/monkey.js) in. The shortcut methods have been removed because they cause difficult circular dependencies. You can find the equivalent methods on the appropriate `operation` class.
+* Shortcut methods on Geometry from upstream API are not available (`.buffer`, `.intersects` and more). The shortcut methods have been removed because they cause difficult circular dependencies. You can find the equivalent methods in individual corresponding modules.
 
