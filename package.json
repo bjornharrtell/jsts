@@ -30,6 +30,9 @@
     "rollup": "4.27.2",
     "typescript": "^5.6.3"
   },
+  "optionalDependencies": {
+    "ol": ">=3"
+  },
   "dependencies": {
     "fastpriorityqueue": "^0.7.5"
   },
